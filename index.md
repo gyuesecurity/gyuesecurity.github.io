@@ -1,5 +1,6 @@
 ---
 layout: home
 title: Home
-WELCOME
 ---
+
+Welcome to my security blog
