@@ -1,5 +1,5 @@
 ---
-title: About
+title: 정보
 ---
 
 안녕하세요. 보안 분야를 공부하고 있는 학생입니다.
@@ -9,3 +9,4 @@ title: About
 - 웹 해킹 및 취약점 분석
 - CTF 문제 풀이 (Writeup)
 - Bug Bounty 학습 기록
+- 보안 관련 기술 문서 정리
