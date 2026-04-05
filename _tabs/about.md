@@ -1,8 +1,11 @@
 ---
-# the default layout is 'page'
-icon: fas fa-info-circle
-order: 4
+title: About
 ---
 
-> Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
-{: .prompt-tip }
+안녕하세요. 보안 분야를 공부하고 있는 학생입니다.
+
+이 블로그는 다음 내용을 기록하기 위해 운영됩니다.
+
+- 웹 해킹 및 취약점 분석
+- CTF 문제 풀이 (Writeup)
+- Bug Bounty 학습 기록
