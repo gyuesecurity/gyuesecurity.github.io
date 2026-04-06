@@ -2,14 +2,14 @@
 layout: null
 permalink: /categories/
 title: Categories
-description: gyue archive 카테고리 목록
+description: gyue blog 카테고리 목록
 ---
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Categories | gyue archive</title>
+  <title>Categories | gyue blog</title>
   <meta name="description" content="{{ page.description }}">
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
@@ -18,7 +18,7 @@ description: gyue archive 카테고리 목록
   <nav class="site-nav">
     <a href="{{ '/' | relative_url }}" class="nav-brand">
       <span class="brand-mark">[gyue]</span>
-      <span class="brand-text">security archive</span>
+      <span class="brand-text">security blog</span>
     </a>
     <ul class="nav-links">
       <li><a href="{{ '/' | relative_url }}">home</a></li>
@@ -47,8 +47,8 @@ description: gyue archive 카테고리 목록
             <span class="topic-kicker">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
             <h3>{{ category_name }}</h3>
             <p>
-              {% if category_name == '개발' %}개발 메모와 구현 기록.
-              {% elsif category_name == 'CTF/Wargame' %}문제 풀이와 워게임 복기.
+              {% if category_name == '개발' %}개발 및 구현 기록.
+              {% elsif category_name == 'CTF/Wargame' %}문제 풀이와 워게임 기록.
               {% elsif category_name == 'BugBounty' %}취약점 분석과 실전 학습.
               {% elsif category_name == '블로그/기술문서' %}문서화와 운영 기록.
               {% elsif category_name == '논문/컨퍼런스' %}자료 요약과 인사이트 정리.
@@ -63,7 +63,7 @@ description: gyue archive 카테고리 목록
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 gyue archive · browse by <a href="{{ '/posts/' | relative_url }}">posts</a></p>
+    <p>© 2026 gyue blog · browse by <a href="{{ '/posts/' | relative_url }}">posts</a></p>
   </footer>
 </body>
 </html>
