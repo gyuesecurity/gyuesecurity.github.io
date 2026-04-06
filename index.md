@@ -4,85 +4,109 @@ title: 홈
 permalink: /
 ---
 
-<div style="text-align:center; margin-top:40px; margin-bottom:50px;">
-
-  <h1 style="font-size:44px; font-weight:800; margin-bottom:10px;">gyuesecurity</h1>
-
-  <p style="font-size:17px; color:#94a3b8; margin-bottom:8px;">
-    Web Hacking · CTF · Bug Bounty
-  </p>
-
-  <p style="font-size:15px; color:#cbd5e1;">
-    보안 공부하며 정리한 내용을 기록하는 블로그입니다.
-  </p>
-
-</div>
-
-## Categories
-
-<div style="display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:20px; margin-top:20px;">
-
-  <a href="/categories/" style="text-decoration:none;">
-    <div style="padding:22px; border:1px solid #243041; border-radius:14px; background:#0f172a;">
-      <h3 style="margin-top:0; margin-bottom:10px; color:#f8fafc;">개발</h3>
-      <p style="margin:0; color:#94a3b8;">개발 관련 학습 내용을 정리합니다.</p>
+<section class="landing-hero">
+  <div class="landing-copy">
+    <p class="landing-eyebrow">Security research archive</p>
+    <h1>gyue</h1>
+    <p class="landing-summary">
+      웹 보안과 문제 해결 과정을 차분하게 축적하는 개인 아카이브입니다.
+    </p>
+    <p class="landing-detail">
+      개발 기록부터 CTF/Wargame, BugBounty, 기술문서, 논문/컨퍼런스, 공모전/자격증까지
+      공부한 내용을 다시 꺼내볼 수 있는 형태로 정리합니다.
+    </p>
+    <div class="landing-actions">
+      <a class="landing-button primary" href="{{ '/archives/' | relative_url }}">최근 글 보기</a>
+      <a class="landing-button" href="{{ '/about/' | relative_url }}">소개 보기</a>
     </div>
-  </a>
+  </div>
 
-  <a href="/categories/" style="text-decoration:none;">
-    <div style="padding:22px; border:1px solid #243041; border-radius:14px; background:#0f172a;">
-      <h3 style="margin-top:0; margin-bottom:10px; color:#f8fafc;">CTF / Wargame</h3>
-      <p style="margin:0; color:#94a3b8;">CTF 문제 풀이와 워게임 학습 내용을 기록합니다.</p>
+  <aside class="landing-panel">
+    <p class="panel-label">Focus</p>
+    <ul class="panel-list">
+      <li>Web Hacking</li>
+      <li>CTF &amp; Wargame</li>
+      <li>BugBounty</li>
+    </ul>
+    <p class="panel-caption">
+      실습 과정, 분석 메모, 기술 문서를 한곳에 모아두는 블로그입니다.
+    </p>
+  </aside>
+</section>
+
+<section class="landing-section">
+  <div class="section-heading">
+    <p class="section-kicker">Categories</p>
+    <h2>기록하는 주제</h2>
+  </div>
+
+  <div class="category-grid">
+    <a class="category-card" href="{{ '/categories/' | relative_url }}">
+      <span class="category-index">01</span>
+      <h3>개발</h3>
+      <p>개발 과정에서 정리할 만한 설계, 구현, 학습 노트를 남깁니다.</p>
+    </a>
+
+    <a class="category-card" href="{{ '/categories/' | relative_url }}">
+      <span class="category-index">02</span>
+      <h3>CTF / Wargame</h3>
+      <p>문제 풀이 흐름과 핵심 개념을 복기할 수 있도록 기록합니다.</p>
+    </a>
+
+    <a class="category-card" href="{{ '/categories/' | relative_url }}">
+      <span class="category-index">03</span>
+      <h3>BugBounty</h3>
+      <p>취약점 분석 과정, 재현 실험, 실전 학습 포인트를 정리합니다.</p>
+    </a>
+
+    <a class="category-card" href="{{ '/categories/' | relative_url }}">
+      <span class="category-index">04</span>
+      <h3>블로그 / 기술문서</h3>
+      <p>운영 기록과 문서화 방식, 참고할 만한 기술 자료를 모읍니다.</p>
+    </a>
+
+    <a class="category-card" href="{{ '/categories/' | relative_url }}">
+      <span class="category-index">05</span>
+      <h3>논문 / 컨퍼런스</h3>
+      <p>논문과 발표 자료에서 얻은 인사이트를 요약해 저장합니다.</p>
+    </a>
+
+    <a class="category-card" href="{{ '/categories/' | relative_url }}">
+      <span class="category-index">06</span>
+      <h3>공모전 / 자격증</h3>
+      <p>준비 과정과 회고를 남겨 다음 도전에 바로 활용할 수 있게 합니다.</p>
+    </a>
+  </div>
+</section>
+
+<section class="landing-section">
+  <div class="section-heading">
+    <p class="section-kicker">Recent posts</p>
+    <h2>최근에 정리한 글</h2>
+  </div>
+
+  <div class="post-stack">
+    {% for post in site.posts limit:4 %}
+      <a class="post-card" href="{{ post.url | relative_url }}">
+        <p class="post-meta">{{ post.date | date: "%Y.%m.%d" }}</p>
+        <h3>{{ post.title }}</h3>
+        {% assign excerpt_text = post.excerpt | strip_html | strip_newlines | truncate: 120 %}
+        <p>{{ excerpt_text }}</p>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="landing-section landing-footer">
+  <div class="contact-card">
+    <p class="section-kicker">Contact</p>
+    <h2>Connect</h2>
+    <p>
+      GitHub Pages 기반으로 운영 중이며, 기술 기록과 보안 학습 메모를 꾸준히 업데이트합니다.
+    </p>
+    <div class="contact-links">
+      <a href="https://github.com/gyuesecurity">GitHub</a>
+      <a href="mailto:sos004989@naver.com">sos004989@naver.com</a>
     </div>
-  </a>
-
-  <a href="/categories/" style="text-decoration:none;">
-    <div style="padding:22px; border:1px solid #243041; border-radius:14px; background:#0f172a;">
-      <h3 style="margin-top:0; margin-bottom:10px; color:#f8fafc;">BugBounty</h3>
-      <p style="margin:0; color:#94a3b8;">버그바운티와 취약점 분석 기록을 정리합니다.</p>
-    </div>
-  </a>
-
-  <a href="/categories/" style="text-decoration:none;">
-    <div style="padding:22px; border:1px solid #243041; border-radius:14px; background:#0f172a;">
-      <h3 style="margin-top:0; margin-bottom:10px; color:#f8fafc;">블로그 / 기술문서</h3>
-      <p style="margin:0; color:#94a3b8;">블로그 운영 기록과 기술 문서를 정리합니다.</p>
-    </div>
-  </a>
-
-  <a href="/categories/" style="text-decoration:none;">
-    <div style="padding:22px; border:1px solid #243041; border-radius:14px; background:#0f172a;">
-      <h3 style="margin-top:0; margin-bottom:10px; color:#f8fafc;">논문 / 컨퍼런스</h3>
-      <p style="margin:0; color:#94a3b8;">논문, 세미나, 컨퍼런스 관련 내용을 기록합니다.</p>
-    </div>
-  </a>
-
-  <a href="/categories/" style="text-decoration:none;">
-    <div style="padding:22px; border:1px solid #243041; border-radius:14px; background:#0f172a;">
-      <h3 style="margin-top:0; margin-bottom:10px; color:#f8fafc;">공모전 / 자격증</h3>
-      <p style="margin:0; color:#94a3b8;">공모전, 자격증, 대외활동 관련 내용을 정리합니다.</p>
-    </div>
-  </a>
-
-</div>
-
-<br><br>
-
-## Recent Posts
-
-<ul>
-{% for post in site.posts limit:5 %}
-  <li style="margin-bottom:10px;">
-    <a href="{{ post.url }}">{{ post.title }}</a>
-    <span style="color:#94a3b8; font-size:14px;">- {{ post.date | date: "%Y-%m-%d" }}</span>
-  </li>
-{% endfor %}
-</ul>
-
-<br>
-
-## Contact
-
-- GitHub: [gyuesecurity](https://github.com/gyuesecurity)
-- Instagram [yh__1025](https://www.instagram.com/yh__1025/)
-- Email: sos004989@naver.com
+  </div>
+</section>

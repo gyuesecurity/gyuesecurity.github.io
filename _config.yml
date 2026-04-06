@@ -12,16 +12,16 @@ timezone: Asia/Seoul
 # jekyll-seo-tag settings
 # ↓ --------------------------
 
-title: gyue Security Blog
+title: gyue
 
-tagline: Web Hacking · CTF
+tagline: Security Notes and Technical Records
 
 description: >-
-  개발, CTF/Wargame, Bug Bounty, 블로그/기술문서, 논문/컨퍼런스,
-  공모전/자격증 관련 학습 기록과 보안 기술 문서를 정리하는 블로그입니다.
+  개발, CTF/Wargame, BugBounty, 블로그/기술문서, 논문/컨퍼런스,
+  공모전/자격증까지 보안 학습과 기술 기록을 아카이빙하는 개인 블로그입니다.
 
 # Fill in the protocol & hostname for your site.
-url: "https://gyue.github.io"
+url: "https://gyuesecurity.github.io"
 
 github:
   username: gyuesecurity
@@ -30,8 +30,8 @@ twitter:
   username:
 
 social:
-  name: gyuesecurity
-  email:
+  name: gyue
+  email: sos004989@naver.com
   fediverse_handle:
   links:
     - https://github.com/gyuesecurity
@@ -73,7 +73,7 @@ pageviews:
 # Available options:
 # light — Use the light color scheme
 # dark  — Use the dark color scheme
-theme_mode: dark
+theme_mode: light
 
 # The CDN endpoint for media resources.
 cdn:
