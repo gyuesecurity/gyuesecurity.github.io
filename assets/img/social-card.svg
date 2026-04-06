@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#121417"/>
+  <circle cx="1002" cy="128" r="180" fill="#6CD6DF" fill-opacity="0.08"/>
+  <rect x="56" y="56" width="1088" height="518" rx="36" fill="#171A1E" stroke="#FFFFFF" stroke-opacity="0.12"/>
+  <text x="96" y="176" fill="#6CD6DF" font-family="IBM Plex Mono, monospace" font-size="28">[gyue] security archive</text>
+  <text x="96" y="286" fill="#EDF1F4" font-family="SUIT, sans-serif" font-size="72" font-weight="700">Security notes,</text>
+  <text x="96" y="370" fill="#EDF1F4" font-family="SUIT, sans-serif" font-size="72" font-weight="700">build logs,</text>
+  <text x="96" y="454" fill="#EDF1F4" font-family="SUIT, sans-serif" font-size="72" font-weight="700">and research trails.</text>
+  <text x="96" y="534" fill="#A0ABB5" font-family="SUIT, sans-serif" font-size="32">gyuesecurity.github.io</text>
+</svg>

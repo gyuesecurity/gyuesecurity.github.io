@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title }} | category | gyue archive</title>
-  <meta name="description" content="{{ page.title }} 카테고리의 게시글 목록">
+  <title>{{ page.title }} | tag | gyue archive</title>
+  <meta name="description" content="{{ page.title }} 태그의 게시글 목록">
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
 </head>
@@ -17,16 +17,16 @@
     <ul class="nav-links">
       <li><a href="{{ '/' | relative_url }}">home</a></li>
       <li><a href="{{ '/posts/' | relative_url }}">posts</a></li>
-      <li><a href="{{ '/categories/' | relative_url }}" class="is-active">categories</a></li>
+      <li><a href="{{ '/tags/' | relative_url }}" class="is-active">tags</a></li>
       <li><a href="{{ '/about/' | relative_url }}">about</a></li>
     </ul>
   </nav>
 
   <main class="page-shell narrow-shell">
     <section class="page-hero">
-      <p class="eyebrow">category archive</p>
-      <h1>{{ page.title }}</h1>
-      <p class="hero-summary">{{ page.posts | size }}개의 글이 이 카테고리에 포함되어 있습니다.</p>
+      <p class="eyebrow">tag archive</p>
+      <h1>#{{ page.title }}</h1>
+      <p class="hero-summary">{{ page.posts | size }}개의 글이 이 태그로 묶여 있습니다.</p>
     </section>
 
     <section class="content-section">
@@ -34,7 +34,7 @@
         {% for post in page.posts %}
           <a href="{{ post.url | relative_url }}" class="post-row">
             <div class="post-row-head">
-              <span class="pill">{{ page.title }}</span>
+              <span class="pill">#{{ page.title }}</span>
               <span class="post-date">{{ post.date | date: "%Y.%m.%d" }}</span>
             </div>
             <h3>{{ post.title }}</h3>
@@ -47,7 +47,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 gyue archive · back to <a href="{{ '/categories/' | relative_url }}">categories</a></p>
+    <p>© 2026 gyue archive · back to <a href="{{ '/tags/' | relative_url }}">tags</a></p>
   </footer>
 </body>
 </html>

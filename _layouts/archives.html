@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title }} | category | gyue archive</title>
-  <meta name="description" content="{{ page.title }} 카테고리의 게시글 목록">
+  <title>Archives | gyue archive</title>
+  <meta name="description" content="gyue archive 전체 아카이브">
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
 </head>
@@ -16,25 +16,26 @@
     </a>
     <ul class="nav-links">
       <li><a href="{{ '/' | relative_url }}">home</a></li>
-      <li><a href="{{ '/posts/' | relative_url }}">posts</a></li>
-      <li><a href="{{ '/categories/' | relative_url }}" class="is-active">categories</a></li>
-      <li><a href="{{ '/about/' | relative_url }}">about</a></li>
+      <li><a href="{{ '/posts/' | relative_url }}" class="is-active">posts</a></li>
+      <li><a href="{{ '/categories/' | relative_url }}">categories</a></li>
+      <li><a href="{{ '/tags/' | relative_url }}">tags</a></li>
     </ul>
   </nav>
 
   <main class="page-shell narrow-shell">
     <section class="page-hero">
-      <p class="eyebrow">category archive</p>
-      <h1>{{ page.title }}</h1>
-      <p class="hero-summary">{{ page.posts | size }}개의 글이 이 카테고리에 포함되어 있습니다.</p>
+      <p class="eyebrow">full archive</p>
+      <h1>전체 아카이브</h1>
+      <p class="hero-summary">연도와 날짜 기준으로 전체 글을 모아둔 페이지입니다.</p>
     </section>
 
     <section class="content-section">
       <div class="stack-list">
-        {% for post in page.posts %}
+        {% for post in site.posts %}
+          {% assign primary_category = post.categories | first %}
           <a href="{{ post.url | relative_url }}" class="post-row">
             <div class="post-row-head">
-              <span class="pill">{{ page.title }}</span>
+              <span class="pill">{{ primary_category }}</span>
               <span class="post-date">{{ post.date | date: "%Y.%m.%d" }}</span>
             </div>
             <h3>{{ post.title }}</h3>
@@ -47,7 +48,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>© 2026 gyue archive · back to <a href="{{ '/categories/' | relative_url }}">categories</a></p>
+    <p>© 2026 gyue archive · back to <a href="{{ '/posts/' | relative_url }}">posts</a></p>
   </footer>
 </body>
 </html>

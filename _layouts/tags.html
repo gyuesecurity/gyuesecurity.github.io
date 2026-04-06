@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tags | gyue archive</title>
+  <meta name="description" content="gyue archive 태그 목록">
+  <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="{{ '/' | relative_url }}" class="nav-brand">
+      <span class="brand-mark">[gyue]</span>
+      <span class="brand-text">security archive</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ '/' | relative_url }}">home</a></li>
+      <li><a href="{{ '/posts/' | relative_url }}">posts</a></li>
+      <li><a href="{{ '/tags/' | relative_url }}" class="is-active">tags</a></li>
+      <li><a href="{{ '/about/' | relative_url }}">about</a></li>
+    </ul>
+  </nav>
+
+  <main class="page-shell narrow-shell">
+    <section class="page-hero">
+      <p class="eyebrow">keyword map</p>
+      <h1>태그</h1>
+      <p class="hero-summary">글에서 반복해서 등장하는 키워드를 태그 기준으로 묶었습니다.</p>
+    </section>
+
+    <section class="content-section">
+      <div class="tag-section">
+        {% assign sorted_tags = site.tags | sort %}
+        {% for tag in sorted_tags %}
+          {% assign tag_name = tag[0] %}
+          {% assign tag_posts = tag[1] %}
+          <a href="{{ '/tags/' | append: tag_name | cgi_escape | append: '/' | relative_url }}" class="tag-tile">
+            <span class="pill">#{{ tag_name }}</span>
+            <strong>{{ tag_posts | size }}</strong>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 gyue archive · browse by <a href="{{ '/posts/' | relative_url }}">posts</a></p>
+  </footer>
+</body>
+</html>
