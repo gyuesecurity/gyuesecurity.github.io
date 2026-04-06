@@ -39,9 +39,11 @@ description: gyue archive 카테고리 목록
     <section class="content-section">
       <div class="topic-grid topic-grid-wide">
         {% assign category_order = "개발|CTF/Wargame|BugBounty|블로그/기술문서|논문/컨퍼런스|공모전/자격증" | split: "|" %}
+        {% assign category_slugs = "dev|ctf-wargame|bugbounty|blog-docs|paper-conf|contest-cert" | split: "|" %}
         {% for category_name in category_order %}
           {% assign posts = site.categories[category_name] %}
-          <a href="{{ '/categories/' | append: category_name | cgi_escape | append: '/' | relative_url }}" class="topic-card tone-cyan">
+          {% assign category_slug = category_slugs[forloop.index0] %}
+          <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}" class="topic-card tone-cyan">
             <span class="topic-kicker">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
             <h3>{{ category_name }}</h3>
             <p>

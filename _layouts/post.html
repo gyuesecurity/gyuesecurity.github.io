@@ -28,7 +28,21 @@
         <div class="post-row-head">
           {% assign primary_category = page.categories | first %}
           {% if primary_category %}
-            <a class="pill" href="{{ '/categories/' | relative_url }}">{{ primary_category }}</a>
+            {% assign category_slug = 'misc' %}
+            {% if primary_category == '개발' %}
+              {% assign category_slug = 'dev' %}
+            {% elsif primary_category == 'CTF/Wargame' %}
+              {% assign category_slug = 'ctf-wargame' %}
+            {% elsif primary_category == 'BugBounty' %}
+              {% assign category_slug = 'bugbounty' %}
+            {% elsif primary_category == '블로그/기술문서' %}
+              {% assign category_slug = 'blog-docs' %}
+            {% elsif primary_category == '논문/컨퍼런스' %}
+              {% assign category_slug = 'paper-conf' %}
+            {% elsif primary_category == '공모전/자격증' %}
+              {% assign category_slug = 'contest-cert' %}
+            {% endif %}
+            <a class="pill" href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}">{{ primary_category }}</a>
           {% endif %}
           <span class="post-date">{{ page.date | date: "%Y.%m.%d" }}</span>
         </div>
