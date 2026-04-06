@@ -1,0 +1,82 @@
+---
+layout: null
+permalink: /posts/
+title: Posts
+description: gyue의 게시글 목록 페이지
+---
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Posts | gyue archive</title>
+  <meta name="description" content="{{ page.description }}">
+  <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="{{ '/' | relative_url }}" class="nav-brand">
+      <span class="brand-mark">[gyue]</span>
+      <span class="brand-text">security archive</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ '/' | relative_url }}">home</a></li>
+      <li><a href="{{ '/posts/' | relative_url }}" class="is-active">posts</a></li>
+      <li><a href="{{ '/about/' | relative_url }}">about</a></li>
+      <li><a href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">github</a></li>
+    </ul>
+  </nav>
+
+  <main class="page-shell narrow-shell">
+    <section class="page-hero">
+      <p class="eyebrow">all notes</p>
+      <h1>쌓아둔 글 목록</h1>
+      <p class="hero-summary">
+        최신 글부터 순서대로 정리합니다. Chirpy 기본 아카이브 대신, 홈과 같은 톤의 목록 페이지입니다.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <div class="summary-strip">
+        <div class="summary-item">
+          <span class="metric-name">total posts</span>
+          <strong>{{ site.posts.size }}</strong>
+        </div>
+        <div class="summary-item">
+          <span class="metric-name">main topics</span>
+          <strong>security / docs / build</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="stack-list">
+        {% if site.posts.size > 0 %}
+          {% for post in site.posts %}
+            {% assign primary_category = post.categories | first %}
+            <a href="{{ post.url | relative_url }}" class="post-row">
+              <div class="post-row-head">
+                <span class="pill">{{ primary_category }}</span>
+                <span class="post-date">{{ post.date | date: "%Y.%m.%d" }}</span>
+              </div>
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.excerpt | strip_html | strip_newlines | truncate: 160 }}</p>
+              <span class="post-link">open post</span>
+            </a>
+          {% endfor %}
+        {% else %}
+          <div class="empty-panel">
+            <p class="eyebrow">empty log</p>
+            <h3>아직 게시글이 없습니다.</h3>
+            <p>새 글이 올라오면 이곳에 모두 모여 표시됩니다.</p>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 gyue archive · back to <a href="{{ '/' | relative_url }}">home</a></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,105 @@
+---
+layout: null
+permalink: /about/
+title: About
+description: gyue의 보안 학습과 기술 기록 방향을 소개하는 페이지
+---
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | gyue archive</title>
+  <meta name="description" content="{{ page.description }}">
+  <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="{{ '/' | relative_url }}" class="nav-brand">
+      <span class="brand-mark">[gyue]</span>
+      <span class="brand-text">security archive</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ '/' | relative_url }}">home</a></li>
+      <li><a href="{{ '/posts/' | relative_url }}">posts</a></li>
+      <li><a href="{{ '/about/' | relative_url }}" class="is-active">about</a></li>
+      <li><a href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">github</a></li>
+    </ul>
+  </nav>
+
+  <main class="page-shell narrow-shell">
+    <section class="page-hero">
+      <p class="eyebrow">about this archive</p>
+      <h1>공부한 걸 다시 꺼내보기 쉽게 남깁니다.</h1>
+      <p class="hero-summary">
+        `gyue`는 보안과 개발을 함께 공부하면서, 실습과 기록을 분리하지 않는 방식을 선호합니다.
+        이 페이지는 어떤 주제에 관심이 있는지와 글을 어떤 식으로 남기는지 설명합니다.
+      </p>
+    </section>
+
+    <section class="content-section two-column">
+      <div class="profile-panel">
+        <p class="note-label">profile</p>
+        <h2>gyue</h2>
+        <p>
+          웹 보안, CTF/Wargame, BugBounty, 기술 문서화를 중심으로 공부하고 있습니다.
+          짧은 정답보다, 다시 읽었을 때 흐름이 살아나는 기록을 선호합니다.
+        </p>
+        <div class="inline-links">
+          <a href="https://github.com/gyuesecurity">GitHub</a>
+          <a href="mailto:sos004989@naver.com">Email</a>
+        </div>
+      </div>
+
+      <div class="stack-panel">
+        <div class="info-block">
+          <p class="eyebrow">focus</p>
+          <ul class="bullet-list">
+            <li>웹 취약점 이해와 재현</li>
+            <li>CTF / Wargame 풀이 복기</li>
+            <li>문서 구조와 기록 방식 개선</li>
+          </ul>
+        </div>
+
+        <div class="info-block">
+          <p class="eyebrow">categories</p>
+          <div class="tag-cloud">
+            <span class="pill">개발</span>
+            <span class="pill">CTF / Wargame</span>
+            <span class="pill">BugBounty</span>
+            <span class="pill">블로그 / 기술문서</span>
+            <span class="pill">논문 / 컨퍼런스</span>
+            <span class="pill">공모전 / 자격증</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="section-top">
+        <p class="eyebrow">principles</p>
+        <h2>기록 방식</h2>
+      </div>
+
+      <div class="principle-grid">
+        <article class="plain-card">
+          <h3>맥락을 생략하지 않기</h3>
+          <p>왜 이 문제를 보게 됐는지, 어떤 가설로 접근했는지까지 남깁니다.</p>
+        </article>
+        <article class="plain-card">
+          <h3>재현 가능한 정리</h3>
+          <p>나중에 다시 읽었을 때 바로 따라갈 수 있도록 흐름을 끊지 않습니다.</p>
+        </article>
+        <article class="plain-card">
+          <h3>배운 점을 구조화하기</h3>
+          <p>단순 로그가 아니라, 다음 학습에 연결될 수 있는 형태로 압축합니다.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 gyue archive · contact <a href="mailto:sos004989@naver.com">sos004989@naver.com</a></p>
+  </footer>
+</body>
+</html>
