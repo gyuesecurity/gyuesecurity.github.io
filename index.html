@@ -1,0 +1,136 @@
+---
+layout: null
+permalink: /
+title: Home
+description: 개발, CTF/Wargame, BugBounty, 블로그/기술문서, 논문/컨퍼런스, 공모전/자격증을 다루는 기술 블로그
+---
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | gyue's Security Archive</title>
+  <meta name="description" content="{{ page.description }}">
+  <link rel="stylesheet" href="{{ '/assets/css/home.css' | relative_url }}">
+</head>
+<body>
+  <nav>
+    <a href="{{ '/' | relative_url }}" class="nav-logo">
+      <span class="prompt">~$</span>
+      gyuesecurity.github.io
+      <span class="cursor"></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ '/' | relative_url }}">home</a></li>
+      <li><a href="{{ '/archives/' | relative_url }}">posts</a></li>
+      <li><a href="{{ '/about/' | relative_url }}">about</a></li>
+      <li><a href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">github</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <p class="hero-label">// security · development · research</p>
+      <h1>
+        Hello,<br>
+        I'm <span class="highlight">gyue</span>.<br>
+        I learn, test, and write.
+      </h1>
+      <p class="hero-desc">
+        보안과 개발을 탐구하는 개인 아카이브입니다.<br>
+        CTF 풀이, 취약점 분석, 개발 기록과 기술 문서를 정리합니다.
+      </p>
+      <div class="hero-stats">
+        <div class="stat-item">posts <span>{{ site.posts.size }}</span></div>
+        <div class="stat-item">categories <span>6</span></div>
+        <div class="stat-item">github <span><a href="https://github.com/gyuesecurity">@gyuesecurity</a></span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-label">categories</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="categories-grid">
+        <a href="{{ '/categories/' | relative_url }}" class="cat-card" data-color="blue">
+          <span class="cat-icon">⌨</span>
+          <div class="cat-name">개발</div>
+          <div class="cat-count">{{ site.categories['개발'] | size }} posts</div>
+        </a>
+
+        <a href="{{ '/categories/' | relative_url }}" class="cat-card" data-color="red">
+          <span class="cat-icon">⚑</span>
+          <div class="cat-name">CTF / Wargame</div>
+          <div class="cat-count">{{ site.categories['CTF/Wargame'] | size }} posts</div>
+        </a>
+
+        <a href="{{ '/categories/' | relative_url }}" class="cat-card" data-color="amber">
+          <span class="cat-icon">◎</span>
+          <div class="cat-name">BugBounty</div>
+          <div class="cat-count">{{ site.categories['BugBounty'] | size }} posts</div>
+        </a>
+
+        <a href="{{ '/categories/' | relative_url }}" class="cat-card" data-color="teal">
+          <span class="cat-icon">✎</span>
+          <div class="cat-name">블로그 / 기술문서</div>
+          <div class="cat-count">{{ site.categories['블로그/기술문서'] | size }} posts</div>
+        </a>
+
+        <a href="{{ '/categories/' | relative_url }}" class="cat-card" data-color="purple">
+          <span class="cat-icon">◈</span>
+          <div class="cat-name">논문 / 컨퍼런스</div>
+          <div class="cat-count">{{ site.categories['논문/컨퍼런스'] | size }} posts</div>
+        </a>
+
+        <a href="{{ '/categories/' | relative_url }}" class="cat-card" data-color="green">
+          <span class="cat-icon">★</span>
+          <div class="cat-name">공모전 / 자격증</div>
+          <div class="cat-count">{{ site.categories['공모전/자격증'] | size }} posts</div>
+        </a>
+      </div>
+
+      <div class="section-header">
+        <span class="section-label">recent posts</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="posts-list">
+        {% if site.posts.size > 0 %}
+          {% for post in site.posts limit:6 %}
+            {% assign primary_category = post.categories | first %}
+            {% assign tag_class = 'tag-teal' %}
+            {% if primary_category == '개발' %}
+              {% assign tag_class = 'tag-blue' %}
+            {% elsif primary_category == 'CTF/Wargame' %}
+              {% assign tag_class = 'tag-red' %}
+            {% elsif primary_category == 'BugBounty' %}
+              {% assign tag_class = 'tag-amber' %}
+            {% elsif primary_category == '블로그/기술문서' %}
+              {% assign tag_class = 'tag-teal' %}
+            {% elsif primary_category == '논문/컨퍼런스' %}
+              {% assign tag_class = 'tag-purple' %}
+            {% elsif primary_category == '공모전/자격증' %}
+              {% assign tag_class = 'tag-green' %}
+            {% endif %}
+            <a href="{{ post.url | relative_url }}" class="post-item">
+              <div class="post-date">{{ post.date | date: "%m.%d" }}</div>
+              <div class="post-title">{{ post.title }}</div>
+              <div class="post-tag {{ tag_class }}">{{ primary_category }}</div>
+            </a>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state">
+            // 아직 작성된 글이 없습니다. 첫 글을 작성해보세요!
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 gyue · Built with Jekyll · <a href="https://github.com/gyuesecurity/gyuesecurity.github.io">source</a></p>
+  </footer>
+</body>
+</html>
