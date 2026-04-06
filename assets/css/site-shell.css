@@ -262,6 +262,10 @@ a {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.topic-grid-wide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .topic-card {
   min-height: 190px;
   padding: 1.2rem;
@@ -363,6 +367,105 @@ a {
 
 .page-hero {
   margin-bottom: 2.4rem;
+}
+
+.article-shell {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 1.6rem;
+  box-shadow: var(--shadow);
+}
+
+.article-header {
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.article-header h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+  margin: 0.8rem 0 1rem;
+}
+
+.article-body {
+  color: var(--text-sub);
+}
+
+.article-body h2,
+.article-body h3,
+.article-body h4 {
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+.article-body h2 {
+  font-size: 1.55rem;
+  margin: 2rem 0 0.9rem;
+}
+
+.article-body h3 {
+  font-size: 1.2rem;
+  margin: 1.6rem 0 0.7rem;
+}
+
+.article-body p,
+.article-body ul,
+.article-body ol,
+.article-body blockquote,
+.article-body pre {
+  margin-bottom: 1rem;
+}
+
+.article-body ul,
+.article-body ol {
+  padding-left: 1.3rem;
+}
+
+.article-body li {
+  margin-bottom: 0.35rem;
+}
+
+.article-body a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.article-body a:hover {
+  text-decoration: underline;
+}
+
+.article-body code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--yellow);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.12rem 0.35rem;
+}
+
+.article-body pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: #101316;
+}
+
+.article-body pre code {
+  background: transparent;
+  border: 0;
+  color: var(--text-main);
+  padding: 0;
+}
+
+.article-body blockquote {
+  padding: 0.9rem 1rem;
+  border-left: 3px solid var(--cyan);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0 12px 12px 0;
 }
 
 .two-column {

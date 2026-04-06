@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories | gyue archive</title>
+  <meta name="description" content="gyue archive 카테고리 목록">
+  <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="{{ '/' | relative_url }}" class="nav-brand">
+      <span class="brand-mark">[gyue]</span>
+      <span class="brand-text">security archive</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ '/' | relative_url }}">home</a></li>
+      <li><a href="{{ '/posts/' | relative_url }}">posts</a></li>
+      <li><a href="{{ '/categories/' | relative_url }}" class="is-active">categories</a></li>
+      <li><a href="{{ '/about/' | relative_url }}">about</a></li>
+    </ul>
+  </nav>
+
+  <main class="page-shell narrow-shell">
+    <section class="page-hero">
+      <p class="eyebrow">topic map</p>
+      <h1>카테고리</h1>
+      <p class="hero-summary">블로그에서 다루는 주제를 한눈에 볼 수 있게 정리했습니다.</p>
+    </section>
+
+    <section class="content-section">
+      <div class="topic-grid topic-grid-wide">
+        {% assign category_order = "개발|CTF/Wargame|BugBounty|블로그/기술문서|논문/컨퍼런스|공모전/자격증" | split: "|" %}
+        {% for category_name in category_order %}
+          {% assign posts = site.categories[category_name] %}
+          {% if posts %}
+            <a href="{{ '/categories/' | append: category_name | cgi_escape | append: '/' | relative_url }}" class="topic-card tone-cyan">
+              <span class="topic-kicker">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              <h3>{{ category_name }}</h3>
+              <p>
+                {% if category_name == '개발' %}개발 메모와 구현 기록.
+                {% elsif category_name == 'CTF/Wargame' %}문제 풀이와 워게임 복기.
+                {% elsif category_name == 'BugBounty' %}취약점 분석과 실전 학습.
+                {% elsif category_name == '블로그/기술문서' %}문서화와 운영 기록.
+                {% elsif category_name == '논문/컨퍼런스' %}자료 요약과 인사이트 정리.
+                {% elsif category_name == '공모전/자격증' %}준비 과정과 회고 기록.
+                {% endif %}
+              </p>
+              <span class="topic-meta">{{ posts | size }} posts</span>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 gyue archive · browse by <a href="{{ '/posts/' | relative_url }}">posts</a></p>
+  </footer>
+</body>
+</html>
