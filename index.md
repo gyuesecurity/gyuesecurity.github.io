@@ -84,4 +84,6 @@ permalink: /
 ## Contact
 
 - GitHub - [@gyuesecurity](https://github.com/gyuesecurity)
-- Email - example@email.com
+- Instagram - [@yh__1025](https://www.instagram.com/yh__1025/)
+- Email - sos004989@naver.com
+
