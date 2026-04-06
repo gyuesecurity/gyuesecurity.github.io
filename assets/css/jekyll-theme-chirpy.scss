@@ -1,0 +1,32 @@
+---
+---
+
+@import "main";
+
+body {
+  background-color: #0b1220 !important;
+  color: #e5e7eb !important;
+}
+
+#sidebar {
+  background: #0f172a !important;
+}
+
+#main-wrapper,
+#topbar-wrapper,
+.content,
+#search-wrapper {
+  background-color: #0b1220 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #f8fafc !important;
+}
+
+a {
+  color: #7dd3fc !important;
+}
+
+a:hover {
+  color: #38bdf8 !important;
+}
