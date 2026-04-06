@@ -4,8 +4,8 @@
 @import "main";
 
 body {
-  background-color: #0b1220 !important;
-  color: #e5e7eb !important;
+  background-color: #0b1120 !important;
+  color: #e2e8f0 !important;
 }
 
 #sidebar {
@@ -16,7 +16,7 @@ body {
 #topbar-wrapper,
 .content,
 #search-wrapper {
-  background-color: #0b1220 !important;
+  background-color: #0b1120 !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -29,4 +29,24 @@ a {
 
 a:hover {
   color: #38bdf8 !important;
+}
+
+#sidebar .site-title,
+#sidebar .site-subtitle,
+#sidebar ul li a,
+#sidebar .sidebar-bottom a {
+  color: #e2e8f0 !important;
+}
+
+#sidebar ul li a.nav-link:hover {
+  background-color: #172036 !important;
+  border-radius: 10px;
+}
+
+table,
+.card,
+.post-preview,
+.list-group-item {
+  background-color: #0f172a !important;
+  border-color: #243041 !important;
 }
