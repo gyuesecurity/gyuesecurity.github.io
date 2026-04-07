@@ -104,7 +104,7 @@ pip install PyMuPDF
 
  (2) 출처 기반 응답 생성
 
-기존 : 단순 텍스트 응답
+기존 : 단순 텍스트 응답  
 개선:  
 {  
 "description": "...",  
