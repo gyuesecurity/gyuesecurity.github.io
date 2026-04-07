@@ -95,27 +95,24 @@ pip install PyMuPDF
  (1) 신뢰도 기반 재정렬 (Trust Level)  
 보안 데이터의 신뢰도를 다음과 같이 정의하였다.
 
-  수준     |     기준    
-- High     |     OWASP, NIST, CVE  
-- Medium     |     Exploit-DB  
-- Low     |     블로그, 포럼  
+  수준    /    기준    
+- High    /    OWASP, NIST, CVE  
+- Medium    /    Exploit-DB  
+- Low    /    블로그, 포럼  
 
-검색 결과를 신뢰도 기반으로 재정렬하여 정확도 향상
-
+검색 결과를 신뢰도 기반으로 재정렬하여 정확도 향상  
 
  (2) 출처 기반 응답 생성
 
 기존 : 단순 텍스트 응답
-
-개선:
+개선:  
 {  
 "description": "...",  
 "source": "OWASP",  
 "trust_level": "high"  
 }  
  
-근거 기반 학습 가능
-
+근거 기반 학습 가능  
 
  (3) 검색 구조 개선
 - 기존 : 단순 벡터 검색  
@@ -136,12 +133,12 @@ pip install PyMuPDF
 ## 7. 기술 구성
 
 모듈기술  
-- 전처리	  |   PyPDF, unstructured  
-- 임베딩	  |   OpenAI Embedding  
-- 벡터   |   DB	Qdrant  
-- 검색   |   BM25 + Dense Hybrid  
-- 생성   |   LLaMA / GPT  
-- 평가   |   RAGAS, Precision@k  
+- 전처리    /    PyPDF, unstructured  
+- 임베딩    /    OpenAI Embedding  
+- 벡터    /    DB	Qdrant  
+- 검색    /    BM25 + Dense Hybrid  
+- 생성    /    LLaMA / GPT  
+- 평가    /    RAGAS, Precision@k  
 
 ## 8. 기대 효과
 본 시스템을 통해 다음과 같은 효과를 기대할 수 있다.
