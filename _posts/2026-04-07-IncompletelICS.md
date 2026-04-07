@@ -501,8 +501,35 @@ ACS{476c3cdce086c3c2d2dce086c3c2dce0807f1fa4da476c3c2dce}
 ## 5. 배운 점 및 방어 방법
 
 ### 5-1. 배운 점
-
+  
 #### 1. delegatecall + 라이브러리 주소 변경 
 - delegatecall은 코드만 가져오고 storage는 caller의 것을 쓴다.  
-- 라이브러리 주소를 외부 입력으로 바꾸게 두면, 결국 임의 코드 실행과 같다.  
+- 라이브러리 주소를 외부 입력으로 바꾸게 두면, 결국 임의 코드 실행과 같다.
+  
+#### 2. storage Layout 충돌
+- ICS.slot0 (configurationLibrary)와 라이브러리.slot0 (configValue)의 충돌을 이용해
+- 라이브러리 주소를 마음대로 덮어쓸 수 있었다.
+  
+#### 3. 권한 관리 실수
+- mapping(address => Role) 의 default 값(0)을 OPERATOR로 쓰면서  
+- 사실상 모든 주소에 OPERATOR 권한을 준 셈이 됐다.
+
+#### 4. CTF infra 특성
+- UUID를 path + HTTP 헤더에 모두 실어야 하는 특수한 RPC 구조  
+- UUID 만료(10분) → 같은 UUID로만 isSolved 체크가 가능.
+
+---
+
+### 5-2. 방어 방법
+
+- delegatecall 쓰는 컨트랙트는:
+  - 라이브러리 주소를 immutable/constant로 하고,  
+  - 사용자 입력이나 낮은 권한에서 절대 변경할 수 없게 해야 한다.
+  
+- storage layout을 명확히 설계하고, 외부 라이브러리를 끼워 넣을 때  
+- slot 충돌을 발생시키지 않도록 주의해야 한다.  
+  
+- 권한 관리:
+  - enum의 0 값을 “권한 없음(NONE)”으로 두고,  
+  - OPERATOR, ENGINEER, ADMINISTRATOR는 1, 2, 3 등으로 설정하는 게 안전하다.  
 
