@@ -71,5 +71,91 @@ contract Setup {
 
 ---
 
+### 1-2. IndustrialControlSystem.sol
 
+```python
+contract IndustrialControlSystem {
+    enum Role { OPERATOR, ENGINEER, ADMINISTRATOR }
 
+    struct SystemConfig {
+        uint256 maxPressure;
+        uint256 maxTemperature;
+        uint256 emergencyThreshold;
+        bool safetySystemEnabled;
+    }
+
+    address public configurationLibrary;
+    address public diagnosticLibrary;
+    address public administrator;
+    mapping(address => Role) public userRoles;
+    SystemConfig public config;
+    uint256 public currentPressure;
+    uint256 public currentTemperature;
+    bool public systemOperational;
+    bool public solved;
+
+    bytes4 constant CONFIG_SIG = bytes4(keccak256("updateConfig(uint256)"));
+    bytes4 constant DIAGNOSTIC_SIG = bytes4(keccak256("runDiagnostic(uint256)"));
+```
+
+### 생성자
+
+```python
+constructor(address _configLib, address _diagnosticLib) {
+    administrator = msg.sender; // Setup 컨트랙트 주소
+    userRoles[msg.sender] = Role.ADMINISTRATOR;
+    configurationLibrary = _configLib;
+    diagnosticLibrary = _diagnosticLib;
+
+    config = SystemConfig({
+        maxPressure: 1000,
+        maxTemperature: 150,
+        emergencyThreshold: 1200,
+        safetySystemEnabled: true
+    });
+
+    systemOperational = true;
+    solved = false;
+}
+```
+- **administrator = Setup 주소**
+- safetySystemEnabled = true 초기값.
+
+### 권한 관련
+
+```python
+modifier onlyRole(Role requiredRole) {
+    require(userRoles[msg.sender] >= requiredRole, "ICS: Insufficient privileges");
+    _;
+}
+
+modifier systemSafety() {
+    require(config.safetySystemEnabled, "ICS: Safety system disabled");
+    _;
+}
+```
+
+- userRoles의 default 값은 enum의 0번, 즉 Role.OPERATOR
+- -> 아무 주소나 최소 OPERATOR 권한을 가진다고 볼 수 있는 구조 (치명적인 설계).
+
+### config 업데이트 함수
+
+```python
+function updateSystemConfig(uint256 _value)
+    public
+    onlyRole(Role.OPERATOR)
+    systemSafety
+{
+    emit AccessAttempt(msg.sender, "updateSystemConfig", true);
+
+    (bool success,) = configurationLibrary.delegatecall(
+        abi.encodePacked(CONFIG_SIG, _value)
+    );
+    require(success, "ICS: Configuration update failed");
+
+    emit ConfigurationChanged("system_parameter", 0, _value);
+}
+```
+
+- 누구든 userRoles[msg.sender] >= OPERATOR(0)면 통과 -> 사실상 모든 주소 접근 가능.
+- delegatecall(configurationLibrary, updateConfig(uint256))가 핵심이다.  
