@@ -159,3 +159,47 @@ function updateSystemConfig(uint256 _value)
 
 - 누구든 userRoles[msg.sender] >= OPERATOR(0)면 통과 -> 사실상 모든 주소 접근 가능.
 - delegatecall(configurationLibrary, updateConfig(uint256))가 핵심이다.  
+
+### solved를 true로 만드는 함수
+
+```python
+function claimVictory() public {
+    require(msg.sender == administrator, "ICS: Only administrator can claim victory");
+    solved = true;
+    emit SystemAlert("CHALLENGE_SOLVED", block.timestamp);
+}
+```
+
+- solved를 true로 만드는 유일한 함수.
+- 단, msg.sender == administrator 여야 한다.
+- 현재 administrator는 Setup -> EOA로는 호출 불가.
+
+---
+
+### 1-3. ConfigurationLibrary / DiagnosticLibrary
+
+```python
+contract ConfigurationLibrary {
+    uint256 public configValue;
+
+    function updateConfig(uint256 _value) public {
+        configValue = _value;
+    }
+}
+```
+
+- storage layout : slot 0에 configValue.
+
+```python
+contract DiagnosticLibrary {
+    uint256 public diagnosticResult;
+
+    function runDiagnostic(uint256 _code) public {
+        diagnosticResult = _code;
+    }
+}
+```
+
+---
+
+## 2. 취약점 분석
