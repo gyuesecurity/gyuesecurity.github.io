@@ -5,6 +5,6 @@ categories: [CTF/Wargame]
 tags: [ctf, web, DreamHack]
 ---
 
-# ENKI REDTEAM CTF 2026 엔키화이트햇 채용 연계형 해킹 대회
+# 빈 페이지 입니다.
 
 ---
