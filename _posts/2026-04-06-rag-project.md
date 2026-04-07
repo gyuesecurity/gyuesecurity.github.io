@@ -5,6 +5,8 @@ categories: [개발]
 tags: [rag, project, LLM]
 ---
 
+# RAG PROJECT
+
 ## 1. 개요
 
 최근 대규모 언어 모델(Large Language Model, LLM)은 다양한 분야에서 활용되며, 보안 학습에서도 빠른 개념 이해를 돕는 도구로 자리 잡고 있다. 그러나 LLM은 종종  근거가 명확하지 않은 응답(할루시네이션)을 생성하며, 이는 보안 분야에서 심각한 신뢰성 문제를 야기할 수 있다.
