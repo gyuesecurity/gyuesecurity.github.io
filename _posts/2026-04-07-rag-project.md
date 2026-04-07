@@ -105,22 +105,21 @@ pip install PyMuPDF
 
  (2) 출처 기반 응답 생성
 
-기존:
-- 단순 텍스트 응답
+기존 : 단순 텍스트 응답
 
 개선:
-{
-"description": "...",
-"source": "OWASP",
-"trust_level": "high"
-}
+{  
+"description": "...",  
+"source": "OWASP",  
+"trust_level": "high"  
+}  
  
 근거 기반 학습 가능
 
 
  (3) 검색 구조 개선
-- 기존: 단순 벡터 검색  
-- 개선: Hybrid Search (BM25 + Dense)
+- 기존 : 단순 벡터 검색  
+- 개선 : Hybrid Search (BM25 + Dense)
 
 검색 정확도 및 문맥 적합성 향상
 
