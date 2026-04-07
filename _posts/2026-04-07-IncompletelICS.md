@@ -7,9 +7,12 @@ tags: [ctf, blockchain, delegatecall, exploit]
 
 ## 0. 개요
 
-- **문제 이름**: Incomplete-ICS  
-- **목표**: `Setup.isSolved() == true` 상태를 만들어 플래그 획득  
-- **핵심 목표**: `ICS.solved = true` 만들기  
+- **문제 이름** : Incomplete-ICS
+- **환경** : 
+  - nc 10.100.0.11 30000 - 인스턴스 생성 / 종료 / 플래그 조회 메뉴
+  - rpc 10.100.0.11 30001 - 개인 블록체인 인스턴스 JSON-RPC
+  - 각인스턴스는 **UUID**로 구분 되고, **10분 후 자동 종료**
+- **목표** : `Setup.isSolved() == true` 상태를 만들어 플래그 획득  
 
 ---
 
