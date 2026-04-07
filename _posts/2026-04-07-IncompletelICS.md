@@ -20,7 +20,7 @@ tags: [ctf, misc, 2025 ACS]
 
 ### 1-1. Setup.sol
 
-```python
+```solidity
 contract Setup {
     IndustrialControlSystem public icsContract;
     ConfigurationLibrary public configLib;
