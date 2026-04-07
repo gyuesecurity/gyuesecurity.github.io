@@ -28,10 +28,10 @@ LLM은 학습된 패턴을 기반으로 답변을 생성하기 때문에, 실제
 ## 3. 연구 목표
 본 시스템의 주요 목표는 다음과 같다.
 
-문서 기반 근거 중심 응답 생성  
-LLM의 할루시네이션 최소화  
-보안 문서 간 자동 요약 및 비교 기능 제공  
-각 응답에 대한 출처 명시 및 신뢰도 표시  
+- 문서 기반 근거 중심 응답 생성  
+- LLM의 할루시네이션 최소화  
+- 보안 문서 간 자동 요약 및 비교 기능 제공  
+- 각 응답에 대한 출처 명시 및 신뢰도 표시  
 
 ## 4. 시스템 구조
 본 시스템은 RAG 구조를 기반으로 설계되었으며, 전체 흐름은 다음과 같다.
@@ -90,10 +90,10 @@ pip install PyMuPDF
  (1) 신뢰도 기반 재정렬 (Trust Level)  
 보안 데이터의 신뢰도를 다음과 같이 정의하였다.
 
-수준 | 기준  
-High | OWASP, NIST, CVE  
-Medium | Exploit-DB  
-Low | 블로그, 포럼  
+  수준   |   기준  
+- High   |   OWASP, NIST, CVE  
+- Medium   |   Exploit-DB  
+- Low   |   블로그, 포럼  
 
 검색 결과를 신뢰도 기반으로 재정렬하여 정확도 향상
 
@@ -128,13 +128,14 @@ Low | 블로그, 포럼
 - 출처 및 정보 제공  
 
 ## 7. 기술 구성
+
 모듈기술  
-전처리	| PyPDF, unstructured  
-임베딩	| OpenAI Embedding  
-벡터 | DB	Qdrant  
-검색 | BM25 + Dense Hybrid  
-생성 | LLaMA / GPT  
-평가 | RAGAS, Precision@k  
+- 전처리	  |   PyPDF, unstructured  
+- 임베딩	  |   OpenAI Embedding  
+- 벡터   |   DB	Qdrant  
+- 검색   |   BM25 + Dense Hybrid  
+- 생성   |   LLaMA / GPT  
+- 평가   |   RAGAS, Precision@k  
 
 ## 8. 기대 효과
 본 시스템을 통해 다음과 같은 효과를 기대할 수 있다.
