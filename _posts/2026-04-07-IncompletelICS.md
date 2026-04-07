@@ -2,7 +2,7 @@
 title: "[2025 ACS] Incomplete-ICS"
 date: 2026-04-07 01:00:00 +0900
 categories: [CTF/Wargame]
-tags: [ctf, blockchain, delegatecall, exploit]
+tags: [ctf, misc, 2025 ACS]
 ---
 
 ## 0. 개요
@@ -20,8 +20,56 @@ tags: [ctf, blockchain, delegatecall, exploit]
 
 ### 1-1. Setup.sol
 
-- ICS, ConfigurationLibrary, DiagnosticLibrary 배포
-- player = tx.origin → 우리가 OPERATOR 권한 보유
-- 목표:
-```solidity
-return icsContract.solved() == true;
+```python
+contract Setup {
+    IndustrialControlSystem public icsContract;
+    ConfigurationLibrary public configLib;
+    DiagnosticLibrary public diagnosticLib;
+    address public player;
+
+    constructor() {
+        configLib = new ConfigurationLibrary();
+        diagnosticLib = new DiagnosticLibrary();
+
+        icsContract = new IndustrialControlSystem(
+            address(configLib),
+            address(diagnosticLib)
+        );
+
+        player = tx.origin;
+        icsContract.grantRole(player, IndustrialControlSystem.Role.OPERATOR);
+    }
+
+    function isSolved() public view returns (bool) {
+        return icsContract.solved() == true;
+    }
+
+    function getChallengeInfo() public view returns (
+        address icsAddress,
+        address configLibAddress,
+        address diagnosticLibAddress,
+        address playerAddress,
+        IndustrialControlSystem.Role playerRole
+    ) {
+        return (
+            address(icsContract),
+            address(configLib),
+            address(diagnosticLib),
+            player,
+            icsContract.userRoles(player)
+        );
+    }
+}
+```
+- 배포시 ConfigurationLibrary, DiagnosticLibrary, IndustrialControlSystem 순으로 생성.
+- player = tx.origin → CTF 참가자의 EOA 주소가 player.  
+- icsContract.grantRole(player, Role.OPERATOR);  
+  - OPERATOR 권한을 가진 상태로 시작.  
+- 플래그 체크: isSolved() == icsContract.solved().  
+
+→ 결론: ICS 컨트랙트의 solved를 true로 만드는 게 목표.  
+
+---
+
+
+
