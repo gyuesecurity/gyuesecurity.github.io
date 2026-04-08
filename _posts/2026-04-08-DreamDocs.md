@@ -46,4 +46,41 @@ Client -> /api/docs -> 문서 목록 확인 -> /doc/<id> -> 문서 내용 조회
 
 ---
 
+### 1-3. 접근 제어 로직 
+
+문서 접근 시 다음 조건이 존재한다.  
+
+```python
+if '/share' not in referer:
+return 403
+
+if document['classification'] == 'confidential':
+if user_level != 'admin':
+return 403
+```
+
+즉, 조건은 다음 두가지다.  
+1. Referer에 /share 포함
+2. X-User: admin
+
+이 두 조건을 만족하면 confidential 문서 접근 가능  
+
+---
+
+## 2. 취약점 분석
+
+### 2-1. 헤더 기반 인증 취약점
+
+user_level = request.headers.get('X-User', 'guest')  
+
+권한을 헤더로 판단. 즉, 다음과 같이 보내면:  
+  
+X-User: admin  
+
+누구나 admin 권한 획득 가능  
+
+--- 
+
+
+
 
