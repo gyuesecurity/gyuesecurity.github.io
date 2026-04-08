@@ -64,8 +64,13 @@ tags: [blog, security]
 
 ### 2-1. 희망 회사
 
+1. 토스 시큐리티 
+
 
 ### 2-2. 희망 직무와 관련된 공고
+
+1. [토스 시큐리티 공고](https://toss.im/career/job-detail?job_id=4076085003&sub_position_id=4076085003&company=%ED%86%A0%EC%8A%A4)
+
 
 
 ### 2-3. 반복적인 역량 
