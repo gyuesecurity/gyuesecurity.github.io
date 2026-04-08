@@ -64,15 +64,17 @@ tags: [blog, security]
 
 ### 2-1. 희망 회사
 
-1. 토스 시큐리티 
-
+1. 토스 시큐리티 (Toss Security)
+2. SK 인포섹 (SK Infosec)
+3. 안랩 (AhnLab)
 
 ### 2-2. 희망 직무와 관련된 공고
 
 1. [토스 시큐리티 공고](https://toss.im/career/job-detail?job_id=4076085003&sub_position_id=4076085003&company=%ED%86%A0%EC%8A%A4)
 
-<img width="1267" height="1342" alt="image" src="https://github.com/user-attachments/assets/9a9f234b-7974-4a91-91b6-97e6176aab6a" />
+<img width="1267" height="1342" alt="image" src="https://github.com/user-attachments/assets/9a9f234b-7974-4a91-91b6-97e6176aab6a" />  
 
+2. [SK 쉴더스](https://www.skshieldusapply.com/ko/o/209981)  
 
 ### 2-3. 반복적인 역량 
 
