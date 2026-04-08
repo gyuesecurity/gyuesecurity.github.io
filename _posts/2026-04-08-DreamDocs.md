@@ -38,8 +38,10 @@ Client -> /api/docs -> 문서 목록 확인 -> /doc/<id> -> 문서 내용 조회
 
 코드를 보면 FLAG는 다음 위치에 존재한다.  
 
-- 'content': f'... <!-- FLAG: {FLAG} --> ...'
-  
+```python
+'content': f'... <!-- FLAG: {FLAG} --> ...'
+```
+ 
 즉, 플래그는 HTML 주석 형태로 문서 내부에 포함되어 있다.  
 
 ---
