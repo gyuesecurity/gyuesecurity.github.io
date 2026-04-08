@@ -71,6 +71,7 @@ tags: [blog, security]
 
 1. [토스 시큐리티 공고](https://toss.im/career/job-detail?job_id=4076085003&sub_position_id=4076085003&company=%ED%86%A0%EC%8A%A4)
 
+<img width="1267" height="1342" alt="image" src="https://github.com/user-attachments/assets/9a9f234b-7974-4a91-91b6-97e6176aab6a" />
 
 
 ### 2-3. 반복적인 역량 
