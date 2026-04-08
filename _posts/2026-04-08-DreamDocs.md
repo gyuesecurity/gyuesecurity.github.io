@@ -81,6 +81,43 @@ X-User: admin
 
 --- 
 
+### 2-2. Referer 기반 접근 제어
 
+if '/share' not in referer:  
 
+Referer 포함 여부로 접근 제어  
+  
+하지만 Referer는:  
+- 클라이언트가 제어 가능
+- 신뢰 불가능한 값
+
+즉, **완전히 우회 가능한 로직**
+
+---
+
+### 2-3. 취약점 정리  
+
+이 문제의 포인트는 두 가지다.  
+- X-User 헤더 신뢰 -> 권한 상승
+- Referer 검사 -> 접근 제어 우회 가능
+
+둘을 동시에 만족시키면 끝.
+
+---
+
+## 3. 공격 시나리오
+
+### 3-1. 대상 문서 탐색
+
+먼저 /api/docs를 확인한다. 
+
+```python
+[
+{ "id": 227, "classification": "confidential", ... }
+]
+```
+
+confidential 문서 발견 -> 타겟 선정  
+
+--- 
 
