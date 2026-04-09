@@ -72,16 +72,21 @@ tags: [blog, security]
 
 1. [토스 시큐리티 공고](https://toss.im/career/job-detail?job_id=4076085003&sub_position_id=4076085003&company=%ED%86%A0%EC%8A%A4)
 
-<img width="1267" height="1342" alt="image" src="https://github.com/user-attachments/assets/9a9f234b-7974-4a91-91b6-97e6176aab6a" />  
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/9a9f234b-7974-4a91-91b6-97e6176aab6a" width="500">
+</div>
 
-2. [SK 쉴더스](https://www.skshieldusapply.com/ko/o/209981)  
+2. [SK 쉴더스](https://www.skshieldusapply.com/ko/o/209981)
 
-<img width="1243" height="1202" alt="image" src="https://github.com/user-attachments/assets/2dbd5080-7a45-43af-a02d-75b49d304842" />  
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/2dbd5080-7a45-43af-a02d-75b49d304842" width="500">
+</div>
 
 3. [안랩 보안](https://career.rememberapp.co.kr/job/posting/304479)
 
-<img width="872" height="1043" alt="image" src="https://github.com/user-attachments/assets/431bf3bb-7381-4b76-9a80-85f75d23a402" />  
-
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/431bf3bb-7381-4b76-9a80-85f75d23a402" width="500">
+</div>
 
 ### 2-3. 반복적인 역량 
 
