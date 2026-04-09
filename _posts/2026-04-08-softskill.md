@@ -16,22 +16,22 @@ tags: [blog, security]
 
 - 가장 중요한 가치
     - 직무적합성  
-        직무가 나에게 있어 어느정도 잘 맞아야 내가 하는 일에 흥미를 가질수있고,
+        직무가 나에게 있어 어느정도 잘 맞아야 내가 하는 일에 흥미를 가질수있고,  
         그래야 오랫동안 그 직무를 유지할 수 있을 것이라 생각하였다. 
     - 함께 일하는 사람  
-        팀 프로젝트나 다른 사람들과 하는 활동에서 사람들에게 스트레스를 너무 많이받았고,
+        팀 프로젝트나 다른 사람들과 하는 활동에서 사람들에게 스트레스를 너무 많이받았고,  
         그래서 계속 다닐 직장에서는 함께 하는 사람들이 가장 중요할것이라 생각하였다.   
  
 - 가장 낮은 가치
     - 자율성  
-        자율성을 낮은 가치로 선정한 이유는 물론 자율성이 좋긴하지만 해야할일이
-        정해져있지 않거나, 찾아서 해야한다면 어려움을 느낄거같고 무엇을 해야할지
+        자율성을 낮은 가치로 선정한 이유는 물론 자율성이 좋긴하지만 해야할일이  
+        정해져있지 않거나, 찾아서 해야한다면 어려움을 느낄거같고 무엇을 해야할지  
         명확한 목표와 계획이 있다면 자율이 주어졌을때 보다 더 잘해낼 수 있을것이라 생각하기 때문이다.  
     - 워라밸  
-        워라밸을 중요시 하는 사람들이 많은데 살아가다 보면 바쁜 시기도 있고
-        한가한 시기도 있기 나름이다. 바쁠때는 바쁘고 힘들더라도 그것을 해내고 나면
-        그 뒤에 찾아오는 보람도 나름 좋게 다가왔고 바쁘게 살아간다는것은 열심히 살아가고 있다는
-        증거라고 생각하여 워라밸을 엄청 중요시 생각하지않는다.
+        워라밸을 중요시 하는 사람들이 많은데 살아가다 보면 바쁜 시기도 있고  
+        한가한 시기도 있기 나름이다. 바쁠때는 바쁘고 힘들더라도 그것을 해내고 나면  
+        그 뒤에 찾아오는 보람도 나름 좋게 다가왔고 바쁘게 살아간다는것은 열심히 살아가고 있다는  
+        증거라고 생각하여 워라밸을 엄청 중요시 생각하지않는다.  
 
 ---
 
@@ -65,27 +65,42 @@ tags: [blog, security]
 ### 2-1. 희망 회사
 
 1. 토스 시큐리티 (Toss Security)
-2. SK 인포섹 (SK Infosec)
-3. 안랩 (AhnLab)
+2. 엔키화이트햇 (ENKI WgiteHat)
+3. SK 쉴더 (SK Shieldus)
+
 
 ### 2-2. 희망 직무와 관련된 공고
 
-1. [토스 시큐리티 공고](https://toss.im/career/job-detail?job_id=4076085003&sub_position_id=4076085003&company=%ED%86%A0%EC%8A%A4)
+[토스 시큐리티 공고](https://toss.im/career/job-detail?job_id=4076085003&sub_position_id=4076085003&company=%ED%86%A0%EC%8A%A4)
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/9a9f234b-7974-4a91-91b6-97e6176aab6a" width="500">
 </div>
 
-2. [SK 쉴더스](https://www.skshieldusapply.com/ko/o/209981)
+[엔키 화이트햇](https://enki.career.greetinghr.com/ko/o/199221)
+
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/8a9d53b6-bdc6-4e22-a05d-f4b27e4dc8cb" width="500">
+</div>
+
+
+[SK 쉴더스](https://www.skshieldusapply.com/ko/o/209981)
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/2dbd5080-7a45-43af-a02d-75b49d304842" width="500">
 </div>
 
-3. [안랩 보안](https://career.rememberapp.co.kr/job/posting/304479)
+[안랩 보안](https://career.rememberapp.co.kr/job/posting/304479)
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/431bf3bb-7381-4b76-9a80-85f75d23a402" width="500">
+</div>
+
+[라온 시큐어]()
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/ac194e3e-544f-4ac0-948c-934633da5d0c" width="500">
 </div>
 
 ### 2-3. 반복적인 역량 
