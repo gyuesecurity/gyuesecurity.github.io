@@ -71,7 +71,7 @@ tags: [blog, security]
 
 ### 2-2. 희망 직무와 관련된 공고
 
-[토스 시큐리티 공고](https://toss.im/career/job-detail?job_id=4076085003&sub_position_id=4076085003&company=%ED%86%A0%EC%8A%A4)
+[토스 시큐리티](https://toss.im/career/job-detail?job_id=4076085003&sub_position_id=4076085003&company=%ED%86%A0%EC%8A%A4)
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/9a9f234b-7974-4a91-91b6-97e6176aab6a" width="500">
@@ -97,7 +97,7 @@ tags: [blog, security]
   <img src="https://github.com/user-attachments/assets/431bf3bb-7381-4b76-9a80-85f75d23a402" width="500">
 </div>
 
-[라온 시큐어]()
+[라온 시큐어](https://www.jobkorea.co.kr/Recruit/GI_Read/48660720?Oem_Code=C1&PageGbn=ST)
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/ac194e3e-544f-4ac0-948c-934633da5d0c" width="500">
