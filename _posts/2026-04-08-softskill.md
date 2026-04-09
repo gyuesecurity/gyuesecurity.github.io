@@ -66,7 +66,7 @@ tags: [blog, security]
 
 1. 토스 시큐리티 (Toss Security)
 2. 엔키화이트햇 (ENKI WgiteHat)
-3. SK 쉴더 (SK Shieldus)
+3. SK 쉴더스 (SK Shieldus)
 
 
 ### 2-2. 희망 직무와 관련된 공고
