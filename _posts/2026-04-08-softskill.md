@@ -76,6 +76,13 @@ tags: [blog, security]
 
 2. [SK 쉴더스](https://www.skshieldusapply.com/ko/o/209981)  
 
+<img width="1243" height="1202" alt="image" src="https://github.com/user-attachments/assets/2dbd5080-7a45-43af-a02d-75b49d304842" />  
+
+3. [안랩 보안](https://career.rememberapp.co.kr/job/posting/304479)
+
+<img width="872" height="1043" alt="image" src="https://github.com/user-attachments/assets/431bf3bb-7381-4b76-9a80-85f75d23a402" />  
+
+
 ### 2-3. 반복적인 역량 
 
 
