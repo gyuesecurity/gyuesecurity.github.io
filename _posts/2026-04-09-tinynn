@@ -1,0 +1,25 @@
+---
+title: "[SPACE WAR @ ARIES (AI)] tinynn"
+date: 2026-04-09 01:00:00 +0900
+categories: [CTF/Wargame]
+tags: [ctf, AI, SPACE WAR]
+---
+
+# 2026 SPACE WAR - 01.ARIES CTF 문제 풀이
+
+## 0. 개요
+
+- **문제 이름** : tinynn
+- **문제 유형** : AI
+- **환경** : 
+  - 입력 : 8x8 grayscale PNG  
+  - 모델: model.onnx  
+  - 서버: 이미지 → 정규화 → logit 계산  
+- **목표** :
+  - **서버 기준값(threshold=0.98)을 넘는 logit을 생성하는 이미지를 만들어 제출**
+
+---
+
+## 1. 전체 구조 분석
+
+### 1-1. 서버 동작
