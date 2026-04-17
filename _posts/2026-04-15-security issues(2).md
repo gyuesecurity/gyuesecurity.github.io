@@ -7,8 +7,6 @@ tags: [blog, security, issues, Analytics]
 
 # 최신 보안 사고 사례에 대한 분석 리포트  
 
----
-
 ## Change Healthcare 랜섬웨어 사건  
 
 ---
