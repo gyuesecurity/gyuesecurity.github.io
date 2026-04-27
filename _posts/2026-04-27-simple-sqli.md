@@ -1,5 +1,5 @@
 ---
-title: "[2026 Hacktheon Sejong] 𝘀𝗶𝗺𝗽𝗹𝗲-𝘀𝗾𝗹𝗶"
+title: "[2026 Hacktheon Sejong] simple-sqli"
 date: 2026-04-27 03:00:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, web, Hacktheon]
