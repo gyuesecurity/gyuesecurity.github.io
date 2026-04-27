@@ -23,7 +23,7 @@ sample_005.wav
 
 소스코드는 제공되지 않았고, 문제 페이지 주소만 주어졌다.  
 
-- http://3.37.31.209:8000  
+- `http://3.37.31.209:8000`  
 
 처음에는 제공된 WAV 파일 중 하나가 정답 음성일 것이라고 생각했지만, 실제 서버에 제출해 보니 그렇지 않았다.  
 
@@ -39,26 +39,26 @@ mono
 16-bit PCM
 ```
 
-각 음성 파일을 서버에 제출해 본 결과, 공통적으로 speaker_similarity는 높게 나왔지만 text_similarity는 낮게 나왔다.  
+각 음성 파일을 서버에 제출해 본 결과, 공통적으로 `speaker_similarity`는 높게 나왔지만 `text_similarity`는 낮게 나왔다.  
 예를 들어 sample_001.wav를 제출했을 때 서버는 화자 유사도를 약 0.957 정도로 판단했다.  
 하지만 transcript는 target sentence와 다른 문장으로 인식되었고, 결국 텍스트 유사도 조건을 만족하지 못해 실패했다.  
 이를 통해 제공된 음성 파일은 정답 음성이 아니라, 목표 화자의 목소리를 담은 레퍼런스 샘플이라는 것을 알 수 있었다.  
   
 즉 문제의 목표는 다음과 같았다.  
-- 제공된 샘플 음성을 이용해 target sentence를 같은 화자의 목소리로 읽게 만든 뒤 제출하기  
+- 제공된 샘플 음성을 이용해 `target sentence`를 같은 화자의 목소리로 읽게 만든 뒤 제출하기  
 
 ---
 
 ## 2. 서버 API 확인  
 
-웹 페이지와 API를 확인해 보니 주요 엔드포인트는 두 개였다.  
+`웹 페이지`와 `API`를 확인해 보니 주요 엔드포인트는 두 개였다.  
 
 ```python
 GET  /api/challenge
 POST /api/verify
 ```
 
-- /api/challenge는 매번 새로운 값을 반환했다.  
+- `/api/challenge`는 매번 새로운 값을 반환했다.  
 
 ```pythonn
 {
@@ -67,7 +67,7 @@ POST /api/verify
 }
 ```
 
-- /api/verify는 업로드한 WAV 파일을 검사해 다음 값을 반환했다.  
+- `/api/verify`는 업로드한 WAV 파일을 검사해 다음 값을 반환했다.  
 
 ```python
 speaker_similarity
@@ -88,15 +88,15 @@ flag
 
 ## 3. 단순 TTS 시도  
 
-처음에는 Windows TTS로 target sentence를 읽게 만든 뒤 제출해 보았다.  
-이 경우 text_similarity는 어느 정도 올라갔지만, speaker_similarity가 약 0.53 수준으로 낮게 나와 실패했다.  
+처음에는 `Windows TTS`로 `target sentence`를 읽게 만든 뒤 제출해 보았다.  
+이 경우 `text_similarity`는 어느 정도 올라갔지만, `speaker_similarity`가 약 0.53 수준으로 낮게 나와 실패했다.  
   
 즉 단순 TTS로는 문제를 풀 수 없었다.  
   
-- text_similarity 조건은 만족 가능  
-- speaker_similarity 조건은 만족 불가  
+- `text_similarity` 조건은 만족 가능  
+- `speaker_similarity` 조건은 만족 불가  
   
-따라서 필요한 것은 단순 음성 합성이 아니라, 제공된 샘플 음성의 화색을 복제하는 zero-shot voice cloning 이었다.  
+따라서 필요한 것은 단순 음성 합성이 아니라, 제공된 샘플 음성의 화색을 복제하는 `zero-shot voice cloning` 이었다.  
 
 ---
 
@@ -121,7 +121,7 @@ language  → en
 ```
 
 를 입력하면, 레퍼런스 음성과 비슷한 목소리로 target sentence를 읽은 WAV 파일을 생성할 수 있었다.  
-레퍼런스로는 가장 길고 안정적인 샘플인 sample_005.wav를 사용했다.  
+레퍼런스로는 가장 길고 안정적인 샘플인 `sample_005.wav`를 사용했다.  
 
 ---
 
@@ -238,7 +238,7 @@ if __name__ == "__main__":
 
 ## 6. 실행 결과  
 
-생성된 음성을 /api/verify에 제출하자 서버가 target sentence를 정확히 인식했다.  
+생성된 음성을 `/api/verify`에 제출하자 서버가 `target sentence`를 정확히 인식했다.  
   
 성공 응답은 다음과 같았다.  
 
@@ -252,7 +252,7 @@ if __name__ == "__main__":
 }
 ```
   
-text_similarity는 1.0으로 완전히 일치했고, speaker_similarity도 임계값인 0.8을 넘어 성공했다.  
+`text_similarity`는 1.0으로 완전히 일치했고, `speaker_similarity`도 임계값인 0.8을 넘어 성공했다.  
 
 ---
 
@@ -270,8 +270,8 @@ hacktheon2026{b7d30e21e4106a6ca4d451a218f15a97}
 처음에는 제공된 WAV 파일을 그대로 제출하거나 단순 TTS를 사용하는 방향으로 접근할 수 있지만,  
 실제로는 두 조건을 동시에 만족해야 했다.  
 
-- 목소리 유사도  
-- 문장 일치도  
+- `목소리 유사도`   
+- `문장 일치도`  
 
 결국 제공된 샘플은 정답이 아니라 목표 화자의 레퍼런스였고,  
 문제의 의도는 이를 이용해 target sentence를 같은 목소리로 합성하는 것이었다.  
