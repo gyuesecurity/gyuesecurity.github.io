@@ -2,7 +2,7 @@
 title: "[SPACE WAR @ TAURUS (PWN)] AutoSlopChess"
 date: 2026-04-27 04:00:00 +0900
 categories: [CTF/Wargame]
-tags: [ctf, web, SPACE WAR]
+tags: [ctf, pwn, SPACE WAR]
 ---
 
 # 2026 SPACE WAR - 02.TAURUS CTF 문제 풀이
