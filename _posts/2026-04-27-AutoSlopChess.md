@@ -222,8 +222,8 @@ flag 출력
 ## 6. 포인트  
 
 이 문제의 포인트는 다음 두 줄이다.  
-deep copy가 아니라 pointer copy  
-free 후에도 다른 슬롯에서 접근 가능  
+- deep copy가 아니라 pointer copy  
+- free 후에도 다른 슬롯에서 접근 가능  
 
 이를 기반으로:  
 - UAF 발생  
