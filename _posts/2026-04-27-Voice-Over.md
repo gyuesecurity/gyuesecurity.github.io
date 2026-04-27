@@ -19,7 +19,7 @@ sample_002.wav
 sample_003.wav
 sample_004.wav
 sample_005.wav
----
+```
 
 소스코드는 제공되지 않았고, 문제 페이지 주소만 주어졌다.  
 
