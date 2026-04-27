@@ -1,5 +1,5 @@
 ---
-title: "[2026 Hacktheon Sejong] 𝗨𝗻𝘁𝗶𝗹-𝗘𝘅𝗲𝗰𝘂𝘁𝗶𝗻𝗴"
+title: "[2026 Hacktheon Sejong] Until-Executing"
 date: 2026-04-27 01:00:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, REV, Hacktheon]
