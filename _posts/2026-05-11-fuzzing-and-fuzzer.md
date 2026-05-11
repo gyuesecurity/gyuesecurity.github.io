@@ -1,6 +1,6 @@
 ---
 title: "Fuzzing과 Fuzzer 정리"
-date: 2026-05-12 00:00:00 +0900
+date: 2026-05-11 00:00:00 +0900
 categories: [BugBounty]
 tags: [fuzzing, fuzzer, BugBounty]
 ---
