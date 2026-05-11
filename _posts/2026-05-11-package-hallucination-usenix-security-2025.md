@@ -5,560 +5,312 @@ categories: [논문/컨퍼런스]
 tags: [LLM, RAG, Paper Review, Security]
 ---
 
-# 코드 생성형 LLM이 만드는 새로운 공급망 공격
+# 코드 생성형 LLM이 만드는 새로운 공급망 공격  
+## *We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs* 논문 리뷰
 
-## *Package Hallucination이 소프트웨어 보안을 위협하는 방식*
+## 1. 논문 정보
 
----
+**논문 제목**  
+*We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs*
 
-## 논문 정보
+**학회**  
+USENIX Security Symposium 2025
 
-### 논문 제목
-**We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs**
-
-### 학회
-**USENIX Security Symposium 2025**
-
-### 저자
+**저자**  
 Joseph Spracklen, Raveen Wijewickrama, A H M Nazmus Sakib, Anindya Maiti, Bimal Viswanath, Murtuza Jadliwala
 
-### 논문 링크
-- [USENIX 공식 페이지](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)
-- [논문 PDF](https://www.usenix.org/system/files/usenixsecurity25-spracklen.pdf)
+**논문 링크**  
+USENIX 공식 페이지:  
+https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen
 
-> 본 논문은 USENIX Security 2025 Distinguished Paper Award Winner로 선정되었다.
+PDF:  
+https://www.usenix.org/system/files/usenixsecurity25-spracklen.pdf
 
----
-
-# 논문을 선택한 이유
-
-이 논문을 선택한 가장 큰 이유는 **LLM의 hallucination 문제가 단순히 "틀린 답변"에서 끝나는 것이 아니라 실제 보안 위협으로 이어질 수 있다는 점** 때문이다.
-
-최근 ChatGPT, GitHub Copilot, Claude 같은 코드 생성형 LLM은 개발 과정에서 매우 자연스럽게 사용되고 있다.
-
-단순한 코드 자동완성을 넘어 실제 라이브러리 import 구문, 패키지 설치 명령어, 코드 템플릿까지 자동으로 생성해주기 때문에 생산성이 크게 향상되었다.
-
-하지만 여기서 중요한 질문이 생긴다.
-
-> LLM이 생성한 코드, 정말 신뢰할 수 있을까?
-
-특히 보안 관점에서는 이 질문이 더욱 중요하다.
-
-존재하지 않는 패키지를 LLM이 실제 라이브러리처럼 추천한다면, 단순한 코드 오류가 아니라 새로운 공격 표면이 될 수 있기 때문이다.
-
-이전에 개인적으로 **RAG 기반 보안 학습 도우미 프로젝트**를 고민하면서 LLM hallucination 문제를 중요하게 봤었기 때문에, 이 논문은 매우 흥미롭게 느껴졌다.
-
-단순 AI 품질 문제가 아니라 **공급망 보안(Supply Chain Security)** 문제로 연결된다는 점이 인상적이었다.
+이 논문은 USENIX Security 2025에 발표된 논문이며, 공식 페이지에서 **Distinguished Paper Award Winner**로 표시되어 있다.
 
 ---
 
-# 1. 배경: LLM과 소프트웨어 개발의 변화
+## 2. 논문을 고른 이유
 
-논문은 먼저 오늘날 소프트웨어 개발 환경이 얼마나 빠르게 변하고 있는지를 설명한다.
+이 논문을 선택한 가장 큰 이유는 **LLM의 hallucination 문제가 단순히 “틀린 답변”에서 끝나지 않고 실제 보안 위협으로 이어질 수 있다는 점** 때문이다.
 
-GPT-4, Claude, CodeLlama, DeepSeek Coder 같은 코드 생성형 LLM은 더 이상 실험적인 도구가 아니다.
+최근 개발자들은 ChatGPT, GitHub Copilot, Claude 같은 코드 생성형 LLM을 활용해 코드를 작성한다. 단순히 문법을 물어보는 수준을 넘어서, 실제 프로젝트 코드, 라이브러리 사용법, 패키지 설치 명령어까지 LLM에게 의존하는 경우가 많다.
 
-이미 많은 개발자들이 실제 업무에 활용하고 있다.
-
-논문에서는 다음과 같은 통계를 언급한다.
-
-- 개발자의 최대 **97%**가 생성형 AI를 어느 정도 사용
-- 오늘날 작성되는 코드의 약 **30%**가 AI에 의해 생성
-
-이 변화는 생산성 측면에서 엄청난 장점을 가진다.
-
-예전에는 라이브러리 사용법을 검색하고 공식 문서를 읽으며 코드를 작성해야 했다.
-
-지금은 이렇게 물어보면 된다.
+예를 들어 사용자가 다음과 같이 질문할 수 있다.
 
 ```text
-Python으로 PDF 분석 코드 작성해줘
+Python으로 PDF 파일을 분석하는 코드를 작성해줘.
 ```
 
-LLM은 바로 코드를 생성한다.
+그러면 LLM은 다음과 같은 코드를 생성할 수 있다.
 
 ```python
-import smartpdfparser
+import pdfsmartparser
 ```
 
-겉으로 보기에는 문제 없어 보인다.
+문제는 `pdfsmartparser`라는 패키지가 실제로 존재하지 않을 수도 있다는 점이다. 여기까지만 보면 단순한 오류처럼 보인다. 하지만 공격자가 이 이름을 보고 PyPI나 npm 같은 패키지 저장소에 같은 이름의 악성 패키지를 등록한다면 상황은 달라진다.
 
-하지만 여기서 중요한 문제가 있다.
+개발자는 LLM이 추천한 패키지를 신뢰하고 다음과 같이 설치할 수 있다.
 
-**smartpdfparser가 실제 존재하는 패키지일까?**
+```bash
+pip install pdfsmartparser
+```
 
-LLM은 검색 엔진이 아니다.
+이때 설치되는 패키지가 공격자가 만든 악성 패키지라면, LLM의 hallucination은 실제 공급망 공격으로 이어질 수 있다.
 
-실시간 검증 시스템도 아니다.
+즉 이 논문은 다음 질문에서 출발한다.
 
-LLM은 학습 데이터 기반으로 "가장 그럴듯한 다음 단어"를 생성하는 모델이다.
+> “LLM이 존재하지 않는 패키지를 추천하는 현상이 실제로 얼마나 자주 발생하며, 이것이 소프트웨어 공급망 보안에 어떤 위협이 되는가?”
 
-즉 실제 존재 여부를 확인하지 않고도 충분히 그럴듯한 이름을 만들어낼 수 있다.
-
-이게 바로 문제다.
+나는 현재 RAG 기반 보안 학습 도우미 프로젝트를 고민하고 있기 때문에, LLM이 잘못된 정보를 생성했을 때 이를 어떻게 검증하고 줄일 수 있는지가 중요하다고 생각했다. 그래서 이 논문은 단순히 AI 논문이 아니라, 내가 진행하려는 보안 프로젝트와도 직접적으로 연결되는 주제라고 판단했다.
 
 ---
 
-# 2. 문제 정의: Package Hallucination
+## 3. 배경: LLM과 소프트웨어 개발의 변화
 
-논문에서 정의하는 **Package Hallucination**은 다음과 같다.
+논문은 먼저 LLM이 소프트웨어 개발 과정에 깊게 들어오고 있다는 점을 설명한다. GPT-4, Claude, CodeLlama, DeepSeek Coder 같은 모델은 개발자가 코드를 더 빠르게 작성하도록 돕고 있으며, 초보 개발자와 숙련 개발자 모두 코드 생성형 LLM을 활용하고 있다. 논문에서는 최근 연구를 인용하며 개발자의 최대 97%가 어느 정도 생성형 AI를 사용하고 있고, 오늘날 작성되는 코드의 약 30%가 AI에 의해 생성된다는 점을 언급한다.
 
-> 코드 생성형 LLM이 실제로 존재하지 않는 패키지 이름을 생성하거나 추천하는 현상
+이 변화는 개발 생산성을 높이는 장점이 있다. 하지만 보안 관점에서는 새로운 문제가 생긴다.
 
-예를 들어:
+개발자가 직접 공식 문서를 보고 코드를 작성하는 경우에는 패키지 이름을 어느 정도 확인할 수 있다. 반면 LLM이 코드를 통째로 생성해주는 경우, 개발자는 그 결과물을 그대로 복사해 실행할 가능성이 있다. 특히 LLM이 import 문이나 install 명령어까지 함께 제공하면, 사용자는 해당 패키지가 실제로 존재하고 안전하다고 착각하기 쉽다.
+
+이 논문이 주목하는 지점은 바로 이 부분이다.
+
+LLM은 언어 모델이기 때문에 실제 존재 여부를 검증해서 답하는 것이 아니라, 학습 데이터와 문맥을 바탕으로 “그럴듯한 이름”을 생성한다. 따라서 존재하지 않는 패키지도 실제 라이브러리처럼 자연스럽게 제안할 수 있다.
+
+---
+
+## 4. 문제 정의: Package Hallucination
+
+논문에서 말하는 **Package Hallucination**은 코드 생성형 LLM이 실제로 존재하지 않는 패키지 이름을 생성하거나 추천하는 현상을 의미한다. 논문은 이를 LLM의 fact-conflicting hallucination, 즉 사실과 충돌하는 환각의 특수한 형태로 본다.
+
+예를 들어 LLM이 다음과 같은 코드를 생성했다고 하자.
 
 ```python
 import fastjsonsecure
 ```
 
-그런데 PyPI에 `fastjsonsecure`라는 패키지가 없다면?
+그런데 PyPI에 `fastjsonsecure`라는 패키지가 없다면, 이는 package hallucination이다.
 
-이것이 package hallucination이다.
+중요한 점은 이 hallucination이 단순히 코드 실행 오류로 끝나지 않는다는 것이다. 공격자가 이 이름을 발견하고 PyPI에 같은 이름으로 패키지를 등록할 수 있다. 이후 다른 사용자가 LLM에게 비슷한 질문을 했을 때 같은 hallucinated package가 다시 추천된다면, 사용자는 공격자가 등록한 패키지를 설치하게 된다.
 
-보통 이런 상황이면 단순 실행 오류로 끝난다고 생각할 수 있다.
+논문은 이 공격 흐름을 일종의 **LLM-enabled package confusion attack**으로 설명한다. 기존의 package confusion 공격은 typosquatting처럼 사용자의 오타나 착각을 노렸다. 예를 들어 `requests` 대신 `request`를 설치하게 만드는 방식이다. 하지만 package hallucination 기반 공격은 사용자가 오타를 낸 것이 아니라, LLM이 먼저 존재하지 않는 패키지명을 만들어낸다는 점에서 차이가 있다.
 
-하지만 논문은 더 위험한 시나리오를 보여준다.
+정리하면 다음과 같다.
 
-공격자가 이 hallucinated package 이름을 발견하고 실제로 PyPI에 등록한다.
-
-```bash
-pip install fastjsonsecure
-```
-
-이제 이후 사용자가 LLM 추천을 믿고 설치하면?
-
-악성 패키지가 실행된다.
-
-즉 공격 흐름은 이렇게 된다.
-
-기존 공급망 공격:
+기존 공격은 보통 다음 구조다.
 
 ```text
-사용자의 오타
-→ 잘못된 패키지 설치
-→ 악성 코드 실행
+사용자의 실수 → 잘못된 패키지 설치 → 악성 코드 실행
 ```
 
-이번 논문이 말하는 새로운 흐름:
+반면 이 논문이 다루는 공격은 다음 구조다.
 
 ```text
-LLM hallucination
-→ 공격자의 패키지 선점
-→ 사용자의 설치
-→ 악성 코드 실행
+LLM의 hallucination → 공격자의 패키지 선점 → 사용자의 설치 → 악성 코드 실행
 ```
 
-이게 핵심 차이다.
-
-기존 공격은 사람이 실수해야 한다.
-
-이번 공격은 **AI가 실수를 만들어낸다.**
+여기서 핵심은 공격자가 LLM의 오류를 기다리거나 찾아낸 뒤, 그 오류를 실제 공격 인프라로 바꿀 수 있다는 점이다.
 
 ---
 
-# 3. 왜 이 문제가 중요한가?
+## 5. 이 문제가 중요한 이유
 
-## 3-1. 사용자는 LLM을 신뢰한다
+이 문제가 중요한 이유는 크게 세 가지다.
 
-많은 사용자는 LLM이 완벽하지 않다는 걸 안다.
+### 첫째, LLM 출력에 대한 사용자의 신뢰도가 높다.
 
-하지만 현실에서는:
+많은 사용자는 LLM이 생성한 코드가 완전히 정확하지 않을 수 있다는 점을 알면서도, 실제 작업에서는 빠르게 복사해서 실행한다. 특히 초보 개발자는 패키지 이름이 실제로 존재하는지, 안전한지, 유지보수가 되는지까지 확인하지 않는 경우가 많다.
 
-- 복붙
-- 빠른 실행
-- 검증 생략
+### 둘째, 패키지 저장소는 누구나 패키지를 올릴 수 있는 개방형 생태계다.
 
-이 자주 일어난다.
+PyPI와 npm은 각각 Python과 JavaScript 생태계에서 널리 사용되는 중앙화된 패키지 저장소다. 논문은 npm과 PyPI가 각각 수백만 개, 수십만 개 규모의 패키지 생태계를 가지고 있으며, 누구나 새로운 패키지를 업로드할 수 있다는 점이 공격 표면이 된다고 설명한다.
 
-특히 초보 개발자는:
+### 셋째, 공급망 공격은 한 번 성공하면 피해가 연쇄적으로 확산될 수 있다.
 
-- 패키지가 실제 존재하는지
-- 안전한지
-- 유지보수되는지
+하나의 악성 패키지가 설치되면 해당 프로젝트만 위험해지는 것이 아니라, 그 프로젝트를 의존하는 다른 코드나 서비스까지 영향을 받을 수 있다. 논문도 하나의 패키지가 dependency chain에 포함될 경우 전체 소프트웨어 제품이나 생태계를 손상시킬 수 있다고 설명한다.
 
-이런 걸 확인하지 않는다.
+즉, package hallucination은 단순한 “잘못된 import 문” 문제가 아니라, AI 시대의 새로운 공급망 보안 문제라고 볼 수 있다.
 
 ---
 
-## 3-2. 패키지 저장소는 개방형 생태계다
+## 6. 기존 연구와의 차이
 
-PyPI, npm은 누구나 패키지를 업로드할 수 있다.
-
-즉 공격자는:
-
-1. hallucinated package 발견
-2. 같은 이름으로 패키지 등록
-3. 악성 코드 삽입
-
-이게 가능하다.
-
----
-
-## 3-3. 공급망 공격은 피해 범위가 넓다
-
-하나의 악성 패키지가 설치되면 끝이 아니다.
-
-영향:
-
-- 프로젝트 감염
-- CI/CD 감염
-- credential theft
-- dependency chain 오염
-
-즉 단순 코드 오류가 아니라 공급망 문제다.
-
----
-
-# 4. 기존 연구와의 차이
-
-기존 연구:
+기존 공급망 보안 연구는 주로 다음 문제를 다뤘다.
 
 - Typosquatting
 - Dependency confusion
 - Malicious package detection
-- Open-source trust analysis
+- 오픈소스 패키지 신뢰성 평가
+- 패키지 저장소 내 악성 코드 탐지
 
-공통점:
+하지만 이 논문은 질문이 다르다.
 
-**사람의 실수 기반**
+기존 연구가 “공격자가 어떻게 사용자를 속이는가?”를 봤다면, 이 논문은 “LLM이 공격자가 악용할 수 있는 패키지 이름을 만들어내는가?”를 본다.
 
-이번 논문:
+즉 공격의 출발점이 사람의 실수나 공격자의 직접적인 속임수가 아니라, **AI 모델의 hallucination**이라는 점이 다르다.
 
-> LLM이 공격자가 악용할 수 있는 패키지명을 생성하는가?
-
-즉 시작점이 AI다.
-
-이게 핵심이다.
+저자들은 이전에도 LLM이 패키지 hallucination을 일으킬 수 있다는 관찰은 있었지만, 다양한 모델, 다양한 언어, 다양한 조건에서 체계적으로 분석한 연구는 부족했다고 본다. 논문은 자신들의 기여를 “package hallucination의 빈도, 특성, 원인, 완화 방법을 대규모로 분석한 첫 체계적 연구”로 설명한다.
 
 ---
 
-# 5. 연구 질문
+## 7. 연구 질문
 
-논문은 5개의 핵심 질문을 던진다.
+논문은 크게 다섯 가지 연구 질문을 중심으로 구성된다.
 
-## RQ1
-LLM은 얼마나 자주 package hallucination을 일으키는가?
+첫 번째는 **LLM이 Python과 JavaScript 코드를 생성할 때 package hallucination이 얼마나 자주 발생하는가**이다.
 
-## RQ2
-모델 설정이 hallucination에 영향을 주는가?
+두 번째는 **모델 설정값이 hallucination 발생률에 어떤 영향을 주는가**이다. 예를 들어 temperature, decoding 방식, 학습 데이터의 최신성 등이 영향을 주는지 확인한다.
 
-- temperature
-- decoding
-- training recency
+세 번째는 **모델이 자기 자신이 생성한 hallucination을 감지할 수 있는가**이다. LLM에게 “이 패키지가 실제로 존재하는가?”라고 다시 물었을 때 제대로 판단할 수 있는지 보는 것이다.
 
-## RQ3
-LLM이 자기 hallucination을 감지할 수 있는가?
+네 번째는 **hallucinated package들이 어떤 특성을 가지는가**이다. 예를 들어 실제 패키지와 이름이 비슷한지, 여러 모델에서 반복적으로 등장하는지, 삭제된 패키지와 관련이 있는지 등을 분석한다.
 
-## RQ4
-hallucinated package는 어떤 특징을 가지는가?
+다섯 번째는 **package hallucination을 줄일 수 있는가**이다. 논문은 RAG, self-refinement, fine-tuning 같은 완화 전략을 실험한다.
 
-## RQ5
-이 문제를 완화할 수 있는가?
+이 구조가 좋은 이유는 논문이 단순히 “LLM이 틀린 패키지를 만들었다”에서 끝나지 않고, 현상의 규모, 원인, 반복성, 공격 가능성, 대응 방안까지 연결하기 때문이다.
 
 ---
 
-# 6. 방법론
+## 8. 방법론: 실험이 어떻게 진행되었는가
 
-논문 실험 구조:
+논문의 실험 과정은 크게 세 단계로 나눌 수 있다.
 
 ```text
-Prompt 생성
-→ 코드 생성
-→ 패키지 추출
-→ 존재 여부 검사
-→ hallucination 분류
+1. Prompt dataset 생성
+2. LLM을 이용한 코드 생성
+3. 생성된 코드에서 패키지 추출 후 hallucination 여부 판단
 ```
 
-## 실험 규모
+논문은 기존 코드 생성 벤치마크들이 prompt 수가 적고 다양성이 부족하다고 보고, 더 다양한 코딩 작업을 포함하는 prompt dataset을 직접 구성했다. 기존 HumanEval이나 EvalPlus 같은 벤치마크는 제한된 수의 문제만 포함하기 때문에 package hallucination을 폭넓게 측정하기 어렵다고 판단한 것이다.
 
-- 16개 코드 생성형 LLM
-- Python + JavaScript
-- 576,000 code samples
-- 2.23 million package recommendations 분석
+이후 저자들은 여러 LLM에 prompt를 입력해 코드를 생성했다. 대상 언어는 Python과 JavaScript이며, 이는 각각 PyPI와 npm이라는 중앙화된 패키지 저장소에 강하게 의존하는 대표적인 언어이기 때문이다.
 
-이 정도면 충분히 대규모다.
+실험 규모도 상당히 크다. 논문은 16개 코드 생성 LLM을 사용했고, 두 개의 prompt dataset을 바탕으로 총 576,000개의 코드 샘플을 생성했다고 밝힌다.
 
----
+생성된 코드에서는 import 문, require 문, install 명령어 등 패키지 이름으로 추정되는 요소를 추출한다. 그리고 해당 패키지가 실제 PyPI나 npm에 존재하는지 확인한다. 존재하지 않으면 hallucinated package로 분류한다.
 
-# 7. 주요 결과
-
-## hallucination 비율
-
-총:
-
-- 2.23M package recommendation
-- 440,445 hallucination
-- 19.7%
-
-즉 **5개 중 1개 수준**
+여기서 중요한 점은 단순히 한두 개 사례를 보여준 것이 아니라, 대규모로 측정했다는 점이다. 그래서 이 논문은 “LLM이 가끔 실수한다”가 아니라 “package hallucination이 구조적으로 얼마나 발생하는지”를 보여준다.
 
 ---
 
-## unique hallucinated package
+## 9. 주요 실험 결과
 
-무려:
+가장 핵심적인 결과는 다음과 같다.
 
-**205,474개**
+논문은 총 2.23 million개의 패키지 추천을 분석했고, 그중 440,445개, 즉 19.7%가 hallucination으로 판단되었다고 보고한다. 또한 중복을 제거했을 때 205,474개의 고유한 존재하지 않는 패키지 이름이 발견되었다.
 
-이건 충격적이다.
+이 결과는 상당히 크다. 단순히 몇 개의 이상한 패키지명이 나온 수준이 아니라, 수십만 개의 hallucinated package name이 생성된 것이다.
 
-랜덤 오류 수준이 아니다.
+또한 상용 모델과 오픈소스 모델 사이에도 차이가 있었다. 논문은 GPT 계열 모델의 hallucination rate가 5.2%인 반면, 오픈소스 모델은 21.7%로 나타났다고 보고한다. 즉 상용 모델이 상대적으로 덜 hallucination을 일으키긴 했지만, 완전히 안전한 것은 아니다.
 
----
+언어별 차이도 있었다. Python은 평균 15.8%, JavaScript는 평균 21.3%의 hallucination rate를 보였다. 논문은 JavaScript 쪽에서 더 높은 hallucination이 발생했다고 분석한다.
 
-## 상용 vs 오픈소스
+이 결과를 내 방식으로 해석하면 다음과 같다.
 
-Commercial:
-
-**5.2%**
-
-Open-source:
-
-**21.7%**
-
-상용 모델이 더 낫지만 안전하진 않다.
+> 상용 모델을 사용한다고 해서 package hallucination 문제가 사라지는 것은 아니다. 다만 오픈소스 모델보다 빈도가 낮을 뿐이다.  
+> 그리고 JavaScript/npm 생태계는 패키지 수가 많고 이름 규칙이 다양하기 때문에, LLM이 존재하지 않는 그럴듯한 패키지명을 만들어내기 더 쉬운 환경일 수 있다.
 
 ---
 
-## 언어별 차이
+## 10. 저자의 생각 vs 나의 생각
 
-Python:
+### 저자의 생각
 
-**15.8%**
+저자들은 package hallucination을 단순한 모델 오류가 아니라, 소프트웨어 공급망의 무결성을 위협하는 새로운 공격 표면으로 본다. LLM이 존재하지 않는 패키지를 생성하고, 공격자가 그 이름을 선점해 악성 패키지를 등록하면, 이후 사용자는 LLM을 신뢰해 해당 패키지를 설치할 수 있다. 이 과정은 기존 package confusion 공격과 유사하지만, LLM이 공격 표면을 새롭게 만들어준다는 점에서 차이가 있다.
 
-JavaScript:
+논문은 또한 package hallucination이 특정 모델이나 특정 조건에서만 발생하는 예외적인 현상이 아니라, 다양한 모델에서 반복적으로 관찰되는 체계적인 문제라고 주장한다.
 
-**21.3%**
+### 나의 생각
 
-npm 생태계가 더 위험해 보인다.
+나는 이 논문의 핵심 가치가 “hallucination의 보안적 의미를 바꿔서 보여줬다”는 점에 있다고 생각한다.
 
----
-
-# 8. 저자의 생각 vs 나의 생각
-
-## 저자의 생각
-
-논문은 hallucination을 단순 AI 오류가 아니라:
-
-**공급망 공격 surface**
-
-로 본다.
-
----
-
-## 내 생각
-
-이 부분이 가장 인상적이었다.
-
-기존 hallucination:
+기존에 hallucination이라고 하면 보통 이런 느낌이었다.
 
 ```text
-틀린 정보
+LLM이 틀린 설명을 했다.
+LLM이 없는 논문을 인용했다.
+LLM이 잘못된 명령어를 알려줬다.
 ```
 
-이번 hallucination:
+하지만 이 논문은 hallucination을 다음처럼 확장해서 보여준다.
 
 ```text
-공격 가능 자원
+LLM이 없는 패키지를 만들었다.
+공격자가 그 이름을 등록했다.
+사용자가 설치했다.
+공급망 공격이 발생했다.
 ```
 
-이 차이가 크다.
+즉, hallucination이 단순한 정보 오류가 아니라 **공격자가 이용할 수 있는 자원**이 된다.
 
-AI가 실수하면 끝이 아니라,
+이 관점이 매우 중요하다고 생각한다. 특히 앞으로 개발 환경이 AI 중심으로 바뀔수록, “LLM이 추천한 것”이 곧 개발자의 의사결정에 영향을 주게 된다. 그러면 공격자는 사람을 직접 속이는 대신, LLM이 만들어내는 오류 패턴을 분석하고 그 결과를 악용할 수 있다.
 
-공격자가 그 실수를 weaponize 할 수 있다.
-
----
-
-# 9. Mitigation
-
-논문이 제안한 대응:
-
-- RAG
-- Self-refinement
-- Fine-tuning
-- Ensemble
-
-## RAG
-
-가장 흥미로웠다.
-
-외부 package DB를 검색해서 valid package만 추천하게 한다.
-
-이건 내가 고민하던 RAG 보안 프로젝트와도 연결된다.
+이 점에서 package hallucination은 AI 시대에 새롭게 등장한 사회공학적 공격과도 비슷하다. 다만 공격 대상이 사람의 심리만이 아니라, LLM의 생성 패턴이라는 점이 다르다.
 
 ---
 
-## 결과
+## 11. Mitigation: 논문이 제안한 완화 방법
 
-DeepSeek:
+논문은 package hallucination을 줄이기 위해 여러 완화 전략을 실험한다.
+
+대표적으로 다음 세 가지가 나온다.
+
+1. Retrieval Augmented Generation, 즉 RAG
+2. Self-refinement
+3. Supervised fine-tuning
+
+여기서 특히 내 관심을 끈 것은 RAG다. 논문은 RAG 방식으로 모델이 코드를 생성하기 전에 유효한 패키지 이름 정보를 외부 지식으로 제공하는 방식을 사용했다. 구체적으로는 PyPI의 인기 패키지 정보를 바탕으로 보조 데이터셋을 만들고, 이를 vector database에 저장한 뒤, prompt와 의미적으로 관련 있는 패키지 정보를 검색해 모델에게 제공했다.
+
+이 방식은 내가 고민하던 RAG 기반 보안 학습 도우미와 연결된다. 내가 만들고 싶은 시스템도 결국 “LLM이 그냥 답하게 두지 않고, 신뢰 가능한 문서와 데이터를 검색해서 근거 기반으로 답하게 만드는 것”이 핵심이다.
+
+논문의 실험 결과를 보면 완화 전략은 실제로 효과가 있었다. DeepSeek 모델의 baseline hallucination rate는 16.14%였는데, RAG 적용 시 12.24%, fine-tuning 적용 시 2.66%, ensemble 적용 시 2.40%까지 감소했다. CodeLlama도 baseline 26.28%에서 RAG 적용 시 13.40%, fine-tuning 적용 시 10.27%, ensemble 적용 시 9.32%로 줄었다.
+
+하지만 fine-tuning은 부작용도 있었다. 논문은 fine-tuning이 hallucination을 크게 줄이지만 코드 품질 저하를 동반할 수 있다고 설명한다. DeepSeek의 경우 HumanEval pass@1이 51.4%에서 25.3%로 떨어졌다.
+
+이 부분은 중요하다. 보안성을 높이기 위해 모델을 지나치게 보수적으로 만들면, 코드 생성 능력 자체가 떨어질 수 있다. 즉 “hallucination 감소”와 “코드 품질 유지” 사이에는 trade-off가 있다.
+
+---
+
+## 12. 평가 결과에 대한 해석
+
+이 논문의 평가 결과는 크게 세 가지 메시지를 준다.
+
+### 첫째, package hallucination은 실제로 빈번하다.
+
+16개 모델, 576,000개 코드 샘플, 2.23 million개의 패키지 추천 분석이라는 규모를 보면, 이 문제는 일부 모델의 우연한 실수가 아니라 코드 생성형 LLM 전반의 구조적 문제에 가깝다.
+
+### 둘째, 상용 모델도 안전하지 않다.
+
+상용 모델의 hallucination rate가 오픈소스 모델보다 낮긴 하지만, 완전히 0이 아니다. GPT-4 Turbo도 가장 낮은 hallucination rate를 보였지만 3.59%로 측정되었다.
+
+### 셋째, 완화는 가능하지만 완벽하지 않다.
+
+RAG, self-refinement, fine-tuning, ensemble 방식 모두 hallucination을 줄였지만, 일부 방식은 코드 품질 저하라는 비용이 있었다. 따라서 현실적인 방어는 단일 방법 하나가 아니라, 여러 계층의 검증 구조가 필요하다고 생각한다.
+
+예를 들어 실제 개발 환경에서는 다음과 같은 방식을 조합할 수 있다.
 
 ```text
-Baseline: 16.14%
-RAG: 12.24%
-Fine-tuning: 2.66%
-Ensemble: 2.40%
+LLM 코드 생성
+→ 패키지 이름 자동 추출
+→ PyPI/npm 존재 여부 확인
+→ 다운로드 수, 유지보수 상태, 생성일 확인
+→ 악성 패키지 탐지 도구 실행
+→ 사용자에게 위험도 표시
 ```
 
-CodeLlama:
-
-```text
-Baseline: 26.28%
-RAG: 13.40%
-Fine-tuning: 10.27%
-Ensemble: 9.32%
-```
+이런 구조가 있어야 LLM 기반 개발 환경에서 공급망 공격을 줄일 수 있다.
 
 ---
 
-## Trade-off
+## 13. 논문의 한계점
 
-Fine-tuning은 hallucination 줄이지만 성능 저하 발생.
+이 논문은 매우 흥미롭지만, 몇 가지 한계도 있다.
 
-DeepSeek:
+첫 번째 한계는 **실제 개발자 행동과 실험 환경 사이의 차이**다.
 
-```text
-HumanEval pass@1
-51.4% → 25.3%
-```
+논문은 LLM이 생성한 패키지명을 분석하지만, 실제 개발자는 패키지를 설치하기 전에 GitHub, 공식 문서, Stack Overflow, PyPI 페이지를 확인할 수도 있다. 물론 현실에서는 복사해서 바로 설치하는 사용자도 많기 때문에 위험이 사라지는 것은 아니지만, 실험 결과가 곧바로 실제 피해 확률을 의미한다고 보기는 어렵다.
 
-즉 보안 vs 성능 trade-off 존재.
+두 번째 한계는 **언어와 생태계가 Python과 JavaScript 중심이라는 점**이다.
 
----
-
-# 10. 한계점
-
-## 현실 개발 환경 차이
-
-실제 개발자는:
-
-- GitHub 확인
-- PyPI 확인
-- StackOverflow 검색
-
-할 수도 있다.
-
----
-
-## 언어 제한
-
-현재:
-
-- Python
-- JavaScript
-
-만 분석
-
-추가 필요:
-
-- Rust
-- Java
-- C#
-- Ruby
-
----
-
-## 존재한다고 안전한 건 아니다
-
-공격자가 이미 package 등록하면?
-
-존재 여부 검사 무의미.
-
----
-
-# 11. 느낀 점
-
-이 논문에서 가장 크게 느낀 건:
-
-> LLM 신뢰성은 AI 품질 문제가 아니라 보안 요구사항이다.
-
-특히 보안 분야에서는 더 위험하다.
-
-예:
-
-- fake exploit code
-- wrong mitigation
-- fake tools
-- hallucinated security package
-
-이건 실제 사고로 이어질 수 있다.
-
----
-
-# 12. 앞으로 해볼 것
-
-## 1) Package validator 만들기
-
-자동으로:
-
-- import 추출
-- registry 확인
-- maintainer 검사
-- trust score 계산
-
----
-
-## 2) Safe RAG package recommender
-
-LLM 자유 생성 금지
-
-trusted package DB 기반 생성
-
----
-
-## 3) 보안 학습 도우미 적용
-
-내 프로젝트에 적용:
-
-- OWASP
-- NIST
-- CVE
-- official docs
-
-기반 grounding
-
----
-
-## 4) 추가 논문
-
-읽어볼 것:
-
-- Prompt Injection
-- RAG Poisoning
-- LLM Agent Security
-- Secure Code Generation
-
----
-
-# 결론
-
-이 논문의 핵심 메시지는 명확하다.
-
-```text
-AI hallucination은 새로운 공급망 공격 진입점이 될 수 있다.
-```
-
-따라서:
-
-**LLM output = trusted code**
-
-이렇게 생각하면 안 된다.
-
-오히려:
-
-> LLM output도 외부 입력이다.
-
-보안 관점에서는 반드시 검증해야 한다.
-
----
-
-## Reference
-
-```bibtex
-@inproceedings{spracklen2025package,
-  title={We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs},
-  author={Spracklen, Joseph et al.},
-  booktitle={USENIX Security Symposium},
-  year={2025}
-}
-```
+논문은 PyPI와 npm을 대상으로 분석했다. 하지만 실제 개발 생태계에는 Maven, Cargo, RubyGems, NuGet 등 다양한 패키지 저장소가 있다. 특히 Rust의 Cargo나 Java의 Maven에서도 비슷한 hallucination이 발생하는지 확인해볼 필요가 있다.
