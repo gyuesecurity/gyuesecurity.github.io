@@ -1,157 +1,94 @@
 ---
-title: "Fuzzing과 Fuzzer 완벽 정리"
-date: 2026-05-11 21:00:00 +0900
+title: "Fuzzing과 Fuzzer 정리"
+date: 2026-05-12 10:00:00 +0900
 categories: [BugBounty, Security]
-tags: [Fuzzing, Fuzzer, AFL++, libFuzzer, Jackalope, BugBounty, Vulnerability Research]
-description: "Fuzzing의 개념부터 종류, 대표 퍼저 비교, 버그바운티 활용까지 정리"
+tags: [fuzzing, fuzzer, afl++, libfuzzer, jackalope, honggfuzz, radamsa, bugbounty]
+description: "Fuzzing의 개념부터 종류, 대표 Fuzzer 비교, BugBounty 활용까지 정리"
 toc: true
 comments: true
-image:
-  path: /assets/img/security/fuzzing-cover.png
+math: false
+pin: false
 ---
 
-# Fuzzing과 Fuzzer
+# fuzzing 과 fuzzer
 
-## 들어가며
+## 1. 개요
 
-보안 취약점을 찾는 방법에는 다양한 접근 방식이 존재한다.
+보안 취약점을 찾는 방법에는 코드 리뷰, 정적 분석, 동적 분석, 수동 침투 테스트 등 여러 방식이 있다. 그중 **Fuzzing**, 즉 **퍼징**은 프로그램에 비정상적이거나 예상하지 못한 입력값을 반복적으로 넣어보면서 오류나 취약점을 찾는 자동화 테스트 기법이다.
 
-대표적으로 다음과 같은 방법들이 있다.
+쉽게 말하면 퍼징은 프로그램을 “이상한 입력값으로 계속 두드려 보는 방식”이다.
 
-- 코드 리뷰 (Code Review)
-- 정적 분석 (Static Analysis)
-- 동적 분석 (Dynamic Analysis)
-- 수동 침투 테스트 (Manual Penetration Testing)
+예를 들어 어떤 프로그램이 파일을 읽는다고 가정해보자. 정상적인 사용자는 올바른 이미지 파일, 문서 파일, 압축 파일 등을 입력한다. 하지만 공격자는 정상적인 파일만 넣지 않는다. 깨진 파일, 너무 긴 문자열, 잘못된 헤더, 음수 값, 특수문자, 널 바이트 등이 포함된 데이터를 넣어 프로그램이 비정상적으로 동작하는지 확인한다.
 
-그중에서도 **자동화된 취약점 탐지 기법**으로 매우 강력한 것이 바로 **Fuzzing(퍼징)** 이다.
+이런 입력을 사람이 하나하나 만들기는 어렵다.
 
-Fuzzing은 프로그램에 예상하지 못한 입력값을 반복적으로 넣어보며 프로그램의 비정상 동작을 유도하는 테스트 기법이다.
-
-쉽게 표현하면 다음과 같다.
-
-> 프로그램을 이상한 입력값으로 계속 괴롭혀서 어디서 터지는지 찾는 방식
-
-예를 들어 이미지 처리 프로그램이 있다고 해보자.
-
-정상적인 사용자는:
-
-- 정상 PNG
-- 정상 JPG
-- 정상 GIF
-
-같은 파일을 넣는다.
-
-하지만 공격자는 그렇지 않다.
-
-공격자는:
-
-- 깨진 파일
-- 조작된 헤더
-- 너무 큰 데이터
-- NULL 바이트 포함 입력
-- 비정상적인 메타데이터
-
-등을 넣는다.
-
-이 과정에서 프로그램이 Crash가 나거나 메모리 손상이 발생하면 보안 취약점일 가능성이 생긴다.
+그래서 이를 자동으로 수행하는 도구가 필요하다. 이 도구를 **Fuzzer**, 즉 **퍼저**라고 한다.
 
 ---
 
-## Fuzzing이란?
+## 2. Fuzzing이란?
 
-Fuzzing은 비정상적이거나 예상하지 못한 입력값을 자동으로 생성하여 프로그램의 예외 동작을 찾는 테스트 기법이다.
+Fuzzing은 프로그램에 무작위 또는 변형된 입력값을 대량으로 전달하여 프로그램의 비정상 동작을 찾아내는 테스트 기법이다.
 
-기본 흐름은 다음과 같다.
+퍼징의 기본 흐름은 다음과 같다.
 
 ```text
-입력 생성
-→ 프로그램 실행
-→ 결과 확인
-→ Crash 탐지
-→ 입력 변형
-→ 반복
+입력 생성 → 프로그램 실행 → 결과 관찰 → Crash 확인 → 입력 변형 → 반복
 ```
 
-퍼저(Fuzzer)는 프로그램에 수천, 수만, 심지어 수백만 개의 입력을 넣는다.
-
-확인하는 항목은 다음과 같다.
+퍼저는 프로그램에 수많은 입력값을 넣는다. 그리고 프로그램이 다음과 같은 이상 동작을 보이는지 확인한다.
 
 ```text
 Crash
 Segmentation Fault
 Memory Corruption
-Infinite Loop
 Timeout
+Infinite Loop
 Assertion Failure
 Unhandled Exception
 ```
 
-특히 C/C++ 프로그램에서는 메모리 관련 취약점을 잘 발견할 수 있다.
-
-대표적인 취약점:
-
-- Buffer Overflow
-- Heap Overflow
-- Use After Free
-- Double Free
-- Integer Overflow
-- Out-of-Bounds Read/Write
+이런 현상은 단순한 오류일 수도 있지만, 보안 관점에서는 취약점으로 이어질 수 있다. 특히 C/C++처럼 메모리 관리를 직접 하는 언어에서는 퍼징을 통해 버퍼 오버플로우, Use After Free, Double Free 같은 치명적인 취약점이 발견될 수 있다.
 
 ---
 
-## 왜 중요한가?
+## 3. Fuzzing이 중요한 이유
 
-사람은 모든 예외 입력을 생각할 수 없다.
+퍼징이 중요한 이유는 사람이 생각하지 못한 입력을 자동으로 탐색할 수 있기 때문이다.
 
-예를 들어 로그인 기능을 만든다고 가정하자.
+개발자는 보통 정상적인 입력을 기준으로 프로그램을 작성한다. 하지만 실제 공격자는 비정상적인 입력을 사용한다. 예를 들어 로그인 페이지에는 일반적인 아이디와 비밀번호만 들어오는 것이 아니라, SQL Injection Payload, 긴 문자열, 특수문자, 인코딩된 값 등이 들어올 수 있다.
 
-개발자는 보통 이런 입력을 생각한다.
+파일 업로드 기능에서도 마찬가지다. 사용자는 정상적인 이미지 파일을 업로드하지만, 공격자는 깨진 이미지, 조작된 메타데이터, 비정상적인 MIME 타입, 확장자 우회 파일을 업로드할 수 있다.
 
-```text
-admin
-guest
-user123
-```
+퍼징은 이런 예외 상황을 자동으로 실험한다.
 
-하지만 공격자는 다음처럼 넣는다.
+특히 다음과 같은 분야에서 많이 사용된다.
 
 ```text
-AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-%x%x%x%x%x
-' OR '1'='1
-../../../etc/passwd
-\x00\xff
+브라우저
+운영체제 커널
+PDF Reader
+이미지 Parser
+압축 해제 프로그램
+동영상/오디오 Decoder
+네트워크 프로토콜
+API 입력 검증
+암호화 라이브러리
 ```
 
-즉, 공격자의 입력은 정상 사용자의 입력과 완전히 다르다.
-
-Fuzzing은 이런 **비정상 입력을 자동으로 대량 생성**해서 취약점을 찾는다.
-
-실제로 퍼징은 다음 분야에서 매우 많이 사용된다.
-
-- Browser
-- Kernel
-- PDF Parser
-- Image Parser
-- Media Decoder
-- Compression Utility
-- API Validation
-- Protocol Stack
-- Crypto Library
-
-Google OSS-Fuzz도 오픈소스 보안 강화를 위해 퍼징을 적극 활용하고 있다.
+Google의 OSS-Fuzz는 오픈소스 소프트웨어의 안정성과 보안을 높이기 위해 현대적인 퍼징 기법과 대규모 분산 실행을 결합한다고 설명한다.
 
 ---
 
-## Fuzzing 동작 원리
+## 4. Fuzzing의 기본 동작 과정
 
-### 1. Seed 준비
+### 4-1. Seed 입력 준비
 
-퍼징은 완전 랜덤에서 시작하지 않는 경우가 많다.
+퍼징은 보통 완전히 무작위 입력에서 시작하지 않는다.
 
-정상 입력 파일을 준비한다.
+대부분은 정상적으로 동작하는 입력값, 즉 **Seed Corpus**를 준비한다.
 
-예:
+예를 들어 PNG Parser를 퍼징한다면 정상 PNG 파일 몇 개를 준비한다.
 
 ```text
 sample1.png
@@ -159,508 +96,492 @@ sample2.png
 sample3.png
 ```
 
-이걸 **Seed Corpus**라고 부른다.
+퍼저는 이 파일들을 기반으로 내용을 조금씩 바꾸면서 새로운 테스트 입력을 만든다.
 
 ---
 
-### 2. Mutation
+### 4-2. 입력 변형
 
-Seed 데이터를 변형한다.
+퍼저는 Seed 파일을 변형한다.
 
-예:
-
-원본:
+예를 들어 원본 입력이 다음과 같다고 하자.
 
 ```text
 username=guest&password=1234
 ```
 
-변형:
+퍼저는 다음과 같이 바꿀 수 있다.
 
 ```text
-username=AAAAAAAAAAAAAAAAAAAA
-username=%x%x%x%x
-username=' OR '1'='1
-username=\x00\xff\x41
+username=AAAAAAAAAAAAAAAAAAAA&password=1234
+username=%x%x%x%x&password=1234
+username=guest&password=' OR '1'='1
+username=guest&password=\x00\xff\x41
 ```
+
+이 과정에서 프로그램이 예상하지 못한 입력을 만나게 된다.
 
 ---
 
-### 3. 실행
+### 4-3. 프로그램 실행
 
-대상 프로그램에 입력 전달:
+퍼저는 변형된 입력을 대상 프로그램에 전달한다.
 
 ```bash
 ./target input.txt
 ```
 
-또는:
+또는 네트워크 서비스라면 HTTP 요청 형태로 보낼 수도 있다.
 
 ```bash
-curl http://example.com/?q=AAAA
+curl "http://example.com/search?q=AAAA"
 ```
 
 ---
 
-### 4. 모니터링
+### 4-4. 결과 관찰
 
-퍼저는 다음을 확인한다.
+퍼저는 프로그램이 정상 종료되었는지, Crash가 발생했는지, 너무 오래 멈춰 있는지 확인한다.
 
-- Crash
-- Hang
-- Timeout
-- New Coverage
-
-Crash 발생 시:
+Crash가 발생하면 해당 입력값을 저장한다.
 
 ```text
 crashes/id_000001
+crashes/id_000002
+hangs/id_000001
 ```
 
-형태로 저장된다.
+이 저장된 입력은 이후 취약점 분석에 사용된다.
 
 ---
 
-## Fuzzing 종류
+## 5. Fuzzing의 종류
+
+퍼징은 여러 기준으로 나눌 수 있다.
+
+가장 대표적인 기준은 프로그램 내부 정보를 얼마나 활용하느냐이다.
 
 ---
 
-## Black-box Fuzzing
+## 5-1. Black-box Fuzzing
 
-프로그램 내부를 모른다.
+Black-box Fuzzing은 프로그램 내부 구조를 모르는 상태에서 입력과 출력만 보고 테스트하는 방식이다.
 
-입력과 출력만 본다.
+즉, 소스코드도 모르고 내부 로직도 모른다.
 
 ```text
-입력 → 프로그램 → 결과
+입력값 → 프로그램 → 결과 확인
 ```
 
-장점:
+대표적으로 웹 서버, API, 바이너리 프로그램처럼 내부 코드를 알 수 없는 대상을 테스트할 때 사용할 수 있다.
 
-- 간단함
-- 빠름
-- 구현 쉬움
+장점은 간단하다는 것이다. 대상 프로그램에 입력만 넣을 수 있으면 된다.
 
-단점:
+하지만 단점도 있다. 내부 코드 커버리지를 알 수 없기 때문에 퍼저가 새로운 경로를 찾고 있는지 판단하기 어렵다.
 
-- 코드 커버리지 모름
-- 깊은 경로 탐색 어려움
-
-예:
+예를 들어 어떤 프로그램 내부에 다음과 같은 코드가 있다고 하자.
 
 ```c
-if (strcmp(input, "secret_admin") == 0)
+if (strcmp(input, "admin_secret_key") == 0) {
+    vulnerable_function();
+}
 ```
 
-이 조건은 우연히 맞춰야 한다.
+Black-box 방식은 이 조건을 우연히 맞혀야 한다. 그래서 깊은 코드 경로까지 도달하기 어렵다.
 
-대표 도구:
-
-- Radamsa
-- zzuf
+대표적인 Black-box 계열 도구로는 Radamsa, zzuf 등이 있다.
 
 ---
 
-## White-box Fuzzing
+## 5-2. White-box Fuzzing
 
-프로그램 내부 구조를 분석한다.
+White-box Fuzzing은 프로그램 내부 구조를 분석하면서 입력을 생성하는 방식이다.
 
-활용 기술:
+소스코드, 제어 흐름, 조건문, 경로 제약 조건 등을 분석한다.
 
-- Symbolic Execution
-- Constraint Solving
-- CFG Analysis
+대표적으로 Symbolic Execution이나 Concolic Execution을 활용한다.
 
-예:
+예를 들어 다음 코드가 있다고 하자.
 
 ```c
-if (x == 1337)
-```
-
-화이트박스 퍼징은 이 조건을 계산해서 x=1337 입력을 만들 수 있다.
-
-장점:
-
-- 깊은 코드 탐색
-- 정확도 높음
-
-단점:
-
-- 느림
-- 복잡함
-- 비용 큼
-
-대표:
-
-- KLEE
-- SAGE
-
----
-
-## Grey-box Fuzzing
-
-실전에서 가장 많이 쓰이는 방식.
-
-내부를 완전히 알 필요는 없지만 일부 정보를 활용한다.
-
-대표적으로:
-
-- Coverage
-- Edge Coverage
-
-흐름:
-
-```text
-입력 생성
-→ 실행
-→ 새로운 코드 경로 발견?
-→ 저장
-→ 다시 Mutation
-```
-
-대표:
-
-- AFL++
-- libFuzzer
-- Honggfuzz
-- Jackalope
-
----
-
-## Mutation-based vs Generation-based
-
----
-
-### Mutation-based
-
-기존 입력 변형
-
-예:
-
-```text
-GET /index.html
-```
-
-→
-
-```text
-GET /AAAA
-```
-
-장점:
-
-- 빠름
-- 간단함
-- 실전적
-
-대표:
-
-- AFL++
-- Honggfuzz
-
----
-
-### Generation-based
-
-입력을 처음부터 생성
-
-예:
-
-PNG 구조
-
-```text
-Signature
-IHDR
-IDAT
-IEND
-```
-
-이 구조를 지켜서 생성.
-
-장점:
-
-- 깊은 로직 탐색
-
-단점:
-
-- 포맷 지식 필요
-
-대표:
-
-- Peach
-- Grammarinator
-
----
-
-## Coverage-guided Fuzzing
-
-현대 퍼징의 핵심.
-
-예:
-
-```c
-if (input[0] == 'F')
- if (input[1] == 'U')
-  if (input[2] == 'Z')
-   if (input[3] == 'Z')
+if (x == 1337) {
     crash();
+}
 ```
 
-랜덤으로 FUZZ 찾기 어렵다.
+일반 랜덤 퍼징은 x가 1337이 되는 입력을 우연히 찾아야 한다.
 
-Coverage-guided는:
+하지만 White-box 방식은 조건식을 분석해서 x가 1337이어야 해당 경로로 들어갈 수 있다는 것을 계산할 수 있다.
 
-- F 도달
-- FU 도달
-- FUZ 도달
-- FUZZ 도달
+장점은 깊은 경로를 탐색할 수 있다는 점이다. 단점은 매우 느리고 복잡하다는 점이다.
 
-이렇게 점진적으로 탐색한다.
-
-즉:
-
-> 새로운 코드 경로를 여는 입력을 진화시키는 방식
+대표 도구로는 KLEE, SAGE 등이 있다.
 
 ---
 
-## 대표 Fuzzer 비교
+## 5-3. Grey-box Fuzzing
 
-| Fuzzer | 방식 | Coverage | 특징 |
-|-------|------|----------|------|
-| AFL++ | Grey-box | O | 가장 대중적 |
-| libFuzzer | Grey-box | O | In-process |
-| Jackalope | Grey-box | O | Binary 대상 |
-| Honggfuzz | Grey-box | O | Sanitizer 강함 |
-| Radamsa | Black-box | X | 단순 변형 |
+Grey-box Fuzzing은 Black-box와 White-box의 중간 방식이다.
+
+프로그램 내부를 완전히 분석하지는 않지만, 실행 중 어떤 코드 경로를 지났는지 정도는 확인한다.
+
+대표적인 정보가 **Coverage**, 즉 코드 커버리지이다.
+
+Grey-box Fuzzing의 핵심은 다음과 같다.
+
+```text
+새로운 입력 생성
+→ 프로그램 실행
+→ 새로운 코드 경로를 발견했는지 확인
+→ 새로운 경로라면 저장
+→ 해당 입력을 다시 변형
+```
+
+이 방식은 매우 실용적이다.
+
+너무 느리지 않으면서도 단순 랜덤 방식보다 훨씬 효율적으로 취약점을 찾을 수 있다.
+
+AFL++, libFuzzer, Honggfuzz 등이 대표적인 Grey-box Fuzzer이다.
+
+AFL++ 문서에서도 AFL++는 instrumentation-guided genetic algorithm을 사용하는 brute-force fuzzer이며, edge coverage를 활용해 프로그램 제어 흐름의 변화를 감지한다고 설명한다.
 
 ---
 
-## AFL++
+## 6. Mutation-based Fuzzing과 Generation-based Fuzzing
 
-GitHub: https://github.com/AFLplusplus/AFLplusplus
+퍼징은 입력을 어떻게 만드는지에 따라서도 나눌 수 있다.
 
-대표적인 Coverage-guided Fuzzer.
+---
 
-특징:
+## 6-1. Mutation-based Fuzzing
 
-- Mutation-based
-- Fast execution
-- Fork server
-- QEMU mode
-- FRIDA mode
-- Unicorn mode
-- Sanitizer integration
+Mutation-based Fuzzing은 기존 입력을 변형하는 방식이다.
 
-실행:
+정상 입력이 있다면 일부 바이트를 바꾸거나, 삭제하거나, 추가하거나, 반복한다.
+
+예를 들어 원본 입력이 다음과 같다고 하자.
+
+```text
+GET /index.html HTTP/1.1
+Host: example.com
+```
+
+퍼저는 다음과 같이 변형할 수 있다.
+
+```text
+GET /AAAA HTTP/1.1
+Host: example.com
+```
+
+```text
+GET /../../../../etc/passwd HTTP/1.1
+Host: example.com
+```
+
+```text
+GET /index.html HTTP/1.1
+Host: %x%x%x%x
+```
+
+장점은 구현이 쉽고 빠르다는 것이다. AFL++ 같은 퍼저가 이 방식을 강력하게 활용한다.
+
+단점은 입력 구조가 복잡한 경우 깊은 경로까지 도달하기 어렵다는 것이다.
+
+예를 들어 PNG, PDF, ZIP처럼 구조가 복잡한 파일은 아무렇게나 바꾸면 파일 자체가 파싱되지 않고 초반에 거부될 수 있다.
+
+---
+
+## 6-2. Generation-based Fuzzing
+
+Generation-based Fuzzing은 입력을 처음부터 생성하는 방식이다.
+
+대상 파일 포맷이나 프로토콜의 문법을 알고 있어야 한다.
+
+예를 들어 PNG 파일은 대략 다음과 같은 구조를 가진다.
+
+```text
+PNG Signature
+IHDR Chunk
+IDAT Chunk
+IEND Chunk
+```
+
+Generation-based Fuzzer는 이런 구조를 알고 그 형식에 맞는 입력을 생성한다.
+
+장점은 복잡한 포맷에서도 더 깊은 로직까지 도달할 수 있다는 점이다.
+
+단점은 포맷에 대한 지식이 필요하고, 퍼저를 만드는 비용이 크다는 점이다.
+
+---
+
+## 7. Coverage-guided Fuzzing
+
+현대 퍼징에서 가장 중요한 개념 중 하나는 **Coverage-guided Fuzzing**이다.
+
+Coverage-guided Fuzzing은 프로그램이 어떤 코드 경로를 실행했는지 추적하고,
+
+새로운 경로를 발견한 입력을 더 가치 있는 입력으로 판단한다.
+
+예를 들어 다음 코드가 있다고 하자.
+
+```c
+if (input[0] == 'F') {
+    if (input[1] == 'U') {
+        if (input[2] == 'Z') {
+            if (input[3] == 'Z') {
+                crash();
+            }
+        }
+    }
+}
+```
+
+완전 랜덤 입력으로 "FUZZ"를 찾기는 어렵다. 하지만 Coverage-guided Fuzzer는 F를 맞혀서 첫 번째 조건문을 통과한 입력을 저장하고, 그 입력을 다시 변형해서 FU, FUZ, FUZZ에 점점 가까워질 수 있다.
+
+즉, 단순히 랜덤으로 때려 넣는 것이 아니라 “새로운 코드 경로를 열어준 입력”을 중심으로 진화시키는 방식이다.
+
+Jackalope도 coverage-guided fuzzer로, 테스트 중 코드 경로를 추적하고 그 정보를 이후 mutation에 활용한다고 설명된다.
+
+---
+
+## 8. Fuzzing으로 발견할 수 있는 취약점
+
+퍼징은 특히 메모리 관련 취약점 탐지에 강하다.
+
+대표적으로 다음과 같은 취약점이 있다.
+
+```text
+Buffer Overflow
+Heap Overflow
+Stack Overflow
+Use After Free
+Double Free
+Integer Overflow
+Out-of-bounds Read
+Out-of-bounds Write
+Null Pointer Dereference
+Format String Bug
+Race Condition
+Infinite Loop
+Parser Crash
+```
+
+예를 들어 다음과 같은 코드가 있다고 하자.
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+    char buf[16];
+
+    if (argc < 2) {
+        return 1;
+    }
+
+    strcpy(buf, argv[1]);
+    printf("%s\n", buf);
+
+    return 0;
+}
+```
+
+이 코드는 buf 크기가 16바이트인데, strcpy()는 입력 길이를 검사하지 않는다.
+
+따라서 다음과 같이 긴 입력을 넣으면 문제가 발생할 수 있다.
+
+```bash
+./test AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+```
+
+이런 단순한 취약점은 사람이 봐도 찾을 수 있지만, 실제 프로그램은 훨씬 복잡하다.
+
+퍼징은 복잡한 코드 안에서 이런 문제를 자동으로 찾아내는 데 유용하다.
+
+---
+
+## 9. 대표 Fuzzer 정리
+
+---
+
+## 9-1. AFL++
+
+AFL++는 가장 널리 사용되는 퍼저 중 하나이다. 기존 AFL을 기반으로 다양한 기능이 추가된 버전이다.
+
+AFL++ GitHub 설명에 따르면 AFL++는 기존 AFL에 커뮤니티 패치, QEMU 모드, collision-free coverage, laf-intel, redqueen, AFLfast++ power schedule, MOpt mutator, unicorn mode 등 다양한 기능이 추가된 퍼저이다.
+
+AFL++의 핵심 특징은 다음과 같다.
+
+```text
+Coverage-guided fuzzing
+Mutation-based fuzzing
+빠른 실행 속도
+Fork server 지원
+QEMU mode 지원
+FRIDA mode 지원
+Unicorn mode 지원
+Sanitizer 연동 가능
+```
+
+AFL++는 소스코드가 있는 C/C++ 프로그램을 퍼징할 때 매우 강력하다.
+
+컴파일 시 instrumentation을 삽입해서 코드 커버리지를 추적한다.
+
+기본 실행 형태는 다음과 같다.
 
 ```bash
 afl-fuzz -i seeds -o findings -- ./target @@
 ```
 
-입문용으로 가장 추천된다.
+여기서 의미는 다음과 같다.
+
+```text
+-i seeds      초기 입력 파일이 들어 있는 디렉터리
+-o findings   결과 저장 디렉터리
+@@            퍼저가 생성한 입력 파일이 들어갈 위치
+```
+
+AFL++는 새로운 코드 경로를 발견한 입력을 저장하고, 해당 입력을 다시 변형하면서 더 깊은 경로를 탐색한다.
+
+입문자가 퍼징을 공부할 때 가장 먼저 다뤄보기 좋은 도구라고 볼 수 있다.
 
 ---
 
-## libFuzzer
+## 9-2. libFuzzer
 
-LLVM 기반 퍼저.
+libFuzzer는 LLVM 프로젝트와 함께 사용되는 in-process coverage-guided fuzzing engine이다.
 
-Harness 필요.
+Google fuzzing 튜토리얼에서도 libFuzzer를 coverage-guided in-process fuzzing engine이라고 설명한다.
 
-예:
+libFuzzer는 AFL++와 다르게 보통 별도의 실행 파일에 입력 파일을 계속 넣는 방식이 아니라,
+
+특정 함수를 반복 호출하는 방식으로 동작한다.
+
+libFuzzer를 사용하려면 보통 다음과 같은 fuzz target을 작성한다.
 
 ```cpp
+#include <stdint.h>
+#include <stddef.h>
+
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
+    // Data와 Size를 이용해 테스트 대상 함수 호출
     return 0;
 }
 ```
 
-특징:
+중요한 함수는 다음이다.
 
-- 매우 빠름
-- In-process
-- Sanitizer 친화적
+```cpp
+LLVMFuzzerTestOneInput
+```
 
----
+libFuzzer는 이 함수에 다양한 입력을 계속 전달한다.
 
-## Jackalope
+장점은 매우 빠르다는 것이다. 프로세스를 매번 새로 실행하지 않고 하나의 프로세스 안에서 반복 실행하기 때문이다.
 
-Google Project Zero 제작.
+단점은 fuzz harness를 직접 작성해야 한다는 것이다.
 
-특징:
+즉, 어떤 함수를 어떻게 테스트할지 개발자가 명확히 지정해야 한다.
 
-- Binary fuzzing
-- Windows/macOS/Linux
-- Coverage-guided
-- TinyInst 기반
+libFuzzer는 다음과 같은 경우에 적합하다.
 
-소스 없는 프로그램 퍼징에 강함.
-
----
-
-## Honggfuzz
-
-특징:
-
-- Coverage-guided
-- Mutation-based
-- Sanitizer 지원
-- Native binary 강점
+```text
+소스코드가 있는 경우
+라이브러리 함수를 직접 테스트하고 싶은 경우
+C/C++ 프로젝트를 개발하면서 퍼징을 통합하고 싶은 경우
+Sanitizer와 함께 메모리 버그를 찾고 싶은 경우
+```
 
 ---
 
-## Radamsa
+## 9-3. Jackalope
 
-단순 데이터 변형 도구.
+Jackalope는 Google Project Zero에서 공개한 coverage-guided fuzzer이다.
 
-예:
+Jackalope GitHub 설명에 따르면 Jackalope는 customizable, distributed, coverage-guided fuzzer이며 black-box binary를 대상으로 동작할 수 있다. 특히 Windows와 macOS의 black-box binary를 대상으로 하는 coverage-guided fuzzer가 상대적으로 적다는 문제의식에서 출발했다.
+
+Jackalope의 특징은 다음과 같다.
+
+```text
+Binary 대상 퍼징 가능
+Coverage-guided fuzzing
+Windows/macOS/Linux/Android 지원
+TinyInst 기반 instrumentation
+분산 퍼징 지원
+```
+
+AFL++나 libFuzzer는 소스코드가 있을 때 강력하다. 반면 Jackalope는 소스코드가 없는 바이너리 대상 퍼징에 유리하다.
+
+예를 들어 상용 프로그램, Windows 프로그램, 폐쇄형 프로그램을 분석할 때 사용할 수 있다.
+
+버그바운티 관점에서는 소스코드가 없는 클라이언트 프로그램이나 파일 파서 프로그램을 분석할 때 유용할 수 있다.
+
+---
+
+## 9-4. Honggfuzz
+
+Honggfuzz도 대표적인 coverage-guided fuzzer 중 하나이다.
+
+특징은 다음과 같다.
+
+```text
+Coverage-guided fuzzing
+Mutation-based fuzzing
+Sanitizer 연동
+Linux 기반 대상에 강함
+Crash 분석 기능 제공
+```
+
+AFL++와 비슷하게 native binary fuzzing에 많이 사용된다.
+
+---
+
+## 9-5. Radamsa
+
+Radamsa는 비교적 단순한 입력 변형 도구이다.
+
+Coverage-guided 방식은 아니고, 입력 데이터를 변형해서 이상한 테스트 케이스를 만들어주는 데 초점이 있다.
+
+예를 들어 다음과 같이 사용할 수 있다.
 
 ```bash
-echo "hello" | radamsa
+echo "hello world" | radamsa
 ```
 
-웹/API 입력 퍼징할 때 가볍게 활용 가능.
+또는 정상 HTTP 요청 파일을 준비한 뒤 Radamsa로 변형해서 서버에 보낼 수도 있다.
+
+장점은 사용이 매우 간단하다는 것이다. 단점은 코드 커버리지를 기반으로 똑똑하게 경로를 탐색하지는 못한다는 것이다.
 
 ---
 
-## Sanitizer
+## 10. Fuzzer 비교표
 
-퍼징과 같이 쓰면 매우 강력하다.
-
-대표:
-
-- AddressSanitizer
-- UndefinedBehaviorSanitizer
-- MemorySanitizer
-- LeakSanitizer
-- ThreadSanitizer
-
-예:
-
-```bash
-clang -fsanitize=address test.c
-```
-
-Crash 안 나도 버그를 찾을 수 있다.
+| Fuzzer | 방식 | Coverage-guided | 소스코드 필요 | 주요 대상 | 특징 |
+|--------|------|----------------|--------------|----------|------|
+| AFL++ | Grey-box | O | 있으면 좋음 | C/C++, 바이너리 | 가장 대중적, 강력한 mutation |
+| libFuzzer | Grey-box | O | 필요 | 라이브러리, 함수 단위 | in-process, 빠름 |
+| Jackalope | Grey-box | O | 없어도 가능 | Windows/macOS/Linux 바이너리 | black-box binary fuzzing |
+| Honggfuzz | Grey-box | O | 있으면 좋음 | Native binary | sanitizer 연동 좋음 |
+| Radamsa | Black-box | X | 불필요 | 파일, 문자열, 프로토콜 | 간단한 랜덤 변형 |
 
 ---
 
-## BugBounty 관점 활용
+## 11. Fuzzing과 Sanitizer
 
-웹에서도 퍼징 사고방식은 중요하다.
+퍼징에서 Sanitizer는 매우 중요하다.
 
-적용 대상:
+퍼저가 Crash를 찾는 것도 중요하지만, 모든 메모리 오류가 즉시 Crash로 이어지는 것은 아니다.
 
-- API Parameters
-- File Upload
-- JSON Parser
-- XML Parser
-- Image Upload
-- PDF Converter
-- GraphQL
-- Search 기능
+어떤 메모리 버그는 조용히 지나가기도 한다.
 
-예:
+이때 AddressSanitizer 같은 도구를 함께 사용하면 메모리 오류를 더 잘 탐지할 수 있다.
 
-정상 요청:
-
-```json
-{
-  "name": "test",
-  "age": 20
-}
-```
-
-퍼징:
-
-```json
-{
-  "name": null,
-  "age": 999999999999999999
-}
-```
-
-```json
-{
-  "name": "<script>alert(1)</script>"
-}
-```
-
-```json
-{
-  "name": "../../../../etc/passwd"
-}
-```
-
----
-
-## 한계점
-
-퍼징이 만능은 아니다.
-
-### 인증 우회 어려움
-
-로그인 필요:
-
-- Session
-- JWT
-- CSRF
-
----
-
-### Stateful Logic 어려움
-
-예:
+대표적인 Sanitizer는 다음과 같다.
 
 ```text
-회원가입 → 로그인 → 업로드 → 변환 → 다운로드
+AddressSanitizer: 메모리 오류 탐지
+UndefinedBehaviorSanitizer: 정의되지 않은 동작 탐지
+MemorySanitizer: 초기화되지 않은 메모리 사용 탐지
+ThreadSanitizer: 스레드 경쟁 상태 탐지
+LeakSanitizer: 메모리 누수 탐지
 ```
-
-랜덤으로 찾기 힘듦.
-
----
-
-### 복잡한 포맷
-
-PDF, ZIP, PNG는 구조가 복잡하다.
-
----
-
-### Crash ≠ 취약점
-
-Crash 후 검증 필요:
-
-- 재현 가능?
-- 입력 제어 가능?
-- 메모리 손상?
-- DoS?
-- RCE 가능?
-
----
-
-## 학습 로드맵
-
-추천 순서:
-
-```text
-Fuzzing 개념
-→ Memory Bug 이해
-→ AddressSanitizer
-→ AFL++
-→ libFuzzer
-→ Crash Triage
-→ CVE 분석
-→ Web/API Fuzzing
-```
-
----
-
-## 마무리
-
-Fuzzing은 단순 랜덤 테스트가 아니다.
-
-현대 보안 연구에서 매우 강력한 자동화 취약점 탐지 기법이다.
-
-정리하면:
-
-```text
