@@ -20,11 +20,9 @@ USENIX Security Symposium 2025
 Joseph Spracklen, Raveen Wijewickrama, A H M Nazmus Sakib, Anindya Maiti, Bimal Viswanath, Murtuza Jadliwala
 
 **논문 링크**  
-USENIX 공식 페이지:  
-https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen
+[USENIX 공식 페이지](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen)
 
-PDF:  
-https://www.usenix.org/system/files/usenixsecurity25-spracklen.pdf
+[논문 PDF](https://www.usenix.org/system/files/usenixsecurity25-spracklen.pdf)
 
 이 논문은 USENIX Security 2025에 발표된 논문이며, 공식 페이지에서 **Distinguished Paper Award Winner**로 표시되어 있다.
 
