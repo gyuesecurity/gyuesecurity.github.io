@@ -1,16 +1,11 @@
 ---
 title: "Fuzzing과 Fuzzer 정리"
-date: 2026-05-12 10:00:00 +0900
-categories: [BugBounty, Security]
-tags: [fuzzing, fuzzer, afl++, libfuzzer, jackalope, honggfuzz, radamsa, bugbounty]
-description: "Fuzzing의 개념부터 종류, 대표 Fuzzer 비교, BugBounty 활용까지 정리"
-toc: true
-comments: true
-math: false
-pin: false
+date: 2026-05-12 00:00:00 +0900
+categories: [BugBounty]
+tags: [fuzzing, fuzzer, BugBounty]
 ---
 
-# fuzzing 과 fuzzer
+# fuzzing 과 fuzzer 에 대한 내용 정리
 
 ## 1. 개요
 
@@ -585,3 +580,277 @@ MemorySanitizer: 초기화되지 않은 메모리 사용 탐지
 ThreadSanitizer: 스레드 경쟁 상태 탐지
 LeakSanitizer: 메모리 누수 탐지
 ```
+Google fuzzing 문서에서도 libFuzzer나 AFL을 sanitizer 도구와 함께 사용해 fuzz target을 빌드하는 방법을 다룬다.
+
+---
+
+## 12. Fuzzing 실습 흐름 예시
+
+퍼징을 처음 공부한다면 다음 순서로 접근하는 것이 좋다.
+
+### 1단계: 취약한 C 프로그램 작성
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+    char buf[8];
+
+    if (argc < 2) {
+        return 1;
+    }
+
+    strcpy(buf, argv[1]);
+
+    if (strcmp(buf, "FUZZ") == 0) {
+        printf("Matched\n");
+    }
+
+    return 0;
+}
+```
+
+---
+
+### 2단계: Sanitizer로 컴파일
+
+```bash
+clang -fsanitize=address -g test.c -o test
+```
+
+---
+
+### 3단계: 긴 입력으로 테스트
+
+```bash
+./test AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+```
+
+---
+
+### 4단계: Crash 확인
+
+AddressSanitizer가 stack-buffer-overflow 같은 오류를 출력할 수 있다.
+
+---
+
+### 5단계: AFL++로 자동화
+
+AFL++를 사용하면 사람이 직접 입력을 넣는 대신 퍼저가 자동으로 입력을 생성하고 Crash를 찾는다.
+
+```bash
+mkdir seeds
+echo "test" > seeds/input.txt
+
+afl-clang-fast test.c -o test_afl
+afl-fuzz -i seeds -o output -- ./test_afl @@
+```
+
+---
+
+## 13. BugBounty 관점에서 Fuzzing 활용
+
+버그바운티에서 퍼징은 단순히 바이너리 취약점만 찾는 기술이 아니다. 웹 보안에서도 퍼징 사고방식은 매우 중요하다.
+
+예를 들어 다음과 같은 부분에 적용할 수 있다.
+
+```text
+API 파라미터
+파일 업로드 기능
+JSON Parser
+XML Parser
+이미지 업로드
+PDF 변환 기능
+압축 파일 처리
+URL 라우팅
+GraphQL Query
+검색 기능
+인증 토큰 처리
+```
+
+웹 애플리케이션에서는 다음과 같은 입력을 퍼징할 수 있다.
+
+```text
+긴 문자열
+특수문자
+인코딩된 값
+SQL Injection Payload
+XSS Payload
+Path Traversal Payload
+Null Byte
+잘못된 JSON 구조
+중첩된 객체
+매우 큰 배열
+```
+
+예를 들어 API가 다음 요청을 받는다고 하자.
+
+```http
+POST /api/profile
+Content-Type: application/json
+
+{
+  "name": "test",
+  "age": 20
+}
+```
+
+퍼징 관점에서는 다음처럼 바꿔볼 수 있다.
+
+```json
+{
+  "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "age": -1
+}
+```
+
+```json
+{
+  "name": "<script>alert(1)</script>",
+  "age": "test"
+}
+```
+
+```json
+{
+  "name": null,
+  "age": 999999999999999999999999
+}
+```
+
+이런 입력을 통해 서버 오류, 예외 처리 실패, 인증 우회, XSS, SQL Injection 가능성을 확인할 수 있다.
+
+---
+
+## 14. Fuzzing의 한계
+
+퍼징은 강력하지만 만능은 아니다.
+
+### 14-1. 인증이 필요한 기능은 어렵다
+
+로그인이 필요한 서비스는 단순 퍼징만으로 접근하기 어렵다.
+
+세션, 쿠키, CSRF Token, JWT 등이 필요하기 때문이다.
+
+---
+
+### 14-2. 상태 기반 로직은 어렵다
+
+일부 프로그램은 특정 순서를 따라야 취약한 코드에 도달한다.
+
+예를 들어 다음 순서가 필요할 수 있다.
+
+```text
+회원가입 → 로그인 → 파일 업로드 → 변환 요청 → 다운로드
+```
+
+이런 경우 단순 랜덤 입력만으로는 취약한 지점까지 도달하기 어렵다.
+
+---
+
+### 14-3. 복잡한 포맷은 단순 변형으로 어렵다
+
+PDF, PNG, ZIP 같은 파일은 구조가 복잡하다. 아무 바이트나 바꾸면 파일 파서가 초반에 거부할 수 있다.
+
+이 경우 structure-aware fuzzing이나 generation-based fuzzing이 필요하다.
+
+Google fuzzing 문서에서도 libFuzzer를 활용한 structure-aware fuzzing 예제를 제공한다.
+
+---
+
+### 14-4. Crash가 항상 취약점은 아니다
+
+Crash가 발생했다고 해서 무조건 보안 취약점은 아니다.
+
+예를 들어 단순 Null Pointer Dereference는 서비스 거부 공격으로 이어질 수는 있지만, 코드 실행 취약점은 아닐 수 있다.
+
+따라서 Crash 이후에는 다음 분석이 필요하다.
+
+```text
+재현 가능한가?
+영향 범위가 무엇인가?
+메모리 손상인가?
+공격자가 제어 가능한 입력인가?
+DoS인가, RCE 가능성이 있는가?
+실제 서비스 환경에서 도달 가능한가?
+```
+
+---
+
+## 15. Fuzzing 학습 로드맵
+
+퍼징을 처음 공부한다면 다음 순서로 학습하면 좋다.
+
+```text
+1. Fuzzing 개념 이해
+2. Crash와 Memory Bug 개념 이해
+3. AddressSanitizer 사용법 학습
+4. AFL++ 기본 사용법 실습
+5. libFuzzer harness 작성 실습
+6. 파일 포맷 Parser 퍼징
+7. Coverage와 Corpus 개념 이해
+8. Crash triage 방법 학습
+9. 실제 CVE 사례 분석
+10. 웹/API 입력 퍼징으로 확장
+```
+
+입문 단계에서는 AFL++를 먼저 추천한다. 이유는 자료가 많고,
+
+실습 예제가 많으며, coverage-guided fuzzing의 핵심 개념을 이해하기 좋기 때문이다.
+
+그다음 libFuzzer로 넘어가면 함수 단위 퍼징과 sanitizer 기반 분석을 익힐 수 있다.
+
+Windows 바이너리나 소스코드 없는 프로그램을 대상으로 하고 싶다면 Jackalope를 공부하면 좋다.
+
+---
+
+## 16. 참고 자료
+
+```text
+AFL++
+https://github.com/AFLplusplus/AFLplusplus
+
+Jackalope
+https://github.com/googleprojectzero/Jackalope
+
+Google Fuzzing
+https://github.com/google/fuzzing/tree/master
+
+OSS-Fuzz
+https://google.github.io/oss-fuzz/
+```
+
+---
+
+## 17. 결론
+
+Fuzzing은 프로그램에 예상하지 못한 입력을 자동으로 넣어보며 Crash나 취약점을 찾는 보안 테스트 기법이다.
+
+초기에는 단순히 랜덤 데이터를 넣는 방식에 가까웠지만, 현대 퍼징은 coverage-guided fuzzing, sanitizer, structure-aware fuzzing 등과 결합되어 매우 강력한 취약점 탐지 기술로 발전했다.
+
+특히 AFL++, libFuzzer, Jackalope 같은 도구는 실제 보안 연구와 버그바운티에서도 활용 가치가 높다.
+
+정리하면 다음과 같다.
+
+```text
+Fuzzing = 비정상 입력을 이용한 자동화 테스트
+Fuzzer = 퍼징을 수행하는 도구
+AFL++ = 입문과 실전에 모두 강한 대표 퍼저
+libFuzzer = 함수 단위, 라이브러리 퍼징에 강함
+Jackalope = 소스코드 없는 바이너리 퍼징에 유리
+Coverage-guided = 현대 퍼징의 핵심 개념
+Sanitizer = 메모리 버그 탐지에 필수적인 보조 도구
+```
+
+퍼징을 공부하면 단순히 도구 사용법만 배우는 것이 아니라,
+
+프로그램이 입력을 어떻게 처리하고 어디서 예외가 발생하는지 분석하는 관점을 기를 수 있다.
+
+버그바운티 관점에서도 퍼징은 매우 유용하다. 웹 API, 파일 업로드,
+
+이미지 처리, JSON/XML 파서, 압축 해제 기능처럼 사용자의 입력을 처리하는 모든 지점은 퍼징 대상이 될 수 있다.
+
+따라서 퍼징은 취약점 분석을 공부하는 사람에게 꼭 필요한 기술 중 하나라고 할 수 있다.
+
+---
