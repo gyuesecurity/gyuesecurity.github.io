@@ -2,7 +2,7 @@
 title: "[ULSAN WAVE 2026] Password Cracking Lab"
 date: 2026-09-10 02:00:00 +0900
 categories: [개발]
-tags: [security, blog, ULSAN, WAVE, 2026, ULSAN WAVE 2026]
+tags: [security, blog, ULSAN, WAVE, "2026", "ULSAN WAVE 2026"]
 ---
 
 # 비밀번호는 길기만 하면 안전할까? Password Cracking Lab 개발부터 부스 운영까지
