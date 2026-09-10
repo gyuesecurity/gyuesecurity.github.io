@@ -869,4 +869,7 @@ Password Cracking Lab은 비밀번호를 대신 만들어 주거나 실제 계�
 코드를 구현하는 것과 실제 사람이 안전하게 사용할 수 있는 서비스를 만드는 것 사이의 차이를 배울 수 있었던 경험이었다.
 
 
-<img width="1290" height="2293" alt="image" src="https://github.com/user-attachments/assets/99a965ec-9dfa-40e3-94fb-9a9846bb2fcb" />
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/99a965ec-9dfa-40e3-94fb-9a9846bb2fcb" width="500">
+</div>
+
