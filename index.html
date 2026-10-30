@@ -12,19 +12,19 @@ description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 �
   <main>
     <section class="ledger-hero page-shell">
       <div class="hero-statement reveal">
-        <p class="eyebrow">SECURITY · DEVELOPMENT · RESEARCH</p>
-        <h1>Security<br><em>field notes.</em></h1>
-        <p class="hero-summary">취약점을 분석하고 문제를 해결하며 배운 내용을 기록합니다.<br>결과뿐 아니라 다시 따라갈 수 있는 과정을 남깁니다.</p>
+        <p class="eyebrow">PERSONAL SECURITY PUBLICATION / 2026</p>
+        <h1>공격의 원리를<br><em>해부합니다.</em></h1>
+        <p class="hero-summary">취약점, 코드, 시스템을 직접 분석하고 검증합니다.<br>결론보다 판단의 근거와 재현 가능한 과정을 기록합니다.</p>
         <div class="hero-actions">
           <a class="button primary" href="{{ '/posts/' | relative_url }}">기록 열람 <span>↗</span></a>
           <a class="button" href="{{ '/about/' | relative_url }}">ABOUT GYUE</a>
         </div>
       </div>
       <aside class="focus-card panel spotlight reveal" aria-label="프로필 요약">
-        <div class="focus-card-head"><span>PROFILE / GYUE</span><span class="signal">LEARNING</span></div>
-        <div class="profile-symbol" aria-hidden="true">g<span>_</span></div>
+        <div class="focus-card-head"><span>ANALYST PROFILE</span><span class="signal">ACTIVE</span></div>
+        <div class="profile-symbol" aria-hidden="true">G/</div>
         <h2>gyue</h2>
-        <p>웹 보안과 개발을 공부하며<br>기술적 시행착오를 기록합니다.</p>
+        <p>웹 보안과 개발을 공부하며<br>분석 결과와 시행착오를 공개합니다.</p>
         <div class="profile-links"><a href="https://github.com/gyuesecurity">GITHUB ↗</a><a href="mailto:sos004989@naver.com">EMAIL ↗</a></div>
       </aside>
       <div class="hero-index" aria-label="아카이브 현황">
@@ -36,8 +36,8 @@ description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 �
 
     <section class="field-section page-shell">
       <header class="section-heading">
-        <div><p class="eyebrow">01 / FIELD DIRECTORY</p><h2>탐구 영역</h2></div>
-        <p>활동을 여섯 개의 독립된 기록 묶음으로 분류합니다.</p>
+        <div><p class="eyebrow">SECTION 01 / COVERAGE</p><h2>분석 범위</h2></div>
+        <p>개발부터 보안 연구까지 여섯 개 섹션으로 분류합니다.</p>
       </header>
       <div class="field-grid">
         {% assign category_order = "개발|CTF/Wargame|BugBounty|블로그/기술문서|논문/컨퍼런스|공모전/자격증" | split: "|" %}
@@ -57,8 +57,8 @@ description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 �
 
     <section class="latest-section page-shell">
       <header class="section-heading">
-        <div><p class="eyebrow">02 / LATEST EVIDENCE</p><h2>최근 기록</h2></div>
-        <a class="text-link" href="{{ '/posts/' | relative_url }}">VIEW ALL RECORDS ↗</a>
+        <div><p class="eyebrow">SECTION 02 / LATEST</p><h2>최근 발행</h2></div>
+        <a class="text-link" href="{{ '/posts/' | relative_url }}">전체 글 보기 ↗</a>
       </header>
       <div class="record-list">
         {% for post in site.posts limit:6 %}{% include post-row.html post=post %}{% endfor %}
@@ -66,8 +66,8 @@ description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 �
     </section>
 
     <section class="manifesto page-shell reveal">
-      <p class="eyebrow">OPERATING PRINCIPLE</p>
-      <blockquote>“결과보다 <em>어떻게 도달했는지</em>를 남긴다.”</blockquote>
+      <p class="eyebrow">EDITORIAL PRINCIPLE</p>
+      <blockquote>“주장에는 <em>재현 가능한 근거</em>를 남긴다.”</blockquote>
       <p>실패한 가설, 재현 과정, 그리고 다음 탐구를 위한 질문까지.</p>
     </section>
   </main>
