@@ -1,6 +1,6 @@
 ---
 title: "[HITCON CTF 2026] Repo Cassette"
-date: 2026-10-26 00:48:00 +0900
+date: 2026-10-25 00:48:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, web, github-api, ssrf, lfi]
 ---
