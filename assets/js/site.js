@@ -61,13 +61,14 @@
     toc.hidden = false;
   }
 
-  article.querySelectorAll('pre').forEach((block) => {
+  article.querySelectorAll('.highlight > pre.highlight').forEach((block) => {
     const button = document.createElement('button');
     button.className = 'copy-code';
     button.type = 'button';
     button.textContent = 'COPY';
     button.addEventListener('click', async () => {
-      await navigator.clipboard.writeText(block.textContent);
+      const source = block.querySelector('.rouge-code pre, code');
+      await navigator.clipboard.writeText(source?.textContent || block.textContent);
       button.textContent = 'COPIED';
       setTimeout(() => { button.textContent = 'COPY'; }, 1400);
     });
