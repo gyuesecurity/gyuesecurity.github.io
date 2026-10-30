@@ -55,7 +55,8 @@
         {% if page.tags and page.tags.size > 0 %}
           <div class="tag-cloud">
             {% for tag in page.tags %}
-              <a class="pill" href="{{ '/tags/' | append: tag | slugify | append: '/' | relative_url }}">#{{ tag }}</a>
+              {% assign tag_slug = tag | slugify %}
+              <a class="pill" href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}">#{{ tag }}</a>
             {% endfor %}
           </div>
         {% endif %}

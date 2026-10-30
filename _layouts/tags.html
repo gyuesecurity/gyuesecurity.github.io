@@ -34,7 +34,8 @@
         {% for tag in sorted_tags %}
           {% assign tag_name = tag[0] %}
           {% assign tag_posts = tag[1] %}
-            <a href="{{ '/tags/' | append: tag_name | slugify | append: '/' | relative_url }}" class="tag-tile">
+            {% assign tag_slug = tag_name | slugify %}
+            <a href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}" class="tag-tile">
             <span class="pill">#{{ tag_name }}</span>
             <strong>{{ tag_posts | size }}</strong>
           </a>
