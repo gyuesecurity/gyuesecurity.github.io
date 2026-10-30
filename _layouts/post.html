@@ -1,101 +1,29 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% seo %}
-  <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
-  <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
-</head>
-<body>
-  <nav class="site-nav">
-    <a href="{{ '/' | relative_url }}" class="nav-brand">
-      <span class="brand-mark">[gyue]</span>
-      <span class="brand-text">security archive</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="{{ '/' | relative_url }}">Home</a></li>
-      <li><a href="{{ '/posts/' | relative_url }}" class="is-active">Posts</a></li>
-      <li><a href="{{ '/categories/' | relative_url }}">Categories</a></li>
-      <li><a href="{{ '/tags/' | relative_url }}">Tags</a></li>
-      <li><a href="{{ '/about/' | relative_url }}">About</a></li>
-      <li><a href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">Github</a></li>
-    </ul>
-  </nav>
-
-  <main class="page-shell article-page">
-    <aside id="article-toc" class="article-toc" aria-label="글 목차" hidden>
-      <p class="eyebrow">on this page</p>
-      <ol id="article-toc-list"></ol>
-    </aside>
+<head>{% include site-head.html %}</head>
+<body class="post-page">
+  <div class="reading-progress" aria-hidden="true"></div>
+  {% include site-nav.html active="posts" %}
+  {% assign primary_category = page.categories | first %}
+  {% assign category_slug = 'misc' %}
+  {% if primary_category == '개발' %}{% assign category_slug = 'dev' %}{% elsif primary_category == 'CTF/Wargame' %}{% assign category_slug = 'ctf-wargame' %}{% elsif primary_category == 'BugBounty' %}{% assign category_slug = 'bugbounty' %}{% elsif primary_category == '블로그/기술문서' %}{% assign category_slug = 'blog-docs' %}{% elsif primary_category == '논문/컨퍼런스' %}{% assign category_slug = 'paper-conf' %}{% elsif primary_category == '공모전/자격증' %}{% assign category_slug = 'contest-cert' %}{% endif %}
+  <main class="article-page page-shell">
+    <aside id="article-toc" class="article-toc" aria-label="글 목차" hidden><p class="eyebrow">CONTENTS</p><ol id="article-toc-list"></ol></aside>
     <article class="article-shell">
       <header class="article-header">
-        <div class="post-row-head">
-          {% assign primary_category = page.categories | first %}
-          {% if primary_category %}
-            {% assign category_slug = 'misc' %}
-            {% if primary_category == '개발' %}
-              {% assign category_slug = 'dev' %}
-            {% elsif primary_category == 'CTF/Wargame' %}
-              {% assign category_slug = 'ctf-wargame' %}
-            {% elsif primary_category == 'BugBounty' %}
-              {% assign category_slug = 'bugbounty' %}
-            {% elsif primary_category == '블로그/기술문서' %}
-              {% assign category_slug = 'blog-docs' %}
-            {% elsif primary_category == '논문/컨퍼런스' %}
-              {% assign category_slug = 'paper-conf' %}
-            {% elsif primary_category == '공모전/자격증' %}
-              {% assign category_slug = 'contest-cert' %}
-            {% endif %}
-            <a class="pill" href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}">{{ primary_category }}</a>
-          {% endif %}
-          <span class="post-date">{{ page.date | date: "%Y.%m.%d" }}</span>
-        </div>
+        <div class="document-stamp"><span>GYUE / SECURITY LEDGER</span><span>REC-{{ page.date | date: '%y%m%d' }}</span></div>
+        <a class="field-label" href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}">{{ primary_category | default: '미분류' }}</a>
         <h1>{{ page.title }}</h1>
-        {% if page.tags and page.tags.size > 0 %}
-          <div class="tag-cloud">
-            {% for tag in page.tags %}
-              {% assign tag_slug = tag | slugify %}
-              <a class="pill" href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}">#{{ tag }}</a>
-            {% endfor %}
-          </div>
-        {% endif %}
+        <div class="article-data"><time datetime="{{ page.date | date_to_xmlschema }}">PUBLISHED {{ page.date | date: "%Y.%m.%d" }}</time><span data-reading-time>CALCULATING</span></div>
+        {% if page.tags and page.tags.size > 0 %}<div class="article-tags">{% for tag in page.tags %}{% assign tag_slug = tag | slugify %}<a href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}">#{{ tag }}</a>{% endfor %}</div>{% endif %}
       </header>
-
-      <div class="article-body">
-        {{ content }}
-      </div>
+      <div class="article-body">{{ content }}</div>
+      <nav class="article-pagination" aria-label="이전 및 다음 글">
+        {% if page.previous %}<a href="{{ page.previous.url | relative_url }}"><small>PREVIOUS RECORD</small><span>← {{ page.previous.title }}</span></a>{% endif %}
+        {% if page.next %}<a href="{{ page.next.url | relative_url }}"><small>NEXT RECORD</small><span>{{ page.next.title }} →</span></a>{% endif %}
+      </nav>
     </article>
   </main>
-
-  <footer class="site-footer">
-    <p>© 2026 gyue archive · back to <a href="{{ '/posts/' | relative_url }}">posts</a></p>
-  </footer>
-  <script>
-    (() => {
-      const article = document.querySelector('.article-body');
-      const toc = document.getElementById('article-toc');
-      const list = document.getElementById('article-toc-list');
-      if (!article || !toc || !list) return;
-
-      const duplicateTitle = article.querySelector(':scope > h1:first-child');
-      if (duplicateTitle) duplicateTitle.remove();
-
-      const headings = [...article.querySelectorAll('h2, h3')];
-      if (headings.length < 3) return;
-
-      headings.forEach((heading, index) => {
-        if (!heading.id) heading.id = `section-${index + 1}`;
-        const item = document.createElement('li');
-        if (heading.tagName === 'H3') item.className = 'toc-subitem';
-        const link = document.createElement('a');
-        link.href = `#${heading.id}`;
-        link.textContent = heading.textContent;
-        item.appendChild(link);
-        list.appendChild(item);
-      });
-      toc.hidden = false;
-    })();
-  </script>
+  {% include site-footer.html %}
 </body>
 </html>

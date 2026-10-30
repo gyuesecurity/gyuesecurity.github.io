@@ -2,105 +2,40 @@
 layout: null
 permalink: /about/
 title: About
-description: gyue의 보안 학습과 기술 기록 방향을 소개하는 페이지
+description: gyue의 관심 분야와 기록 원칙
 ---
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% seo %}
-  <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
-  <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
-</head>
+<head>{% include site-head.html %}</head>
 <body>
-  <nav class="site-nav">
-    <a href="{{ '/' | relative_url }}" class="nav-brand">
-      <span class="brand-mark">[gyue]</span>
-      <span class="brand-text">security archive</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="{{ '/' | relative_url }}">Home</a></li>
-      <li><a href="{{ '/posts/' | relative_url }}">Posts</a></li>
-      <li><a href="{{ '/categories/' | relative_url }}">Categories</a></li>
-      <li><a href="{{ '/tags/' | relative_url }}">Tags</a></li>
-      <li><a href="{{ '/about/' | relative_url }}" class="is-active">About</a></li>
-      <li><a href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">Github</a></li>
-    </ul>
-  </nav>
-
-  <main class="page-shell narrow-shell">
-    <section class="page-hero">
-      <p class="eyebrow">about this archive</p>
-      <h1>학습 내용을 기록합니다.</h1>
-      <p class="hero-summary">
-        이 페이지는 어떤 주제에 관심이 있는지와 글을 어떤 식으로 남기는지 설명합니다.
-      </p>
+  {% include site-nav.html active="about" %}
+  <main class="page-shell inner-shell about-page">
+    <section class="about-intro reveal">
+      <p class="eyebrow">SUBJECT PROFILE / GYUE</p>
+      <div class="about-title"><h1>호기심을<br>증거로 바꿉니다.</h1><span>G</span></div>
+      <p class="about-lead">웹 보안과 개발을 공부하며, 취약점이 발생한 이유와 해결에 도달한 경로를 기록하는 사람입니다.</p>
     </section>
-
-    <section class="content-section two-column">
-      <div class="profile-panel">
-        <p class="note-label">profile</p>
-        <h2>gyue</h2>
-        <p>
-          웹 보안, CTF/Wargame, BugBounty, 기술 문서화를 중심으로 공부하고 있습니다.
-          짧은 정답보다, 다시 읽었을 때 이해가 되는 기록을 선호합니다.
-        </p>
-        <div class="inline-links">
-          <a href="https://github.com/gyuesecurity">GitHub</a>
-          <a href="mailto:sos004989@naver.com">Email</a>
-        </div>
-      </div>
-
-      <div class="stack-panel">
-        <div class="info-block">
-          <p class="eyebrow">focus</p>
-          <ul class="bullet-list">
-            <li>웹 취약점 이해와 재현</li>
-            <li>CTF / Wargame 풀이</li>
-            <li>문서 구조와 기록 방식 개선</li>
-          </ul>
-        </div>
-
-        <div class="info-block">
-          <p class="eyebrow">categories</p>
-          <div class="tag-cloud">
-            <span class="pill">개발</span>
-            <span class="pill">CTF / Wargame</span>
-            <span class="pill">BugBounty</span>
-            <span class="pill">블로그 / 기술문서</span>
-            <span class="pill">논문 / 컨퍼런스</span>
-            <span class="pill">공모전 / 자격증</span>
-          </div>
-        </div>
+    <section class="about-grid">
+      <article class="identity-card reveal">
+        <p class="eyebrow">IDENTIFICATION</p><h2>gyue</h2>
+        <dl><div><dt>ROLE</dt><dd>Security Learner</dd></div><div><dt>BASE</dt><dd>Seoul, KR</dd></div><div><dt>CONTACT</dt><dd><a href="mailto:sos004989@naver.com">sos004989@naver.com</a></dd></div></dl>
+        <a class="button primary" href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">GITHUB ↗</a>
+      </article>
+      <div class="about-copy reveal">
+        <p class="eyebrow">WHY THIS ARCHIVE EXISTS</p>
+        <h2>기억은 흐려지지만,<br>과정은 다시 사용할 수 있습니다.</h2>
+        <p>풀이의 정답만 남기기보다 어떤 가설을 세웠고, 어디서 막혔으며, 무엇을 새롭게 이해했는지 기록합니다. 이 아카이브는 학습의 결과물이자 다음 문제를 위한 도구입니다.</p>
       </div>
     </section>
-
-    <section class="content-section">
-      <div class="section-top">
-        <p class="eyebrow">principles</p>
-        <h2>기록 방식</h2>
-      </div>
-
-      <div class="principle-grid">
-        <article class="plain-card">
-          <h3>맥락을 생략하지 않기</h3>
-          <p>왜 이 문제를 보게 됐는지, 어떤 가설로 접근했는지까지 남깁니다.</p>
-        </article>
-        <article class="plain-card">
-          <h3>재현 가능한 정리</h3>
-          <p>나중에 다시 읽었을 때 바로 따라갈 수 있도록 흐름을 끊지 않습니다.</p>
-        </article>
-        <article class="plain-card">
-          <h3>배운 점을 구조화하기</h3>
-          <p>단순 로그가 아니라, 다음 학습에 연결될 수 있는 형태로 압축합니다.</p>
-        </article>
-      </div>
+    <section class="principles">
+      <header class="section-heading"><div><p class="eyebrow">OPERATING RULES</p><h2>기록 원칙</h2></div></header>
+      <ol>
+        <li class="reveal"><span>01</span><div><h3>맥락을 생략하지 않는다</h3><p>왜 시작했고 어떤 가설로 접근했는지부터 남깁니다.</p></div></li>
+        <li class="reveal"><span>02</span><div><h3>재현 가능하게 쓴다</h3><p>미래의 내가 다시 따라갈 수 있도록 조건과 흐름을 명확히 합니다.</p></div></li>
+        <li class="reveal"><span>03</span><div><h3>부족한 점을 숨기지 않는다</h3><p>실패와 미완성 질문도 다음 학습을 위한 유효한 증거로 취급합니다.</p></div></li>
+      </ol>
     </section>
   </main>
-
-  <footer class="site-footer">
-    <p>© 2026 gyue archive · contact <a href="mailto:sos004989@naver.com">sos004989@naver.com</a></p>
-  </footer>
+  {% include site-footer.html %}
 </body>
 </html>

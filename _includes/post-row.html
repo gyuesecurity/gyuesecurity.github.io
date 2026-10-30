@@ -1,0 +1,13 @@
+{% assign primary_category = include.post.categories | first %}
+<a href="{{ include.post.url | relative_url }}" class="record-row reveal">
+  <span class="record-id">REC/{{ include.post.date | date: '%y%m%d' }}</span>
+  <div class="record-main">
+    <div class="record-meta">
+      <span>{{ primary_category | default: '미분류' }}</span>
+      <time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: "%Y.%m.%d" }}</time>
+    </div>
+    <h3>{{ include.post.title }}</h3>
+    <p>{{ include.post.excerpt | strip_html | strip_newlines | truncate: 145 }}</p>
+  </div>
+  <span class="record-arrow" aria-hidden="true">↗</span>
+</a>

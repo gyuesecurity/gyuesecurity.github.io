@@ -1,68 +1,31 @@
 ---
 layout: null
 permalink: /categories/
-title: Categories
-description: gyue archive 카테고리 목록
+title: Fields
+description: gyue security archive 카테고리 목록
 ---
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% seo %}
-  <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
-  <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
-</head>
+<head>{% include site-head.html %}</head>
 <body>
-  <nav class="site-nav">
-    <a href="{{ '/' | relative_url }}" class="nav-brand">
-      <span class="brand-mark">[gyue]</span>
-      <span class="brand-text">security archive</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="{{ '/' | relative_url }}">Home</a></li>
-      <li><a href="{{ '/posts/' | relative_url }}">Posts</a></li>
-      <li><a href="{{ '/categories/' | relative_url }}" class="is-active">Categories</a></li>
-      <li><a href="{{ '/tags/' | relative_url }}">Tags</a></li>
-      <li><a href="{{ '/about/' | relative_url }}">About</a></li>
-    </ul>
-  </nav>
-
-  <main class="page-shell narrow-shell">
-    <section class="page-hero">
-      <p class="eyebrow">topic map</p>
-      <h1>카테고리</h1>
-      <p class="hero-summary">블로그에서 다루는 주제를 한눈에 볼 수 있게 다시 정리했습니다.</p>
-    </section>
-
-    <section class="content-section">
-      <div class="topic-grid topic-grid-wide">
-        {% assign category_order = "개발|CTF/Wargame|BugBounty|블로그/기술문서|논문/컨퍼런스|공모전/자격증" | split: "|" %}
-        {% assign category_slugs = "dev|ctf-wargame|bugbounty|blog-docs|paper-conf|contest-cert" | split: "|" %}
-        {% for category_name in category_order %}
-          {% assign posts = site.categories[category_name] %}
-          {% assign category_slug = category_slugs[forloop.index0] %}
-          <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}" class="topic-card tone-cyan">
-            <span class="topic-kicker">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
-            <h3>{{ category_name }}</h3>
-            <p>
-              {% if category_name == '개발' %}개발 및 구현 기록.
-              {% elsif category_name == 'CTF/Wargame' %}문제 풀이와 워게임 기록.
-              {% elsif category_name == 'BugBounty' %}취약점 분석과 실전 학습.
-              {% elsif category_name == '블로그/기술문서' %}문서화와 운영 기록.
-              {% elsif category_name == '논문/컨퍼런스' %}자료 요약과 인사이트 정리.
-              {% elsif category_name == '공모전/자격증' %}준비 과정과 회고 기록.
-              {% endif %}
-            </p>
-            <span class="topic-meta">{{ posts | size }} posts</span>
-          </a>
-        {% endfor %}
-      </div>
+  {% include site-nav.html active="categories" %}
+  <main class="page-shell inner-shell">
+    <section class="index-hero reveal"><p class="eyebrow">FIELD DIRECTORY</p><span class="index-serial">MAP / 06</span><h1>탐구 영역</h1><p>서로 다른 목적의 활동을 여섯 개 필드로 분류했습니다.</p></section>
+    <section class="field-grid field-grid-full">
+      {% assign category_order = "개발|CTF/Wargame|BugBounty|블로그/기술문서|논문/컨퍼런스|공모전/자격증" | split: "|" %}
+      {% assign category_slugs = "dev|ctf-wargame|bugbounty|blog-docs|paper-conf|contest-cert" | split: "|" %}
+      {% assign field_codes = "BUILD|BREAK|HUNT|WRITE|RESEARCH|ACHIEVE" | split: "|" %}
+      {% assign descriptions = "설계와 구현 과정에서 얻은 판단을 기록합니다.|문제를 분해하고 공격 경로를 복기합니다.|취약점을 찾고 검증한 실전 기록을 남깁니다.|지식을 다시 사용할 수 있는 문서로 정리합니다.|연구 결과와 발표에서 얻은 통찰을 압축합니다.|도전의 준비 과정과 결과를 회고합니다." | split: "|" %}
+      {% for category_name in category_order %}
+        {% assign category_slug = category_slugs[forloop.index0] %}
+        <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}" class="field-card field-{{ forloop.index }} reveal">
+          <span class="field-number">0{{ forloop.index }}</span><span class="field-code">{{ field_codes[forloop.index0] }}</span>
+          <h3>{{ category_name }}</h3><p>{{ descriptions[forloop.index0] }}</p>
+          <div class="field-foot"><span>{{ site.categories[category_name] | size }} RECORDS</span><span>EXPLORE ↗</span></div>
+        </a>
+      {% endfor %}
     </section>
   </main>
-
-  <footer class="site-footer">
-    <p>© 2026 gyue archive · browse by <a href="{{ '/posts/' | relative_url }}">posts</a></p>
-  </footer>
+  {% include site-footer.html %}
 </body>
 </html>

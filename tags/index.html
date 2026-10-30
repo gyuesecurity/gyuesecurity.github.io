@@ -1,58 +1,23 @@
 ---
 layout: null
 permalink: /tags/
-title: Tags
-description: gyue archive 태그 목록
+title: Keyword Index
+description: gyue security archive 태그 색인
 ---
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% seo %}
-  <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
-  <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
-</head>
+<head>{% include site-head.html %}</head>
 <body>
-  <nav class="site-nav">
-    <a href="{{ '/' | relative_url }}" class="nav-brand">
-      <span class="brand-mark">[gyue]</span>
-      <span class="brand-text">security archive</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="{{ '/' | relative_url }}">Home</a></li>
-      <li><a href="{{ '/posts/' | relative_url }}">Posts</a></li>
-      <li><a href="{{ '/categories/' | relative_url }}">Categories</a></li>
-      <li><a href="{{ '/tags/' | relative_url }}" class="is-active">Tags</a></li>
-      <li><a href="{{ '/about/' | relative_url }}">About</a></li>
-    </ul>
-  </nav>
-
-  <main class="page-shell narrow-shell">
-    <section class="page-hero">
-      <p class="eyebrow">keyword map</p>
-      <h1>태그</h1>
-      <p class="hero-summary">글에 붙은 키워드를 중심으로 묶어 본 태그 목록입니다.</p>
-    </section>
-
-    <section class="content-section">
-      <div class="tag-section">
-        {% assign sorted_tags = site.tags | sort %}
-        {% for tag in sorted_tags %}
-          {% assign tag_name = tag[0] %}
-          {% assign tag_posts = tag[1] %}
-          {% assign tag_slug = tag_name | slugify %}
-          <a href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}" class="tag-tile">
-            <span class="pill">#{{ tag_name }}</span>
-            <strong>{{ tag_posts | size }}</strong>
-          </a>
-        {% endfor %}
-      </div>
+  {% include site-nav.html active="tags" %}
+  <main class="page-shell inner-shell">
+    <section class="index-hero reveal"><p class="eyebrow">KEYWORD INDEX</p><span class="index-serial">A—Z</span><h1>키워드 색인</h1><p>반복해서 등장하는 기술과 주제를 연결합니다.</p></section>
+    <section class="tag-index">
+      {% assign sorted_tags = site.tags | sort %}
+      {% for tag in sorted_tags %}{% assign tag_name = tag[0] %}{% assign tag_posts = tag[1] %}{% assign tag_slug = tag_name | slugify %}
+        <a href="{{ '/tags/' | append: tag_slug | append: '/' | relative_url }}" class="tag-entry reveal"><span>#{{ tag_name }}</span><b>{{ tag_posts | size }}</b></a>
+      {% endfor %}
     </section>
   </main>
-
-  <footer class="site-footer">
-    <p>© 2026 gyue archive · browse by <a href="{{ '/posts/' | relative_url }}">posts</a></p>
-  </footer>
+  {% include site-footer.html %}
 </body>
 </html>
