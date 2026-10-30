@@ -1,15 +1,15 @@
 <nav class="site-nav" aria-label="주요 메뉴">
   <a href="{{ '/' | relative_url }}" class="nav-brand" aria-label="gyue 홈">
-    <span class="brand-glyph" aria-hidden="true">G:</span>
-    <span><b>GYUE</b><small>SECURITY LEDGER</small></span>
+    <span class="brand-glyph" aria-hidden="true">g<span>_</span></span>
+    <span><b>gyue</b><small>/ security notes</small></span>
   </a>
   <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu">MENU</button>
   <div class="nav-cluster" id="site-menu">
     <ul class="nav-links">
       <li><a href="{{ '/' | relative_url }}"{% if include.active == 'home' %} class="is-active"{% endif %}>Home</a></li>
-      <li><a href="{{ '/posts/' | relative_url }}"{% if include.active == 'posts' %} class="is-active"{% endif %}>Records</a></li>
-      <li><a href="{{ '/categories/' | relative_url }}"{% if include.active == 'categories' %} class="is-active"{% endif %}>Fields</a></li>
-      <li><a href="{{ '/tags/' | relative_url }}"{% if include.active == 'tags' %} class="is-active"{% endif %}>Index</a></li>
+      <li><a href="{{ '/posts/' | relative_url }}"{% if include.active == 'posts' %} class="is-active"{% endif %}>Posts</a></li>
+      <li><a href="{{ '/categories/' | relative_url }}"{% if include.active == 'categories' %} class="is-active"{% endif %}>Categories</a></li>
+      <li><a href="{{ '/tags/' | relative_url }}"{% if include.active == 'tags' %} class="is-active"{% endif %}>Tags</a></li>
       <li><a href="{{ '/about/' | relative_url }}"{% if include.active == 'about' %} class="is-active"{% endif %}>About</a></li>
     </ul>
     <button class="theme-toggle" type="button" aria-label="색상 테마 전환">

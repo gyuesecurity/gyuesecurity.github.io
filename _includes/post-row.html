@@ -1,5 +1,5 @@
 {% assign primary_category = include.post.categories | first %}
-<a href="{{ include.post.url | relative_url }}" class="record-row reveal">
+<a href="{{ include.post.url | relative_url }}" class="record-row panel spotlight reveal" data-search-item data-category="{{ primary_category | escape }}" data-search-text="{{ include.post.title | append: ' ' | append: include.post.tags | downcase | escape }}">
   <span class="record-id">REC/{{ include.post.date | date: '%y%m%d' }}</span>
   <div class="record-main">
     <div class="record-meta">

@@ -11,24 +11,21 @@ description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 �
   {% include site-nav.html active="home" %}
   <main>
     <section class="ledger-hero page-shell">
-      <div class="hero-coordinate" aria-hidden="true">37.5665° N / 126.9780° E</div>
       <div class="hero-statement reveal">
-        <p class="eyebrow">INDEPENDENT SECURITY RECORDS · EST. 2026</p>
-        <h1>Break the<br><em>assumption.</em></h1>
-        <p class="hero-summary">시스템이 당연하다고 믿는 가정을 의심하고,<br>분석하고, 재현한 과정을 기록합니다.</p>
+        <p class="eyebrow">SECURITY · DEVELOPMENT · RESEARCH</p>
+        <h1>Security<br><em>field notes.</em></h1>
+        <p class="hero-summary">취약점을 분석하고 문제를 해결하며 배운 내용을 기록합니다.<br>결과뿐 아니라 다시 따라갈 수 있는 과정을 남깁니다.</p>
         <div class="hero-actions">
           <a class="button primary" href="{{ '/posts/' | relative_url }}">기록 열람 <span>↗</span></a>
           <a class="button" href="{{ '/about/' | relative_url }}">ABOUT GYUE</a>
         </div>
       </div>
-      <aside class="focus-card reveal" aria-label="현재 관심 분야">
-        <div class="focus-card-head"><span>CURRENT SIGNAL</span><span class="signal">LIVE</span></div>
-        <div class="radar" aria-hidden="true"><span></span><i></i></div>
-        <ol>
-          <li><span>01</span>웹 취약점 분석과 재현</li>
-          <li><span>02</span>CTF / Wargame 풀이</li>
-          <li><span>03</span>보안 기술과 논문 기록</li>
-        </ol>
+      <aside class="focus-card panel spotlight reveal" aria-label="프로필 요약">
+        <div class="focus-card-head"><span>PROFILE / GYUE</span><span class="signal">LEARNING</span></div>
+        <div class="profile-symbol" aria-hidden="true">g<span>_</span></div>
+        <h2>gyue</h2>
+        <p>웹 보안과 개발을 공부하며<br>기술적 시행착오를 기록합니다.</p>
+        <div class="profile-links"><a href="https://github.com/gyuesecurity">GITHUB ↗</a><a href="mailto:sos004989@naver.com">EMAIL ↗</a></div>
       </aside>
       <div class="hero-index" aria-label="아카이브 현황">
         <div><small>RECORDS</small><strong>{{ site.posts.size }}</strong></div>
@@ -48,7 +45,7 @@ description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 �
         {% assign field_codes = "BUILD|BREAK|HUNT|WRITE|RESEARCH|ACHIEVE" | split: "|" %}
         {% for category_name in category_order %}
           {% assign category_slug = category_slugs[forloop.index0] %}
-          <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}" class="field-card field-{{ forloop.index }} reveal">
+          <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}" class="field-card field-{{ forloop.index }} panel spotlight reveal">
             <span class="field-number">0{{ forloop.index }}</span>
             <span class="field-code">{{ field_codes[forloop.index0] }}</span>
             <h3>{{ category_name }}</h3>

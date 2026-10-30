@@ -10,15 +10,26 @@ description: gyue의 전체 보안 및 기술 기록
 <body>
   {% include site-nav.html active="posts" %}
   <main class="page-shell inner-shell">
-    <section class="index-hero reveal">
-      <p class="eyebrow">MASTER RECORD INDEX</p><span class="index-serial">INDEX / {{ site.posts.size }}</span>
-      <h1>모든 기록</h1><p>완성된 답이 아니라, 탐구가 진행된 순서를 보관합니다.</p>
+    <section class="index-hero panel reveal">
+      <p class="eyebrow">THE COMPLETE ARCHIVE</p><span class="index-serial">{{ site.posts.size }} NOTES</span>
+      <h1>전체 기록<span class="accent">.</span></h1><p>보안과 개발을 공부하며 남긴 모든 글을 최신순으로 정리했습니다.</p>
+      <div class="category-links" data-category-filters>
+        <button type="button" class="is-active" data-category="">전체</button>
+        <button type="button" data-category="개발">&lt;/&gt; 개발</button>
+        <button type="button" data-category="CTF/Wargame">&gt;_ CTF/Wargame</button>
+        <button type="button" data-category="BugBounty">[!] BugBounty</button>
+        <button type="button" data-category="블로그/기술문서">:: 기술문서</button>
+        <button type="button" data-category="논문/컨퍼런스">= 논문/컨퍼런스</button>
+        <button type="button" data-category="공모전/자격증"># 공모전/자격증</button>
+      </div>
     </section>
     <section class="index-stats">
       <div><small>TOTAL RECORDS</small><strong>{{ site.posts.size }}</strong></div>
       <div><small>ACTIVE FIELDS</small><strong>06</strong></div>
       <div><small>LAST UPDATED</small><strong>{{ site.posts.first.date | date: "%Y.%m.%d" }}</strong></div>
     </section>
+    <section class="archive-tools"><label for="post-search">기록 검색 <kbd>/</kbd><input id="post-search" type="search" placeholder="제목이나 키워드로 검색" autocomplete="off"></label><output id="search-count">{{ site.posts.size }}개의 기록</output></section>
+    <p class="empty-record" id="search-empty" hidden>검색 결과가 없습니다.</p>
     <section class="content-section"><div class="record-list">{% for post in site.posts %}{% include post-row.html post=post %}{% endfor %}</div></section>
   </main>
   {% include site-footer.html %}

@@ -24,6 +24,53 @@
     menu?.classList.toggle('is-open', !open);
   });
 
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.spotlight').forEach((card) => {
+      card.addEventListener('pointermove', (event) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--spot-x', `${event.clientX - rect.left}px`);
+        card.style.setProperty('--spot-y', `${event.clientY - rect.top}px`);
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.setProperty('--spot-x', '50%');
+        card.style.setProperty('--spot-y', '50%');
+      });
+    });
+  }
+
+  const search = document.getElementById('post-search');
+  const categoryButtons = [...document.querySelectorAll('[data-category-filters] button')];
+  const searchItems = [...document.querySelectorAll('[data-search-item]')];
+  if (search && searchItems.length) {
+    const count = document.getElementById('search-count');
+    const empty = document.getElementById('search-empty');
+    let category = '';
+    const filterPosts = () => {
+      const query = search.value.normalize('NFKC').trim().toLocaleLowerCase();
+      let visible = 0;
+      searchItems.forEach((item) => {
+        const matchesText = !query || item.dataset.searchText.includes(query);
+        const matchesCategory = !category || item.dataset.category === category;
+        item.hidden = !(matchesText && matchesCategory);
+        if (!item.hidden) visible += 1;
+      });
+      if (count) count.textContent = `${visible}개의 기록`;
+      if (empty) empty.hidden = visible !== 0;
+    };
+    search.addEventListener('input', filterPosts);
+    categoryButtons.forEach((button) => button.addEventListener('click', () => {
+      category = button.dataset.category;
+      categoryButtons.forEach((item) => item.classList.toggle('is-active', item === button));
+      filterPosts();
+    }));
+    addEventListener('keydown', (event) => {
+      if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+        event.preventDefault();
+        search.focus();
+      }
+    });
+  }
+
   const progress = document.querySelector('.reading-progress');
   if (progress) {
     const updateProgress = () => {

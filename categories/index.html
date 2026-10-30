@@ -18,7 +18,7 @@ description: gyue security archive 카테고리 목록
       {% assign descriptions = "설계와 구현 과정에서 얻은 판단을 기록합니다.|문제를 분해하고 공격 경로를 복기합니다.|취약점을 찾고 검증한 실전 기록을 남깁니다.|지식을 다시 사용할 수 있는 문서로 정리합니다.|연구 결과와 발표에서 얻은 통찰을 압축합니다.|도전의 준비 과정과 결과를 회고합니다." | split: "|" %}
       {% for category_name in category_order %}
         {% assign category_slug = category_slugs[forloop.index0] %}
-        <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}" class="field-card field-{{ forloop.index }} reveal">
+        <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}" class="field-card field-{{ forloop.index }} panel spotlight reveal">
           <span class="field-number">0{{ forloop.index }}</span><span class="field-code">{{ field_codes[forloop.index0] }}</span>
           <h3>{{ category_name }}</h3><p>{{ descriptions[forloop.index0] }}</p>
           <div class="field-foot"><span>{{ site.categories[category_name] | size }} RECORDS</span><span>EXPLORE ↗</span></div>
