@@ -145,6 +145,10 @@ collections:
 defaults:
   - scope:
       path: ""
+    values:
+      image: /assets/img/social-card.svg
+  - scope:
+      path: ""
       type: posts
     values:
       layout: post
