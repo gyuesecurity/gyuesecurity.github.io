@@ -12,7 +12,7 @@ timezone: Asia/Seoul
 # jekyll-seo-tag settings
 # ↓ --------------------------
 
-title: gyue
+title: gyue.security
 
 tagline: Security Analysis and Write-ups
 
@@ -25,9 +25,6 @@ url: "https://gyuesecurity.github.io"
 
 github:
   username: gyuesecurity
-
-twitter:
-  username:
 
 social:
   name: gyue
