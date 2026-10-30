@@ -5,6 +5,7 @@ categories: [CTF/Wargame]
 tags: [ctf, web, request-smuggling, parser-differential]
 ---
 
+# Paper Trail - HTTP 요청 스머글링과 파서 차이를 이용한 권한 우회
 
 ## 개요
 

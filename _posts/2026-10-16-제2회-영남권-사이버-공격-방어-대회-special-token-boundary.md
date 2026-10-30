@@ -5,6 +5,7 @@ categories: [CTF/Wargame]
 tags: [ctf, ai-security, prompt-injection, llm]
 ---
 
+# Special Token Boundary - 특수 토큰으로 LLM 역할 경계를 무너뜨리는 공격
 
 ## 문제 정보
 

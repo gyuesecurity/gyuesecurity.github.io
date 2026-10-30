@@ -5,6 +5,8 @@ categories: [CTF/Wargame]
 tags: [ctf, web, github-api, ssrf, lfi]
 ---
 
+# Repo Cassette - GitHub API 경로 탈출과 SSRF·LFI 취약점 체인
+
 Repo Cassette는 HAR로 저장한 GitHub 저장소 응답을 다시 제공하고, 현재
 GitHub 응답의 SHA-256과 일치하면 저장소 소유자의 아바타를 postcard
 SVG에 포함하는 문제다.

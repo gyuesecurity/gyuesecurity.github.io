@@ -5,6 +5,7 @@ categories: [CTF/Wargame]
 tags: [ctf, forensics, audio, steganography]
 ---
 
+# What is Love - 오디오 파일에 숨겨진 데이터를 복원하는 포렌식 문제
 
 ## 문제 정보
 

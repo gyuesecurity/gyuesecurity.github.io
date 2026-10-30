@@ -5,6 +5,7 @@ categories: [CTF/Wargame]
 tags: [ctf, reversing, crackme, cryptography]
 ---
 
+# Pixel Puzzle Crackme - ELF 검증 로직 분석과 암호화 퍼즐 복호화
 
 ## 문제 개요
 

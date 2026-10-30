@@ -5,6 +5,7 @@ categories: [CTF/Wargame]
 tags: [ctf, ai-security, prompt-injection, mcp]
 ---
 
+# MCP Support Desk - 간접 프롬프트 인젝션을 이용한 MCP 에이전트 공격
 
 ## 문제 정보
 

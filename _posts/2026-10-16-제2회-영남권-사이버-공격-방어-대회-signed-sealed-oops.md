@@ -5,6 +5,7 @@ categories: [CTF/Wargame]
 tags: [ctf, web, ssrf, cryptography, parser-differential]
 ---
 
+# Signed, Sealed, Oops - SSRF와 검증 로직 차이를 연결한 복합 공격
 
 ## 개요
 

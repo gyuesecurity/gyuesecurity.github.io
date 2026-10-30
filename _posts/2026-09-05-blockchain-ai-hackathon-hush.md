@@ -5,6 +5,8 @@ categories: [공모전/자격증]
 tags: [hackathon, blockchain, ai, web3, privacy, ethereum, gemini]
 ---
 
+# HUSH - 프라이버시를 보존하는 AI·Web3 집단 협상 시스템 개발
+
 ## 1. 프로젝트 개요
 
 HUSH는 여러 사람이 하나의 결정을 내려야 할 때 각자의 민감한 조건을 다른 사람에게 공개하지 않고 합의를 찾도록 돕는 AI·Web3 기반 협상 시스템이다.

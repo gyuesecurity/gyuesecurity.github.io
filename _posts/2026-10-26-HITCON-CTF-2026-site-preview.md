@@ -5,6 +5,8 @@ categories: [CTF/Wargame]
 tags: [ctf, web, nextjs, prototype-pollution, lfi]
 ---
 
+# Site Preview - JWT 위조부터 Prototype Pollution RCE까지
+
 - Category: Web
 - Challenge: `Site Preview`
 - Flag: `hitcon{finally_a_sufficiently_complicated_ctf_challenge_for_llm_assited_solving?}`

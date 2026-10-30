@@ -5,6 +5,8 @@ categories: [CTF/Wargame]
 tags: [ctf, web, http3, request-smuggling, lfi]
 ---
 
+# Wiki.js - HTTP/3 요청 스머글링과 캐시 LFI를 연결한 공격
+
 - 대회: HITCON CTF 2026
 - 분야: web
 - 상태: 원격 플래그 회수 완료, 제출은 사용자 수동 진행
