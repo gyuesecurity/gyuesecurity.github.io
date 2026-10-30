@@ -9,8 +9,7 @@ description: gyue의 게시글 목록 페이지
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Posts | gyue archive</title>
-  <meta name="description" content="{{ page.description }}">
+  {% seo %}
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
 </head>
@@ -23,6 +22,8 @@ description: gyue의 게시글 목록 페이지
     <ul class="nav-links">
       <li><a href="{{ '/' | relative_url }}">Home</a></li>
       <li><a href="{{ '/posts/' | relative_url }}" class="is-active">Posts</a></li>
+      <li><a href="{{ '/categories/' | relative_url }}">Categories</a></li>
+      <li><a href="{{ '/tags/' | relative_url }}">Tags</a></li>
       <li><a href="{{ '/about/' | relative_url }}">About</a></li>
       <li><a href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">Github</a></li>
     </ul>
@@ -44,8 +45,8 @@ description: gyue의 게시글 목록 페이지
           <strong>{{ site.posts.size }}</strong>
         </div>
         <div class="summary-item">
-          <span class="metric-name">main topics</span>
-          <strong>security</strong>
+          <span class="metric-name">last updated</span>
+          <strong>{{ site.posts.first.date | date: "%Y.%m.%d" }}</strong>
         </div>
       </div>
     </section>

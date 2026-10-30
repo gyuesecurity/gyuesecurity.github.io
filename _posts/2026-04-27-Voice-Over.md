@@ -2,7 +2,7 @@
 title: "[2026 Hacktheon Sejong] 𝗩𝗼𝗶𝗰𝗲-𝗢𝘃𝗲𝗿"
 date: 2026-04-27 01:00:00 +0900
 categories: [CTF/Wargame]
-tags: [ctf, AI, Hacktheon]
+tags: [ctf, ai, hacktheon]
 ---
 
 # 2026 Hacktheon Sejong CTF 대회

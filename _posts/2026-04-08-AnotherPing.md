@@ -2,7 +2,7 @@
 title: "[DreamHack] Another Ping"
 date: 2026-04-08 00:40:00 +0900
 categories: [CTF/Wargame]
-tags: [ctf, web, DreamHack]
+tags: [ctf, web, dreamhack]
 ---
 
 # 드림핵 CTF 문제 풀이

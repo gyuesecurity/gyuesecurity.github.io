@@ -2,7 +2,7 @@
 title: "[Paper Review] 코드 생성형 LLM이 만드는 새로운 공급망 공격 - Package Hallucination"
 date: 2026-05-11 01:00:00 +0900
 categories: [논문/컨퍼런스]
-tags: [LLM, RAG, Paper Review, Security]
+tags: [llm, rag, paper review, security]
 ---
 
 # 코드 생성형 LLM이 만드는 새로운 공급망 공격  

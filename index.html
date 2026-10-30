@@ -9,8 +9,7 @@ description: 개발, CTF/Wargame, BugBounty, 블로그/기술문서, 논문/컨�
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home | gyue archive</title>
-  <meta name="description" content="{{ page.description }}">
+  {% seo %}
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
 </head>
@@ -23,6 +22,8 @@ description: 개발, CTF/Wargame, BugBounty, 블로그/기술문서, 논문/컨�
     <ul class="nav-links">
       <li><a href="{{ '/' | relative_url }}" class="is-active">Home</a></li>
       <li><a href="{{ '/posts/' | relative_url }}">Posts</a></li>
+      <li><a href="{{ '/categories/' | relative_url }}">Categories</a></li>
+      <li><a href="{{ '/tags/' | relative_url }}">Tags</a></li>
       <li><a href="{{ '/about/' | relative_url }}">About</a></li>
       <li><a href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">Github</a></li>
     </ul>
@@ -32,7 +33,7 @@ description: 개발, CTF/Wargame, BugBounty, 블로그/기술문서, 논문/컨�
     <section class="hero-split">
       <div class="hero-copy">
         <p class="eyebrow">security notes · exploit paths · build logs</p>
-        <h1>guye, security.</h1>
+        <h1>gyue, security.</h1>
         <p class="hero-summary">
           보안과 개발 활동을 기록하는 공간입니다.
           취약점 분석 및 문제 풀이 등 다양한 기록들을 공유합니다.
@@ -70,37 +71,37 @@ description: 개발, CTF/Wargame, BugBounty, 블로그/기술문서, 논문/컨�
       </div>
 
       <div class="topic-grid">
-        <a href="{{ '/categories/' | relative_url }}" class="topic-card tone-cyan">
+        <a href="{{ '/categories/dev/' | relative_url }}" class="topic-card tone-cyan">
           <span class="topic-kicker">01</span>
           <h3>개발</h3>
           <p>설계, 구현등의 기록을 남기는 공간.</p>
           <span class="topic-meta">{{ site.categories['개발'] | size }} posts</span>
         </a>
-        <a href="{{ '/categories/' | relative_url }}" class="topic-card tone-orange">
+        <a href="{{ '/categories/ctf-wargame/' | relative_url }}" class="topic-card tone-orange">
           <span class="topic-kicker">02</span>
           <h3>CTF / Wargame</h3>
           <p>문제 풀이를 기록하는 공간.</p>
           <span class="topic-meta">{{ site.categories['CTF/Wargame'] | size }} posts</span>
         </a>
-        <a href="{{ '/categories/' | relative_url }}" class="topic-card tone-yellow">
+        <a href="{{ '/categories/bugbounty/' | relative_url }}" class="topic-card tone-yellow">
           <span class="topic-kicker">03</span>
           <h3>BugBounty</h3>
           <p>실전 감각을 잃지 않기 위한 취약점 메모.</p>
           <span class="topic-meta">{{ site.categories['BugBounty'] | size }} posts</span>
         </a>
-        <a href="{{ '/categories/' | relative_url }}" class="topic-card tone-green">
+        <a href="{{ '/categories/blog-docs/' | relative_url }}" class="topic-card tone-green">
           <span class="topic-kicker">04</span>
           <h3>블로그 / 기술문서</h3>
           <p>문서화 방식과 운영 기록을 축적하는 섹션.</p>
           <span class="topic-meta">{{ site.categories['블로그/기술문서'] | size }} posts</span>
         </a>
-        <a href="{{ '/categories/' | relative_url }}" class="topic-card tone-rose">
+        <a href="{{ '/categories/paper-conf/' | relative_url }}" class="topic-card tone-rose">
           <span class="topic-kicker">05</span>
           <h3>논문 / 컨퍼런스</h3>
           <p>발표와 자료에서 얻은 통찰을 정리하는 공간.</p>
           <span class="topic-meta">{{ site.categories['논문/컨퍼런스'] | size }} posts</span>
         </a>
-        <a href="{{ '/categories/' | relative_url }}" class="topic-card tone-slate">
+        <a href="{{ '/categories/contest-cert/' | relative_url }}" class="topic-card tone-slate">
           <span class="topic-kicker">06</span>
           <h3>공모전 / 자격증</h3>
           <p>준비 과정과 회고를 장기적으로 남기는 기록.</p>

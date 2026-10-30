@@ -9,8 +9,7 @@ description: gyue의 보안 학습과 기술 기록 방향을 소개하는 페�
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About | gyue archive</title>
-  <meta name="description" content="{{ page.description }}">
+  {% seo %}
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
 </head>
@@ -23,6 +22,8 @@ description: gyue의 보안 학습과 기술 기록 방향을 소개하는 페�
     <ul class="nav-links">
       <li><a href="{{ '/' | relative_url }}">Home</a></li>
       <li><a href="{{ '/posts/' | relative_url }}">Posts</a></li>
+      <li><a href="{{ '/categories/' | relative_url }}">Categories</a></li>
+      <li><a href="{{ '/tags/' | relative_url }}">Tags</a></li>
       <li><a href="{{ '/about/' | relative_url }}" class="is-active">About</a></li>
       <li><a href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">Github</a></li>
     </ul>

@@ -2,7 +2,7 @@
 title: "RAG PROJECT"
 date: 2026-04-06 00:00:00 +0900
 categories: [개발]
-tags: [rag, project, LLM]
+tags: [rag, project, llm]
 ---
 
 # RAG PROJECT

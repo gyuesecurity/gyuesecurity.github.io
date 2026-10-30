@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title }} | gyue archive</title>
-  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 160 }}">
+  {% seo %}
   <link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ '/assets/css/site-shell.css' | relative_url }}">
 </head>
@@ -17,12 +16,18 @@
     <ul class="nav-links">
       <li><a href="{{ '/' | relative_url }}">Home</a></li>
       <li><a href="{{ '/posts/' | relative_url }}" class="is-active">Posts</a></li>
+      <li><a href="{{ '/categories/' | relative_url }}">Categories</a></li>
+      <li><a href="{{ '/tags/' | relative_url }}">Tags</a></li>
       <li><a href="{{ '/about/' | relative_url }}">About</a></li>
       <li><a href="https://github.com/gyuesecurity" target="_blank" rel="noreferrer">Github</a></li>
     </ul>
   </nav>
 
-  <main class="page-shell narrow-shell">
+  <main class="page-shell article-page">
+    <aside id="article-toc" class="article-toc" aria-label="글 목차" hidden>
+      <p class="eyebrow">on this page</p>
+      <ol id="article-toc-list"></ol>
+    </aside>
     <article class="article-shell">
       <header class="article-header">
         <div class="post-row-head">
@@ -50,7 +55,7 @@
         {% if page.tags and page.tags.size > 0 %}
           <div class="tag-cloud">
             {% for tag in page.tags %}
-              <span class="pill">#{{ tag }}</span>
+              <a class="pill" href="{{ '/tags/' | append: tag | slugify | append: '/' | relative_url }}">#{{ tag }}</a>
             {% endfor %}
           </div>
         {% endif %}
@@ -65,5 +70,31 @@
   <footer class="site-footer">
     <p>© 2026 gyue archive · back to <a href="{{ '/posts/' | relative_url }}">posts</a></p>
   </footer>
+  <script>
+    (() => {
+      const article = document.querySelector('.article-body');
+      const toc = document.getElementById('article-toc');
+      const list = document.getElementById('article-toc-list');
+      if (!article || !toc || !list) return;
+
+      const duplicateTitle = article.querySelector(':scope > h1:first-child');
+      if (duplicateTitle) duplicateTitle.remove();
+
+      const headings = [...article.querySelectorAll('h2, h3')];
+      if (headings.length < 3) return;
+
+      headings.forEach((heading, index) => {
+        if (!heading.id) heading.id = `section-${index + 1}`;
+        const item = document.createElement('li');
+        if (heading.tagName === 'H3') item.className = 'toc-subitem';
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        item.appendChild(link);
+        list.appendChild(item);
+      });
+      toc.hidden = false;
+    })();
+  </script>
 </body>
 </html>

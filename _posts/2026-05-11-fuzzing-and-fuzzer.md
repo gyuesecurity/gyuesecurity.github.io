@@ -2,7 +2,7 @@
 title: "Fuzzing과 Fuzzer 정리"
 date: 2026-05-11 02:00:00 +0900
 categories: [BugBounty]
-tags: [fuzzing, fuzzer, BugBounty]
+tags: [fuzzing, fuzzer, bugbounty]
 ---
 
 # fuzzing 과 fuzzer 에 대한 내용 정리

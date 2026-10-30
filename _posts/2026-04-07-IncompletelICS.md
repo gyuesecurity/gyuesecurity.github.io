@@ -2,7 +2,7 @@
 title: "[2025 ACS] Incomplete-ICS"
 date: 2026-04-07 01:00:00 +0900
 categories: [CTF/Wargame]
-tags: [ctf, misc, 2025 ACS]
+tags: [ctf, misc, 2025 acs]
 ---
 
 # 2025 Asean Cyber Shield HACKING CONTEST
