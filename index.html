@@ -2,7 +2,7 @@
 layout: null
 permalink: /
 title: Home
-description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 기록하는 gyue의 보안 아카이브
+description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 기록하는 gyue.security 보안 블로그
 ---
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,8 +32,8 @@ description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 �
         <div class="profile-links"><a href="{{ site.posts.first.url | relative_url }}">OPEN REPORT ↗</a><a href="{{ '/about/' | relative_url }}">VIEW PROFILE ↗</a></div>
       </aside>
       <div class="hero-index" aria-label="아카이브 현황">
-        <div><small>RECORDS</small><strong>{{ site.posts.size }}</strong></div>
-        <div><small>FIELDS</small><strong>06</strong></div>
+        <div><small>POSTS</small><strong>{{ site.posts.size }}</strong></div>
+        <div><small>CATEGORIES</small><strong>06</strong></div>
         <div><small>LAST SYNC</small><strong>{{ site.posts.first.date | date: "%Y.%m.%d" }}</strong></div>
       </div>
     </section>
@@ -72,7 +72,7 @@ description: 개발, CTF/Wargame, BugBounty, 기술문서, 논문과 활동을 �
             <span class="field-number">0{{ forloop.index }}</span>
             <span class="field-code">{{ field_codes[forloop.index0] }}</span>
             <h3>{{ category_name }}</h3>
-            <div class="field-foot"><span>{{ site.categories[category_name] | size }} RECORDS</span><span>↗</span></div>
+            <div class="field-foot"><span>{{ site.categories[category_name] | size }} POSTS</span><span>↗</span></div>
           </a>
         {% endfor %}
       </div>

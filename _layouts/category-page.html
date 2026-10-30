@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="ko"><head>{% include site-head.html %}</head><body>
 {% include site-nav.html active="categories" %}
 {% assign matched_posts = site.posts | where_exp: "post", "post.categories contains page.category_label" %}
-<main class="page-shell inner-shell"><section class="index-hero reveal"><p class="eyebrow">FIELD RECORDS</p><span class="index-serial">{{ matched_posts | size }} ITEMS</span><h1>{{ page.category_label }}</h1><p>이 필드에 분류된 탐구 기록입니다.</p></section><div class="record-list">{% for post in matched_posts %}{% include post-row.html post=post %}{% endfor %}{% if matched_posts.size == 0 %}<div class="empty-record">NO RECORDS YET</div>{% endif %}</div></main>
+<main class="page-shell inner-shell"><section class="index-hero reveal"><p class="eyebrow">CATEGORY POSTS</p><span class="index-serial">{{ matched_posts | size }} POSTS</span><h1>{{ page.category_label }}</h1><p>이 카테고리에 분류된 게시글입니다.</p></section><div class="record-list">{% for post in matched_posts %}{% include post-row.html post=post %}{% endfor %}{% if matched_posts.size == 0 %}<div class="empty-record">NO POSTS YET</div>{% endif %}</div></main>
 {% include site-footer.html %}</body></html>

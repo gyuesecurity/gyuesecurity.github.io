@@ -2,7 +2,7 @@
 layout: null
 permalink: /categories/
 title: Categories
-description: gyue security archive 카테고리 목록
+description: gyue.security 보안 블로그 카테고리 목록
 ---
 <!DOCTYPE html>
 <html lang="ko">
@@ -21,7 +21,7 @@ description: gyue security archive 카테고리 목록
         <a href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}" class="field-card field-{{ forloop.index }} panel spotlight reveal">
           <span class="field-number">0{{ forloop.index }}</span><span class="field-code">{{ field_codes[forloop.index0] }}</span>
           <h3>{{ category_name }}</h3><p>{{ descriptions[forloop.index0] }}</p>
-          <div class="field-foot"><span>{{ site.categories[category_name] | size }} RECORDS</span><span>EXPLORE ↗</span></div>
+          <div class="field-foot"><span>{{ site.categories[category_name] | size }} POSTS</span><span>EXPLORE ↗</span></div>
         </a>
       {% endfor %}
     </section>

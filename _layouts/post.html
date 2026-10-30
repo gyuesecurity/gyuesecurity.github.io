@@ -11,7 +11,7 @@
     <aside id="article-toc" class="article-toc" aria-label="글 목차" hidden><p class="eyebrow">CONTENTS</p><ol id="article-toc-list"></ol></aside>
     <article class="article-shell">
       <header class="article-header">
-        <div class="document-stamp"><span>GYUE / SECURITY LEDGER</span><span>REC-{{ page.date | date: '%y%m%d' }}</span></div>
+        <div class="document-stamp"><span>gyue.security / security report</span><span>POST-{{ page.date | date: '%y%m%d' }}</span></div>
         <a class="field-label" href="{{ '/categories/' | append: category_slug | append: '/' | relative_url }}">{{ primary_category | default: '미분류' }}</a>
         <h1>{{ page.title }}</h1>
         <div class="article-data"><time datetime="{{ page.date | date_to_xmlschema }}">PUBLISHED {{ page.date | date: "%Y.%m.%d" }}</time><span data-reading-time>CALCULATING</span></div>
@@ -19,8 +19,8 @@
       </header>
       <div class="article-body">{{ content }}</div>
       <nav class="article-pagination" aria-label="이전 및 다음 글">
-        {% if page.previous %}<a href="{{ page.previous.url | relative_url }}"><small>PREVIOUS RECORD</small><span>← {{ page.previous.title }}</span></a>{% endif %}
-        {% if page.next %}<a href="{{ page.next.url | relative_url }}"><small>NEXT RECORD</small><span>{{ page.next.title }} →</span></a>{% endif %}
+        {% if page.previous %}<a href="{{ page.previous.url | relative_url }}"><small>PREVIOUS POST</small><span>← {{ page.previous.title }}</span></a>{% endif %}
+        {% if page.next %}<a href="{{ page.next.url | relative_url }}"><small>NEXT POST</small><span>{{ page.next.title }} →</span></a>{% endif %}
       </nav>
     </article>
   </main>
