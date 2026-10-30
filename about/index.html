@@ -27,6 +27,30 @@ description: gyue의 관심 분야와 기록 원칙
         <p>풀이의 정답만 남기기보다 어떤 가설을 세웠고, 어디서 막혔으며, 무엇을 새롭게 이해했는지 기록합니다. 이 아카이브는 학습의 결과물이자 다음 문제를 위한 도구입니다.</p>
       </div>
     </section>
+    <section class="portfolio-section">
+      <header class="section-heading">
+        <div><p class="eyebrow">SELECTED WORK / 2026</p><h2>대표 작업</h2></div>
+        <p>직접 설계하고 구현하거나, 문제를 분석해 결과를 만든 작업입니다.</p>
+      </header>
+      {% assign ctf_agent = site.posts | where: "title", "[CTF 문제 자동 분석 및 플래그 추출 AI 에이전트]" | first %}
+      {% assign rag_project = site.posts | where: "title", "RAG PROJECT" | first %}
+      {% assign ctf_result = site.posts | where: "title", "[K.knock · D-Alpha · CAUtion 동아리 연합 CTF 결과 및 Write-up]" | first %}
+      {% assign codeql = site.posts | where: "title", "[CodeQL] 원리와 사용법 분석" | first %}
+      <div class="portfolio-grid">
+        <a class="portfolio-card spotlight" href="{{ ctf_agent.url | relative_url }}"><span class="portfolio-index">01 / PROJECT</span><strong>CTF Agent</strong><p>문제 수집부터 도구 실행, 플래그 제출과 Write-up 생성까지 자동화하는 AI 에이전트.</p><div><span>AI · CTF · AUTOMATION</span><b>CASE STUDY ↗</b></div></a>
+        <a class="portfolio-card spotlight" href="{{ rag_project.url | relative_url }}"><span class="portfolio-index">02 / PROJECT</span><strong>Security RAG</strong><p>공식 보안 문서를 검색해 근거 중심 답변을 생성하는 보안 학습 도우미.</p><div><span>RAG · LLM · POSTGRESQL</span><b>CASE STUDY ↗</b></div></a>
+        <a class="portfolio-card spotlight featured-work" href="{{ ctf_result.url | relative_url }}"><span class="portfolio-index">03 / ACHIEVEMENT</span><strong>동아리 연합 CTF 3위</strong><p>Web, Pwnable, Crypto, Reversing, OSINT, AI 분야의 공격 경로와 풀이 과정을 정리했습니다.</p><div><span>CTF · WEB · PWN</span><b>WRITE-UP ↗</b></div></a>
+        <a class="portfolio-card spotlight" href="{{ codeql.url | relative_url }}"><span class="portfolio-index">04 / RESEARCH</span><strong>CodeQL 분석 및 실습</strong><p>코드 데이터베이스와 QL Query를 이용한 정적 분석 원리를 학습하고 직접 검증했습니다.</p><div><span>SAST · CODEQL · DATA FLOW</span><b>READ REPORT ↗</b></div></a>
+      </div>
+    </section>
+
+    <section class="portfolio-summary">
+      <div><span>WRITTEN REPORTS</span><strong>{{ site.posts.size }}</strong></div>
+      <div><span>CTF / WARGAME</span><strong>{{ site.categories['CTF/Wargame'] | size }}</strong></div>
+      <div><span>DEVELOPMENT</span><strong>{{ site.categories['개발'] | size }}</strong></div>
+      <div><span>TECHNICAL DOCS</span><strong>{{ site.categories['블로그/기술문서'] | size }}</strong></div>
+    </section>
+
     <section class="principles">
       <header class="section-heading"><div><p class="eyebrow">OPERATING RULES</p><h2>기록 원칙</h2></div></header>
       <ol>
