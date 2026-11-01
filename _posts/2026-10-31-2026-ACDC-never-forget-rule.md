@@ -1,6 +1,6 @@
 ---
 title: "[2026 ACDC] Never forget rule"
-date: 2026-10-31 09:39:14 +0900
+date: 2026-10-31 14:00:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, ai-security, yara, reversing, onnx]
 ---

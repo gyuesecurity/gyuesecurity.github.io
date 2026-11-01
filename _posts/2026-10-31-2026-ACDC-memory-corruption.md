@@ -1,6 +1,6 @@
 ---
 title: "[2026 ACDC] Memory Corruption"
-date: 2026-10-31 13:39:22 +0900
+date: 2026-10-31 14:04:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, ai-security, prompt-injection, memory-poisoning]
 ---

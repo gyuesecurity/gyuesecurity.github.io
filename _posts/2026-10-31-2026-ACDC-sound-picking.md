@@ -1,6 +1,6 @@
 ---
 title: "[2026 ACDC] Sound Picking"
-date: 2026-10-31 16:39:10 +0900
+date: 2026-10-31 14:06:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, ai, signal-processing, machine-learning, audio]
 ---

@@ -1,6 +1,6 @@
 ---
 title: "[2026 ACDC] clear picture"
-date: 2026-10-31 15:43:34 +0900
+date: 2026-10-31 14:05:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, forensics, computer-vision, qr-code, video]
 ---

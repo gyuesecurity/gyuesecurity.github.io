@@ -1,6 +1,6 @@
 ---
 title: "[2026 ACDC] Damaged fingerprint"
-date: 2026-10-31 12:32:48 +0900
+date: 2026-10-31 14:02:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, ai, image-restoration, computer-vision, forensics]
 ---

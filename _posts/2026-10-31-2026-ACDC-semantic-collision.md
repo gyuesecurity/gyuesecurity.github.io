@@ -1,6 +1,6 @@
 ---
 title: "[2026 ACDC] Semantic Collision"
-date: 2026-10-31 11:30:56 +0900
+date: 2026-10-31 14:01:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, ai-security, prompt-injection, llm]
 ---

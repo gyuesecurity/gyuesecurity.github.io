@@ -1,6 +1,6 @@
 ---
 title: "[2026 UHCON CTF] blitter"
-date: 2026-10-31 11:11:52 +0900
+date: 2026-10-31 13:01:00 +0900
 categories: [CTF/Wargame]
 tags: [ctf, pwn, heap, tcache, seccomp]
 ---
