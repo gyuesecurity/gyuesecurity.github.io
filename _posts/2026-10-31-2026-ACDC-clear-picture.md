@@ -5,7 +5,7 @@ categories: [CTF/Wargame]
 tags: [ctf, forensics, computer-vision, qr-code, video]
 ---
 
-# clear picture - 회전 영상의 3D 복원으로 숨겨진 QR 코드 추출
+# Clear Picture - 회전 영상의 3D 복원으로 숨겨진 QR 코드 추출
 
 ## 1. 문제 개요
 문제 설명은 다음과 같다.
